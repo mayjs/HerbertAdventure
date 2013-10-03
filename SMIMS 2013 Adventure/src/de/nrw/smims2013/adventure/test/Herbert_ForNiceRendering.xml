@@ -1,0 +1,23 @@
+<story startScene="BedroomScene" playerPosX="60" playerPosY="54" width="100" height="60">
+
+
+	<inventory>
+		<item name="Hausschluessel" />
+		
+	</inventory>
+
+	<scene name="BedroomScene" width="100" height="60" rightNeighbour="DummyScene">
+		<item name="Bett" posX="5" posY="35" />
+		<item name="Tisch" posX="40" posY="39"/>
+		<item name="Tablettendose" posX="48" posY="38" />		
+	</scene>
+
+	<scene name="DummyScene" width="100" height="60">
+	
+	</scene>
+
+	<item name="Bett" width="30" height="20" description="Herberts Bett" />
+	<item name="Tablettendose" width="2" height="4" grappable="true" description="Hier sind Pillen drinne."/>
+	<item name="Hausschluessel" width="3" height="1" description="Irgendeine Tür wird sich immer öffnen!" />
+	<item name="Tisch" width="15" height="15" />
+</story>

@@ -1,0 +1,64 @@
+<story startScene="scene1" playerPosX="15" playerPosY="15">
+	<scene name="scene1" width="50" height="30" rightNeighbour="rightScene"
+		leftNeighbour="leftScene" blockedWallHeight="20">
+		<item name="Hammer" posX="10" posY="10" />
+		<item name="Tür" posX="40" posY="15" />
+
+		<npc name="Günther" posX="15" posY="15" />
+	</scene>
+
+	<scene name="rightScene" width="50" height="50">
+		<item name="Tasse" posX="15" posY="10" />
+	</scene>
+
+	<scene name="leftScene" width="50" height="50">
+		<item name="Schlüssel" posX="20" posY="25" />
+	</scene>
+
+	<item name="LeereTasse" width="1" height="1" grapable="true"
+		description="Eine Tasse kann Flüssigkeiten aufnehmen und kaputtgehauen werden (mit einem Hammer)." />
+	<item name="Schlüssel" width="1" height="1" grapable="true"
+		description="Ein Schlüssel kann eine Tür öffnen.">
+		<interaction item="Schlüssel">
+			<remove item="Tür" />
+			<add item="OffeneTür" location="scene" xPos="40" yPos="15" />
+		</interaction>
+	</item>
+	<item name="OffeneTür" width="2" height="4" grapable="false">
+		<interaction>
+			<changeScene to="rightScene" start="left" />
+		</interaction>
+	</item>
+	<item name="Käse" width="2" height="2" />
+	<item name="Tür" width="2" height="4" grapable="false"
+		description="TÜR!" />
+
+	<item name="VolleTasse" width="1" height="1" grappable="true"
+		description="bla">
+		<interaction>
+			<remove item="VolleTasse" />
+			<add location="inventory" item="LeereTasse" />
+		</interaction>
+	</item>
+
+	<inventory>
+		<item name="Schlüssel" />
+		<item name="Käse" />
+		<item name="LeereTasse" />
+	</inventory>
+
+	<npc name="Günther" width="40" height="20" description="Nachbar">
+		<interaction item="Käse">
+			<remove location="" item="Käse" />
+			<add location="inventory" item="Schlüssel" />
+		</interaction>
+		<dialog>
+			<part content="Hallo!" />
+			<part content="Ich bin Günther." />
+			<part content="Ich wollte einen Auflauf backen und habe keinen Käse! :(" />
+			<part content="Hast du Käse für mich?" />
+			<part content="Ich würde dir im Gegenzug ein Geschenk machen!" />
+		</dialog>
+	</npc>
+
+</story>

@@ -1,0 +1,210 @@
+<story startScene="BedroomScene" playerPosX="60" playerPosY="54" width="100" height="60">
+
+
+	<inventory>
+		
+	</inventory>
+
+	<scene name="BedroomScene" width="100" height="60" rightNeighbour="KitchenScene"
+		lPosX="10" lPosY="50"
+		rPosX="80" rPosY="50" blockedWallHeight="46">
+		<item name="Bett" posX="5" posY="35" />
+		<item name="Tisch" posX="40" posY="39"/>
+		<item name="Tablettendose" posX="48" posY="37" />
+	</scene>
+
+	<scene name="KitchenScene" width="100" height="60" rightNeighbour="FloorScene"
+		leftNeighbour="BedroomScene"
+		lPosX="10" lPosY="50"
+		rPosX="80" rPosY="50" blockedWallHeight="46">
+		<item name="vollerKuehlschrank" posX="40" posY="22" />
+		<item name="Tasse" posX="45" posY="20"/>
+	</scene>
+	
+	<scene name="FloorScene" width="100" height="60" rightNeighbour="BathroomScene"
+		leftNeighbour="KitchenScene"
+		lPosX="10" lPosY="50"
+		rPosX="80" rPosY="50" blockedWallHeight="46">
+		<item name="Kommode" posX="20" posY="28" />
+		<item name="Karte" posX="30" posY="26" />		
+		<item name="Tuer" posX="70" posY="10" />	
+	</scene>
+	
+	<scene name="BathroomScene" width="100" height="60" leftNeighbour="FloorScene" 
+		lPosX="10" lPosY="50"
+		rPosX="80" rPosY="50" blockedWallHeight="46">
+		<item name="Krokodil" posX="40" posY="40" />
+		<item name="Hausschluessel" posX="60" posY="55" />
+		<item name="Klo" posX="70" posY="35"/>
+	</scene>
+	
+	<scene name="StreetScene" width="100" height="60" rightNeighbour="EndScene"
+		leftNeighbour="FloorScene"
+		lPosX="10" lPosY="50"
+		rPosX="80" rPosY="50" blockedWallHeight="46">
+		<npc name="Gisela" posX="70" posY="25"/>
+	</scene>
+	
+	<scene name="EndScene" width="100" height="60" leftNeighbour="StreetScene"
+		lPosX="10" lPosY="50"
+		rPosX="80" rPosY="50" blockedWallHeight="46">
+		<item name="Zigaretten" posX="50" posY="30" />
+		<item name="hammer" posX="55" posY="32"/>	
+		<npc name="Verkaeufer" posX="40" posY="22" />
+	</scene>
+
+	<item name="Bett" displayName="" width="30" height="20" description="Herberts Bett" />
+	
+	<item name="Tablettendose" displayName="" width="2" height="4" grappable="true" description="Hier sind meine Schlafabletten drin.">
+		<interaction item="Fleisch">
+			<remove item="Tablettendose" />
+			<remove item="Fleisch" />
+			<add location="inventory" item="FleischMitTabletten" />
+		</interaction> 
+	</item>
+	
+	<item name="Hausschluessel" displayName="Hausschlüssel" width="2" height="4" grappable="true" description="Wie konnte ich meinen Schlüssel nur verlieren?" >
+		<interaction item="Tuer">
+			<changeScene to="StreetScene" start="left"/>
+		</interaction>
+	</item>
+	
+	<item name="Tisch" displayName="" width="15" height="15" description="Eigentlich wollte ich diesen Tisch schon immer wegschmeißen, nur ich habe leider kein Geld für einen Neuen..."/>
+	
+	<item name="Fleisch" displayName="" width="5" height="3" grappable="true" description="Mhhh lecker! Das schmeckt bestimmt, ich sollte es mir morgen braten." >
+		<interaction item="Tablettendose">
+			<remove item="Tablettendose" />
+			<remove item="Fleisch" />
+			<add location="inventory" item="FleischMitTabletten" />
+		</interaction> 
+	</item>
+	
+	<item name="vollerKuehlschrank" displayName="Kühlschrank" width="20" height="30" description="Ich habe schon Hunger, aber nur auf Zigaretten.">
+		<interaction>
+			<remove location="KitchenScene" item="vollerKuehlschrank" />
+			<add location="KitchenScene" item="leererKuehlschrank" posX="40" posY="22" />
+			<add location="inventory" item="Kaese" />
+			<add location="inventory" item="Fleisch" />
+		</interaction>
+	</item>
+	
+	<item name="leererKuehlschrank" displayName="Kühlschrank" width="20" height="30" description="Hier ist nichts mehr zu holen." />
+	
+	<item name="Tasse" width="3" height="4" grappable="true" description="Eine einfache rote Tasse." >
+		<interaction item="hammer">
+			<remove item="Tasse"/>
+			<add item="scherben" location="inventory"/>
+		</interaction>
+	</item>
+	
+
+	<item name="volleTasse" displayName="volle Tasse" width="3" height="4" grappable="true" description="Eine volle rote Tasse. Mmhhh, lecker, wer würde das nicht trinken wollen.." >
+		<interaction>
+			<remove item="volleTasse"/>
+			<add location="inventory" item="Tasse"/>
+		</interaction>
+		<interaction item="hammer">
+			<remove item="volleTasse"/>
+			<add item="scherben" location="inventory"/>
+		</interaction>
+	</item>
+	
+	<item name="Kaese" displayName="Käse" width="4" height="3" grappable="true" description="Käse stinkt, warum habe ich so was überhaupt?"/>	
+	
+	<item name="Karte" width="4" height="3" grappable="true" description="Weist dir immer den Weg - egal mit welchen Mitteln!">
+		<interaction>
+			<remove item="Karte" />
+			<add location="inventory" item="AufgerollteKarte" />
+		</interaction>
+	</item>	
+
+	<item name="AufgerollteKarte" width="4" height="3" grappable="true" description="So eine Papierrolle ist vielfältig einzusetzten ...">
+		<interaction item="Gisela">
+			<remove location="StreetScene" npc="Gisela"/>
+			<add location="StreetScene" npc="verletzteGisela" posX="70" posY="25" />
+		</interaction>
+	</item>	
+
+	<item name="Tuer" displayName="Tür" width="20" height="35" description="Wo bitteschön ist mein Schlüssel?" >
+		<interaction item="Hausschluessel">
+			<changeScene to="StreetScene" start="left"/>
+		</interaction>
+	</item>
+	
+	<item name="FleischMitTabletten" displayName="Fleisch mit Tabletten" with="5" height="3" grappable="true" description="Igitt wie ekelig. Das kann doch kein Mensch essen! Man würde sofort einschlafen.">
+		<interaction item="Krokodil">
+			<remove item="FleischMitTabletten" />
+			<remove location="BathroomScene" item="Krokodil" />
+			<add location="BathroomScene" item="KrokoSchlafend"
+				posX="30" posY="45" />
+		</interaction>
+	</item>
+	
+	<item name="Kommode" displayName="" width="25" height="20" description="Die Kommode klemmt und man kann sie daher nicht benutzen... Hoffentlich kommt bald der Handwerker."/>
+	
+	<item name="Krokodil" displayName="" width="8" height="20" description="Ahhhhh!!! Ein Krokodil versperrt den Weg zum Schlüssel!" >
+		<interaction item="FleischMitTabletten">
+			<remove item="FleischMitTabletten" />
+			<remove location="BathroomScene" item="Krokodil" />
+			<add location="BathroomScene" item="KrokoSchlafend" posX="40" posY="45" />
+		</interaction>
+	</item>
+	
+	<item name="KrokoSchlafend" displayName="Krokodil" width="20" height="8" description="Wie süß es doch aussieht, wenn es friedlich schläft." />
+	
+	<item name="Zigaretten" displayName="Zigaretten" width="4" height="4" 
+		description="Da sind meine lang erhofften Zigaretten endlich! Doch habe ich genug Geld dafür?" />
+	
+	<item name="Geld" width="4" height="4" description="Endlich habe ich auch Geld um mir meine Zigaretten zu finanzieren!"/>
+	
+	<item name="Klo" displayName="" width="10" height="20" description="Eine Toilette. Sogar funktionsfähig.">
+		<interaction item="Tasse">
+			<remove item="Tasse" />
+			<add location="inventory" item="volleTasse" />
+		</interaction>
+	</item>
+	
+	<item name="scherben" displayName="Scherben" width="4" height="4" description="Welcher Idiot würde denn eine Tasse zerschlagen?¿?"/>
+
+	<item name="hammer" displayName="Hammer" width="4" height="4" grappable="true" description="Ein Hammer macht Dinge kaputt.">
+		
+	</item>
+	
+	<npc name="Gisela" displayName="" width="12" height="30">
+		<interaction item="Kaese">
+			<remove location="inventory" item="Kaese"/>
+			<add location="inventory" item="Geld"/>
+		</interaction>
+		<interaction item="AufgerollteKarte">
+			<remove location="StreetScene" npc="Gisela"/>
+			<add location="StreetScene" npc="verletzteGisela" posX="70" posY="25" />
+			<add location="inventory" item="Geld"/>
+		</interaction>
+		<dialog>
+			<part content="Hallo!"/>
+			<part content="Ich bin Gisela."/>
+			<part content="Ich wollte einen Auflauf backen und habe keinen Käse! :("/>
+			<part content="Hast du Käse für mich?"/>
+			<part content="Ich würde dir im Gegenzug ein Geschenk machen!"/>
+		</dialog>
+	</npc>
+	
+	<npc name="verletzteGisela" displayName="verletzte Gisela" width="12" height="30">
+		<dialog>
+			<part content="Aua!"/>
+		</dialog>
+	</npc>
+	
+	<npc name="Verkaeufer" width="6" height="10" description="Verkäufer" >
+		<interaction item="Geld" >
+			<remove item="Geld" />
+			<remove location="EndScene" item="Zigaretten" />
+			<add location= "inventory" item="Zigaretten" />
+		</interaction>
+		<dialog>
+			<part content="Guten Tag."/>
+			<part content="Zigaretten kosten 5€."/>
+		</dialog>
+	</npc>
+	
+</story>

@@ -1,0 +1,30 @@
+<story startScene="scene1" playerPosX="15" playerPosY="15">
+	<scene name="scene1" width="50" height="30" rightNeighbour="rightScene" leftNeighbour="leftScene"
+	lPosX="10" lPosY="15"
+	rPosX="40" rPosY="15"
+	tPosX="25" tPosY="5"
+	bPosX="25" bPosY="25">
+		<item name="Hammer" posX="10" posY="10" />
+		<item name="Tür" posX="40" posY="15" />
+	</scene>
+
+	<scene name="rightScene" width="50" height="50">
+		<item name="Tasse" posX="15" posY="10" />
+	</scene>
+
+	<scene name="leftScene" width="50" height="50">
+		<item name="Schlüssel" posX="20" posY="25" />
+	</scene>
+
+	<item name="Hammer" width="1" height="2" grapable="true"
+	description="Ein Hammer hautDinge kaputt."/>
+	
+	<item name="Tasse" width="1" height="1" grapable="true"
+	description="Eine Tasse kann Flüssigkeiten aufnehmen und kaputtgehauen werden (mit einem Hammer)."/>
+	
+	<item name="Schlüssel" width="1" height="1" grapable="true"
+	description="Ein Schlüssel kann eine Tür öffnen."/>
+	
+	<item name="Tür" width="2" height="4" grapable="false"
+	description="TÜR!"/>
+</story>
