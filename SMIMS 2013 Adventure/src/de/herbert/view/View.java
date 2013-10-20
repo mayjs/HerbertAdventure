@@ -1,5 +1,11 @@
 package de.herbert.view;
 
-public class View {
+import de.herbert.control.Control;
 
+public class View {
+	private Control control;
+	
+	public View(Control control){
+		this.control = control;
+	}
 }
