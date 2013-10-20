@@ -21,7 +21,7 @@ public class View {
 		components = new LinkedList<Component>();
 		
 		//Add components here!
-		components.add(new SimpleComponent(new Rectangle(30,30,50,50)));
+		components.add(new SimpleComponent(new Rectangle(30,30,500,50)));
 	}
 	
 	public void update(GameContainer container, int delta)
