@@ -22,7 +22,6 @@ public class View {
 		components = new LinkedList<Component>();
 		
 		//Add components here!
-		//components.add(new SimpleComponent(new Rectangle(30,30,500,50)));
 		
 		components.add(new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?"));
 		components.add(new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld")));

@@ -11,6 +11,7 @@ import org.newdawn.slick.geom.Rectangle;
 public class PctButton extends Button{
 	Image img;
 	
+	
 	public PctButton(Rectangle boundings, Image image){
 		super(boundings);
 		img = image;
