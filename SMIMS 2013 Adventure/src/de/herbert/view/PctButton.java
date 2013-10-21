@@ -1,7 +1,5 @@
 package de.herbert.view;
 
-import java.net.URL;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
