@@ -1,6 +1,7 @@
 package de.herbert.control;
 
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.AppletGameContainer.Container;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -11,6 +12,7 @@ import de.herbert.view.View;
 public class Control extends BasicGame {
 
 	private View view;
+	private GameContainer container;
 	
 	public Control(String title) {
 		super(title);
@@ -27,6 +29,7 @@ public class Control extends BasicGame {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		// TODO Auto-generated method stub
+		this.container = container;
 		view = new View(this);
 	}
 
@@ -35,6 +38,10 @@ public class Control extends BasicGame {
 			throws SlickException {
 		view.update(container, delta);
 		
+	}
+	
+	public GameContainer getContainer(){
+		return container;
 	}
 	
 	public static void main(String[] args) throws SlickException{

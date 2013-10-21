@@ -25,4 +25,8 @@ public abstract class Component {
 			throws SlickException;
 	public abstract void render(GameContainer container, Graphics g)
 			throws SlickException;
+	
+	public boolean isStillUsed(){
+		return true;
+	}
 }
