@@ -13,9 +13,9 @@ import org.newdawn.slick.geom.Rectangle;
 public class Button extends Component {
 	final int GAP = 20; // gap between border and image
 	
-	final static char ID_CHAR_MIN = (char)33;
-	final static char ID_CHAR_MAX = (char)128;
-	static String uniqueIDRef = new String(new char[]{ID_CHAR_MIN});
+	final static char ID_CHAR_MIN = (char)65;
+	final static char ID_CHAR_MAX = (char)90;
+	static String uniqueIDRef = new String(new char[]{ID_CHAR_MIN - 1});
 	
 	private String uniqueID = null;
 	private Map<ButtonListener, String> listeners = new HashMap<ButtonListener, String>();
@@ -39,17 +39,18 @@ public class Button extends Component {
 	
 	private static String generateUniqueID(){
 		char[] chars = uniqueIDRef.toCharArray();
-		int i = 0;
-		for(; i < chars.length;){
+		int i = chars.length - 1;
+		for(; i >= 0;){
 			if(chars[i] < ID_CHAR_MAX){
 				chars[i]++;
 				break;
 			}else
 				chars[i] = ID_CHAR_MIN;
-			i++;
+			;
+			i --;
 		}
-		if(i >= chars.length)
-			uniqueIDRef = new String(chars) + ID_CHAR_MIN;
+		if(i < 0)
+			uniqueIDRef = ID_CHAR_MIN + new String(chars);
 		else
 			uniqueIDRef = new String(chars);
 		
