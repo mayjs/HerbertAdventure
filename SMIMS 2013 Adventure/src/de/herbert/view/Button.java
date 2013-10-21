@@ -1,5 +1,8 @@
 package de.herbert.view;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -10,7 +13,12 @@ import org.newdawn.slick.geom.Rectangle;
 public class Button extends Component {
 	final int GAP = 20; // gap between border and image
 	
+	final static char ID_CHAR_MIN = (char)33;
+	final static char ID_CHAR_MAX = (char)128;
+	static String uniqueIDRef = new String(new char[]{ID_CHAR_MIN});
 	
+	private String uniqueID = null;
+	private Map<ButtonListener, String> listeners = new HashMap<ButtonListener, String>();
 	
 	Color bgCol = new Color(0, 0, 0, 130);
 	Color bgColMo = new Color(0, 0, 0, 160);
@@ -22,6 +30,30 @@ public class Button extends Component {
 	
 	public Button(Rectangle boundings) {
 		super(boundings);
+	}
+	
+	public String getUniqueID(){
+		if(uniqueID == null) uniqueID = generateUniqueID();
+		return uniqueID;
+	}
+	
+	private static String generateUniqueID(){
+		char[] chars = uniqueIDRef.toCharArray();
+		int i = 0;
+		for(; i < chars.length;){
+			if(chars[i] < ID_CHAR_MAX){
+				chars[i]++;
+				break;
+			}else
+				chars[i] = ID_CHAR_MIN;
+			i++;
+		}
+		if(i >= chars.length)
+			uniqueIDRef = new String(chars) + ID_CHAR_MIN;
+		else
+			uniqueIDRef = new String(chars);
+		
+		return uniqueIDRef;
 	}
 
 	@Override
@@ -36,7 +68,15 @@ public class Button extends Component {
 //			mouseY >= boundings.getY() && mouseY <= boundings.getY() + boundings.getHeight())
 		if(boundings.contains(mouseX, mouseY))
 			mouseOver = true;
-		else mouseOver = false;		
+		else mouseOver = false;
+		
+		if(container.getInput().isMouseButtonDown(0) && mouseOver) 
+			mouseDown = true;
+		else{
+			if(mouseDown && mouseOver)
+				fireButtonClicked();
+			mouseDown = false;
+		} 
 	}
 
 
@@ -46,7 +86,7 @@ public class Button extends Component {
 		Rectangle b = getBoundings();
 		
 		Color c = mouseOver? bgColMo : bgCol;
-		if(container.getInput().isMouseButtonDown(0) && mouseOver) 
+		if(mouseDown) 
 			c = bgColMd;
 		
 		g.setColor(Color.darkGray);
@@ -54,7 +94,23 @@ public class Button extends Component {
 		//g.drawRoundRect(b.getX(), b.getY(), b.getWidth(), b.getHeight(), 10, 2);
 		
 		g.fill(b, new GradientFill(b.getX() + b.getWidth()/2, b.getY(), grCol, b.getX() + b.getWidth() / 2, b.getY() + b.getHeight(), c));
-
+	}
+	
+	public String getListenerID(ButtonListener listener){
+		return listeners.get(listener);
+	}
+	
+	public void addButtonListener(ButtonListener listener, String id){
+		listeners.put(listener, id);
+	}
+	
+	public void addButtonListener(ButtonListener listener){
+		addButtonListener(listener, getUniqueID());
+	}
+	
+	private void fireButtonClicked(){
+		for(ButtonListener listener : listeners.keySet())
+			listener.buttonClicked(listeners.get(listener));
 	}
 	
 	public Color getBgCol() {
