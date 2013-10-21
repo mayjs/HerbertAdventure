@@ -11,20 +11,16 @@ import org.newdawn.slick.geom.Rectangle;
 public class PctButton extends Button{
 	Image img;
 	
-	public PctButton(Rectangle boundings, String imageUrl){
+	public PctButton(Rectangle boundings, Image image){
 		super(boundings);
-		try {
-			img = new Image(imageUrl);
-			float scale = (float)0.5;
-			if((img.getWidth() - getBoundings().getWidth()) > (img.getHeight() - getBoundings().getHeight())){
-				scale = (getBoundings().getWidth() - 2*GAP) / img.getWidth();
-			}else{
-				scale = (getBoundings().getHeight() - 2*GAP)/  img.getHeight();
-			}
-			img = img.getScaledCopy(scale);
-		} catch (SlickException e) {
-			e.printStackTrace();
+		img = image;
+		float scale = (float)0.5;
+		if((img.getWidth() - getBoundings().getWidth()) > (img.getHeight() - getBoundings().getHeight())){
+			scale = (getBoundings().getWidth() - 2*GAP) / img.getWidth();
+		}else{
+			scale = (getBoundings().getHeight() - 2*GAP)/  img.getHeight();
 		}
+		img = img.getScaledCopy(scale);
 	}
 	
 	public void update(GameContainer container, int delta)
