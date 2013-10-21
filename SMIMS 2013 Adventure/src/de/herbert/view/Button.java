@@ -15,6 +15,7 @@ public class Button extends Component {
 	final int GAP = 20; // gap between border and image
 	
 	
+	
 	Color bgCol = new Color(0, 0, 0, 130);
 	Color bgColMo = new Color(0, 0, 0, 160);
 	Color bgColMd = new Color(100, 50, 0, 400);
