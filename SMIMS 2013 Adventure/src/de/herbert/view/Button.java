@@ -32,8 +32,9 @@ public class Button extends Component {
 		int mouseX = container.getInput().getMouseX(),
 				mouseY = container.getInput().getMouseY();
 		
-		if(mouseX >= boundings.getX() && mouseX <= boundings.getX() + boundings.getWidth() &&
-			mouseY >= boundings.getY() && mouseY <= boundings.getY() + boundings.getHeight())
+//		if(mouseX >= boundings.getX() && mouseX <= boundings.getX() + boundings.getWidth() &&
+//			mouseY >= boundings.getY() && mouseY <= boundings.getY() + boundings.getHeight())
+		if(boundings.contains(mouseX, mouseY))
 			mouseOver = true;
 		else mouseOver = false;		
 	}
