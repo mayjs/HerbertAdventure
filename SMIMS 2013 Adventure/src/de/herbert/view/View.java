@@ -57,12 +57,12 @@ public class View implements ButtonListener{
 		
 		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 		
-		try {
-			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("/src/de/herbert/parser/example.xml").toURI()), false); // irgendwie findet der die Date nicht :(
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("C:/example.xml").toURI()), false); // irgendwie findet der die Date nicht :(
+//		} catch (URISyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	public void update(GameContainer container, int delta)
