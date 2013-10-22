@@ -1,5 +1,7 @@
 package de.herbert.view;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,11 +33,11 @@ public class View implements ButtonListener{
 		b1.addButtonListener(this, "Button1");
 		Button b2 = new TxtButton(new Rectangle(70, 350, 20, 20), "2");
 		b2.addButtonListener(this);
-		Button tb = new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
-		tb.addButtonListener(this);
+		//Button tb = new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
+		//tb.addButtonListener(this);
 		Button pctb = new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld"));
 		pctb.addButtonListener(this);
-		components.add(tb);
+		//components.add(tb);
 		components.add(pctb);
 		components.add(b1);
 		components.add(b2);
@@ -54,6 +56,13 @@ public class View implements ButtonListener{
 		components.add(new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld")));
 		
 		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
+		
+		try {
+			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("/SMIMS 2013 Adventure/src/de/herbert/parser/exapmle.xml").toURI()), false); // irgendwie findet der die Date nicht :(
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void update(GameContainer container, int delta)

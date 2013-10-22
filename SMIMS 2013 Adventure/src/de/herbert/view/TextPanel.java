@@ -14,7 +14,7 @@ public class TextPanel extends NotificationPanel {
 
 	private Font font;
 	private String text = "";
-	private float gap = 10f;
+	protected float gap = 10f;
 	
 	public TextPanel(float x, float y, boolean closeOnClick, GameContainer container) {
 		super(x, y, closeOnClick);
