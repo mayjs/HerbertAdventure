@@ -6,6 +6,7 @@ import org.newdawn.slick.TrueTypeFont;
 import java.awt.Font;
 
 public class Text {
+	
 	private String text;
 	private Font font;
 	private org.newdawn.slick.Font slickFont;
