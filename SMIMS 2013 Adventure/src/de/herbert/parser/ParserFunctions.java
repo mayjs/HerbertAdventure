@@ -12,11 +12,12 @@ import org.w3c.dom.NodeList;
 import de.nrw.smims2013.adventure.model.Point;
 
 /**
- * Collection of useful functions for parsing.
+ * Collection of useful functions for parsing. 
  * @author Thilo
  *
  */
 class ParserFunctions {
+	
 	static List<Element> getElementsByTag(NodeList list, String tag){
 		List<Element> elementsByTag = new LinkedList<Element>();
 		Node node;
