@@ -61,7 +61,7 @@ public class Button extends Component {
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		
-		// Mouse
+		//  Mouse
 		int mouseX = container.getInput().getMouseX(),
 				mouseY = container.getInput().getMouseY();
 		

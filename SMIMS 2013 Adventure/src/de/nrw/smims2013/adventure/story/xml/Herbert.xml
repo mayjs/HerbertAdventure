@@ -1,9 +1,11 @@
+
+<!DOCTYPE story SYSTEM "dtd.dtd">
 <story startScene="BedroomScene" playerPosX="60" playerPosY="54" width="100" height="60">
 
 
-	<inventory>
+	<inventory/>
 		
-	</inventory>
+	
 
 	<scene name="BedroomScene" width="100" height="60" rightNeighbour="KitchenScene"
 		lPosX="10" lPosY="50"

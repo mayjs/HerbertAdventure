@@ -57,10 +57,16 @@ public class StoryParser implements Serializable {
 		this.player = player;
 	}
 
+	public Player parser(String fileName) {
+		File file = new File(fileName);
+		return parser(file);
+	}
+	
 	/**
-	 * @param filename
-	 *            the *.xml file
-	 * @return a Player as it is defined in filename
+	 * Creates a Player out of the information found in file.
+	 * 
+	 * @param file the *.xml file to be parsed
+	 * @return a player
 	 */
 	public Player parser(File file) {
 
@@ -72,7 +78,7 @@ public class StoryParser implements Serializable {
 			doc.getDocumentElement().normalize();
 
 			parseItems(doc);
-			parseNPC(doc);
+			parseNPCs(doc);
 			parseScenes(doc);
 			parsePlayer(doc);
 			
@@ -95,7 +101,7 @@ public class StoryParser implements Serializable {
 				System.out.println("-----------End Parser----------\n\n");
 			}
 			
-			return player;
+			return getPlayer();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -103,314 +109,410 @@ public class StoryParser implements Serializable {
 		return null;
 	}
 	
-	public Player parser(String fileName) {
-		File file = new File(fileName);
-		return parser(file);
+	private void parseItems(Document doc){
+		List<Element> itemElements = getChildElementsByTag(doc.getDocumentElement(), "item");
+		
+		for(Element e : itemElements){
+			addItem(makeItem(e));
+		}
+		// add interaction Items
+		for(Element e : itemElements){
+			addInteractionNodesToItem(e);
+		}
 	}
 
-	public void parseInteractWith(Item item1, Item item2) {
-		if (item1 != null && item1.canInteract(item2)) {
-			parseInteraction(item1.getNode(item2));
+	private void parseScenes(Document doc){
+		List<Element> sceneElements = getChildElementsByTag(doc.getDocumentElement(), "scene");
+		
+		for(Element e : sceneElements){
+			addScene(makeScene(e));
 		}
+		// parse neighbour scenes
+		for(Element e : sceneElements){
+			addNeighbourScenes(e);
+		}
+	}
+	
+	private void parseNPCs(Document doc){
+		List<Element> npcElements = getChildElementsByTag(doc.getDocumentElement(), "npc");
+		
+		for(Element e : npcElements){
+			addNPC(makeNPC(e));
+		}
+	}
+	
+	private Player parsePlayer(Document doc){
+		Player player = new Player();
+		
+		player.setPosition(makePoint(doc.getDocumentElement(), "playerPos"));
+		player.setScene(getScene(doc.getDocumentElement().getAttribute("startScene")));
+		player.setInventory(parseInventory(doc));
+		this.player = player;
+		return player;
+	}
+
+	private int makeInt(String value, int standardValue) {
+		try {
+			return Integer.parseInt(value);
+		} catch (Exception e) {
+			return standardValue;
+		}
+	}
+
+	private boolean makeBoolean(String value, boolean standardValue) { 
+		try {
+			return Boolean.parseBoolean(value);
+		} catch (Exception e) {
+			return standardValue;
+		}
+	}
+	
+	private Point makePoint(Element element, String identifier, int defX, int defY){
+		return new Point(makeInt(element.getAttribute(identifier + "X"), defX), makeInt(element.getAttribute(identifier + "Y"), defY));
+	}
+	
+	private Point makePoint(Element element, String identifier){
+		return makePoint(element, identifier, 15, 15);
+	}
+
+	private NPC makeNPC(Element element){
+		if(!element.getNodeName().equals("npc"))
+			return null;
+		
+		// get attributes
+		NPC npc = new NPC();
+		npc.setName(element.getAttribute("name"));
+		npc.setDescription(element.getAttribute("descrpition"));
+		npc.setHeight(makeInt(element.getAttribute("height"), 20));
+		npc.setWidth(makeInt(element.getAttribute("width"), 10));
+		
+		// parse the rest of the content
+		List<Element> childElements = getChildElements(element);
+		for(Element e : childElements){
+			if(e.getNodeName().equals("interaction")){
+				String item = e.getAttribute("item");
+				if(item.equals("")){
+					npc.setUseNode(e);
+				}else{
+					npc.addInteractItem(getItem(item), e);
+				}
+			}else if(e.getNodeName().equals("dialog")){
+				npc.setDialogNode(e);
+			}
+		}
+		
+		return npc;
+	}
+	
+	private Item makeItem(Element element){
+		if(!element.getNodeName().equals("item"))
+			return null;
+		
+		// parse attributes
+		Item item = new Item();
+		item.setName(element.getAttribute("name"));
+		item.setDisplayName(element.getAttribute("displayName"));
+		if(item.getDisplayName().equals("")) item.setDisplayName(item.getName());
+		item.setDescription(element.getAttribute("description"));
+		item.setWidth(makeInt(element.getAttribute("width"), 1));
+		item.setHeight(makeInt(element.getAttribute("height"), 1));
+		item.setGrapable(makeBoolean(element.getAttribute("grappable"), false));
+		
+		return item;
+	}
+
+	private Scene makeScene(Element element){
+		if(!element.getNodeName().equals("scene"))
+			return null;
+		
+		// parse attributes
+		Scene scene = new Scene(element.getAttribute("name"),
+								makeInt(element.getAttribute("width"), 100),
+								makeInt(element.getAttribute("height"), 60));
+		scene.setStartBottom(makePoint(element, "bPos"));
+		scene.setStartTop(makePoint(element, "tPos"));
+		scene.setStartRight(makePoint(element, "rPos"));
+		scene.setStartLeft(makePoint(element, "lPos"));
+		scene.blockWall(makeInt(element.getAttribute("blockedWallHeight"), 0));
+		// parse the rest of the content of the scene excluding neighbour scenes
+		List<Element> childElements = getChildElements(element);
+		for(Element e : childElements){
+			if(e.getNodeName().equals("item")){
+				scene.add(getItem(e.getAttribute("name")),
+						makePoint(e, "pos"));
+			}else if(e.getNodeName().equals("npc")){
+				NPC npc = getNPC(e.getAttribute("name"));
+				npc.setPos(makePoint(e, "pos"));
+				scene.addNPC(npc);
+			}
+		}
+		
+		return scene;
+	}
+
+	private void addNeighbourScenes(Element element){
+		Scene scene = getScene(element.getAttribute("name"));
+		if(!element.getNodeName().equals("scene") || scene == null)
+			return;
+		
+		scene.setRight(getScene(element.getAttribute("rightNeighbour")));
+		scene.setLeft(getScene(element.getAttribute("leftNeighbour")));
+		scene.setBottom(getScene(element.getAttribute("bottomNeighbour")));
+		scene.setTop(getScene(element.getAttribute("topNeighbour")));
+	}
+	
+	private void addInteractionNodesToItem(Element itemElement){
+		Item item = getItem(itemElement.getAttribute("name"));
+		if(!itemElement.getNodeName().equals("item") || item == null)
+			return;
+		
+		List<Element> childElements = getChildElements(itemElement);
+		for(Element e : childElements){
+			if(e.getNodeName().equals("interaction")){
+				String itemName = e.getAttribute("item");
+				if(itemName.equals("")){
+					item.setUseNode(e);
+				}else{
+					item.addInteractItem(getItem(itemName), e);
+				}
+			}
+		}
+	}
+	
+	private void addScene(Scene scene){
+		scenes.put(scene.getName(), scene);
+	}
+	
+	private void addNPC(NPC npc){
+		npcs.put(npc.getName(), npc);
+	}
+	
+	private void addItem(Item item){
+		items.put(item.getName(), item);
+	}
+	
+	private Item getItem(String name){
+		return items.get(name);
+	}
+	
+	private NPC getNPC(String name){
+		return npcs.get(name);
+	}
+	
+	private Scene getScene(String name){
+		return scenes.get(name);
+	}
+	
+	private List<Element> getElementsByTag(NodeList list, String tag){
+		List<Element> elementsByTag = new LinkedList<Element>();
+		Node node;
+		for(int i = 0; i < list.getLength(); i++)
+		{
+			if(!(node = list.item(i)).getNodeName().equals(tag) ||
+					node.getNodeType() != Node.ELEMENT_NODE)
+				continue;
+			
+			elementsByTag.add((Element)node);
+		}
+		return elementsByTag;
+	}
+	
+	private List<Element> getChildElementsByTag(Element element, String tag){
+		return getElementsByTag(element.getChildNodes(), tag);
+	}
+	
+	private List<Element> getChildElements(Node node){
+		NodeList list = node.getChildNodes();
+		List<Element> elements = new LinkedList<Element>();
+		Node childNode;
+		for(int i = 0; i < list.getLength(); i++)
+		{
+			if((childNode = list.item(i)).getNodeType() != Node.ELEMENT_NODE)
+				continue;
+			
+			elements.add((Element)childNode);
+		}
+		return elements;
+	}
+	
+	private Point getStartPos(Scene scene, String pos){
+		if(pos.equals("top"))
+			return scene.getStartTop();
+		if(pos.equals("bottom"))
+			return scene.getStartBottom();
+		if(pos.equals("right"))
+			return scene.getStartRight();
+		if(pos.equals("left"))
+			return scene.getStartLeft();
+		return new Point(15, 15);
+	}
+	
+	// from here on: interaction parsing:
+	
+	private void parseInteraction(Element element){
+		List<Element> childElements = getChildElements(element);
+		for(Element e : childElements){
+			if(e.getNodeName().equals("add")){
+				interactionAdd(e);
+			}else if(e.getNodeName().equals("remove")){
+				interactionRemove(e);
+			}else if(e.getNodeName().equals("changeScene")){
+				interactionChangeScene(e);
+			}
+		}
+	}
+	
+	private void interactionAdd(Element e) {
+		Item item = getItem(e.getAttribute("item"));
+		if (item == null || !e.getNodeName().equals("add"))
+			return;
+
+		String location = e.getAttribute("location");
+		if (location.equals("inventory"))
+			interactionAdd(item);
+		else if (location.equals("scene"))
+			interactionAdd(item, getPlayer().getScene(), makePoint(e, "pos"));
+		else
+			interactionAdd(item, getScene(location), makePoint(e, "pos"));
+	}
+	
+	private void interactionAdd(Item item, Scene scene, Point pos){
+		scene.add(item, pos);
+	}
+	
+	private void interactionAdd(Item item){
+		getPlayer().getInventory().add(item);
+	}
+	
+	private void interactionRemove(Element e){
+		Item item = getItem(e.getAttribute("item"));
+		if(item == null || !e.getNodeName().equals("remove"))
+			return;
+		
+		String location = e.getAttribute("location");
+		if(location.equals("inventory"))
+			interactionRemove(item);
+		else if(location.equals("scene"))
+			interactionRemove(item, getPlayer().getScene());
+		else if (location.equals("")) {
+			if (!interactionRemove(item))
+				interactionRemove(item, getPlayer().getScene());
+		} else
+			interactionRemove(item, getScene(location));
+	}
+	
+	private boolean interactionRemove(Item item){
+		return getPlayer().getInventory().remove(item);
+	}
+
+	private boolean interactionRemove(Item item, Scene scene){
+		if(scene == null) return false;
+		return scene.remove(item);
+	}
+	
+	private void interactionChangeScene(Element e){
+		Scene scene = getScene(e.getAttribute("to"));
+		if(scene == null || !e.getNodeName().equals("changeScene"))
+			return;
+		
+		getPlayer().setScene(scene);
+		getPlayer().setPosition(getStartPos(scene, e.getAttribute("start")));
+	}
+	
+	public void parseInteractWith(Item item1, Item item2){
+		if(item1 != null && item1.canInteract(item2))
+			parseInteraction((Element)item1.getNode(item2));
 	}
 	
 	public void parseInteractWith(NPC npc, Item item){
-		if(npc != null && npc.canInteract(item)){
-			parseInteraction(npc.getNode(item));
-		}
+		if(npc != null && npc.canInteract(item))
+			parseInteraction((Element)npc.getNode(item));
 	}
+	
+	public String parseDialog(Node d, int t){return "";}
+	
+	
 
-	public void parseInteraction(Node node) {
-		if (node != null && node.getNodeName().equals("interaction")) {
-			List<Element> actions = getChildElements(node);
-			for (Element e : actions) {
-				String actionName = e.getNodeName();
-
-				if (e.getAttribute("location").equals("inventory")) {
-					if (actionName.equals("add")) {
-						getPlayer().getInventory().add(
-								items.get(e.getAttribute("item")));
-					} else if (actionName.equals("remove")) {
-						getPlayer().getInventory().remove(
-								items.get(e.getAttribute("item")));
-					}
-
-				} else if (e.getAttribute("location").equals("")) {
-
-					// <changeScene to="scene" start="right"/>
-					if (actionName.equals("changeScene")) {
-						getPlayer().setScene(scenes.get(e.getAttribute("to")));
-						String startStr = e.getAttribute("start");
-						if (startStr.equals("right")) {
-							getPlayer().setPosition(
-									getPlayer().getScene().getStartRight());
-						} else if (startStr.equals("left")) {
-							getPlayer().setPosition(
-									getPlayer().getScene().getStartLeft());
-						} else if (startStr.equals("top")) {
-							getPlayer().setPosition(
-									getPlayer().getScene().getStartTop());
-						} else if (startStr.equals("bottom")) {
-							getPlayer().setPosition(
-									getPlayer().getScene().getStartBottom());
-						}
-					}else if(actionName.equals("remove")){
-						if(!getPlayer().getInventory().remove(items.get(e.getAttribute("item")))){
-							Scene scene = scenes.get(e.getAttribute("location"));
-							if(scene==null)
-								scene = getPlayer().getScene();
-							if(e.hasAttribute("item"))
-								scene.remove(items.get(e.getAttribute("item")));
-							else
-								scene.removeNPC(npcs.get(e.getAttribute("npc")));
-						}
-					}
-
-				} else { // location != inventory && location != null
-					Scene scene = scenes.get(e.getAttribute("location"));
-					if (scene == null)
-						scene = getPlayer().getScene();
-					if (actionName.equals("add")) {
-						Point pos = new Point(
-								makeInt(e.getAttribute("posX"), 0), makeInt(
-										e.getAttribute("posY"), 0));
-						if(e.hasAttribute("item")){
-							Item it = items.get(e.getAttribute("item"));
-							scene.add(it, pos);
-						}else{
-							NPC npc = npcs.get(e.getAttribute("npc"));
-							npc.setPos(new Point(makeInt(e.getAttribute("posX"), 0), makeInt(e.getAttribute("posY"), 0)));
-							scene.addNPC(npc);
-						}
-					} else if (actionName.equals("remove")) {
-						if(e.hasAttribute("item"))
-							scene.remove(items.get(e.getAttribute("item")));
-						else
-							scene.removeNPC(npcs.get(e.getAttribute("npc")));
-					}
-				}
-			}
-		}
-	}
+//	public void parseInteraction(Node node) {
+//		if (node != null && node.getNodeName().equals("interaction")) {
+//			List<Element> actions = getChildElements(node);
+//			for (Element e : actions) {
+//				String actionName = e.getNodeName();
+//
+//				if (e.getAttribute("location").equals("inventory")) {
+//					if (actionName.equals("add")) {
+//						getPlayer().getInventory().add(
+//								items.get(e.getAttribute("item")));
+//					} else if (actionName.equals("remove")) {
+//						getPlayer().getInventory().remove(
+//								items.get(e.getAttribute("item")));
+//					}
+//
+//				} else if (e.getAttribute("location").equals("")) {
+//
+//					// <changeScene to="scene" start="right"/>
+//					if (actionName.equals("changeScene")) {
+//						getPlayer().setScene(scenes.get(e.getAttribute("to")));
+//						String startStr = e.getAttribute("start");
+//						if (startStr.equals("right")) {
+//							getPlayer().setPosition(
+//									getPlayer().getScene().getStartRight());
+//						} else if (startStr.equals("left")) {
+//							getPlayer().setPosition(
+//									getPlayer().getScene().getStartLeft());
+//						} else if (startStr.equals("top")) {
+//							getPlayer().setPosition(
+//									getPlayer().getScene().getStartTop());
+//						} else if (startStr.equals("bottom")) {
+//							getPlayer().setPosition(
+//									getPlayer().getScene().getStartBottom());
+//						}
+//					}else if(actionName.equals("remove")){
+//						if(!getPlayer().getInventory().remove(items.get(e.getAttribute("item")))){
+//							Scene scene = scenes.get(e.getAttribute("location"));
+//							if(scene==null)
+//								scene = getPlayer().getScene();
+//							if(e.hasAttribute("item"))
+//								scene.remove(items.get(e.getAttribute("item")));
+//							else
+//								scene.removeNPC(npcs.get(e.getAttribute("npc")));
+//						}
+//					}
+//
+//				} else { // location != inventory && location != null
+//					Scene scene = scenes.get(e.getAttribute("location"));
+//					if (scene == null)
+//						scene = getPlayer().getScene();
+//					if (actionName.equals("add")) {
+//						Point pos = new Point(
+//								makeInt(e.getAttribute("posX"), 0), makeInt(
+//										e.getAttribute("posY"), 0));
+//						if(e.hasAttribute("item")){
+//							Item it = items.get(e.getAttribute("item"));
+//							scene.add(it, pos);
+//						}else{
+//							NPC npc = npcs.get(e.getAttribute("npc"));
+//							npc.setPos(new Point(makeInt(e.getAttribute("posX"), 0), makeInt(e.getAttribute("posY"), 0)));
+//							scene.addNPC(npc);
+//						}
+//					} else if (actionName.equals("remove")) {
+//						if(e.hasAttribute("item"))
+//							scene.remove(items.get(e.getAttribute("item")));
+//						else
+//							scene.removeNPC(npcs.get(e.getAttribute("npc")));
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	public void parseUse(Item item) {
 		if (item != null)
-			parseInteraction(item.getUseNode());
+			parseInteraction((Element)item.getUseNode());
 	}
 
 	public void parseUse(Node useNode) {
-		parseInteraction(useNode);
-	}
-
-	public String parseDialog(Node dialogNode, int part){
-		if(dialogNode == null)
-			return null;
-		
-		NodeList xmlParts = dialogNode.getChildNodes();
-		int length = xmlParts.getLength();
-		Node partNode;
-		int curNode = -1;
-		for(int i = 0; i < length; i++){
-			if(part < length && (partNode = xmlParts.item(i)).getNodeType() == Node.ELEMENT_NODE){
-				curNode++;
-				if(curNode == part)
-					return ((Element) partNode).getAttribute("content");
-			}
-		}
-		
-			
-		return null;
-	}
-	
-	/**
-	 * Parses all scenes in the story and puts them into scenes.
-	 * Before a call of this function parseItems() and parseNPC() have to be called.
-	 * @param doc the xml Document
-	 */
-	private void parseScenes(Document doc) {
-		// scenes without neighbours
-
-		List<Element> xmlScenes = getElementsByTag(doc.getElementsByTagName("scene"), "scene");
-
-		Scene scene;
-		for (Element e : xmlScenes) {
-			if (e.getParentNode().getNodeName().equals("story")) {
-				String sceneName = e.getAttribute("name");
-				scene = new Scene(sceneName, makeInt(e.getAttribute("width"),
-						50), makeInt(e.getAttribute("height"), 30));
-				String lPosX = e.getAttribute("lPosX"), 
-						lPosY = e.getAttribute("lPosY"), 
-						rPosX = e.getAttribute("rPosX"), 
-						rPosY = e.getAttribute("rPosY"), 
-						tPosX = e.getAttribute("tPosX"), 
-						tPosY = e.getAttribute("tPosY"), 
-						bPosX = e.getAttribute("bPosX"), 
-						bPosY = e.getAttribute("bPosY");
-
-				Point startLeft = new Point(makeInt(lPosX, 15), makeInt(lPosY,15)), 
-						startRight = new Point(makeInt(rPosX, 15),makeInt(rPosY, 15)), 
-						startTop = new Point(makeInt(tPosX, 15), makeInt(tPosY, 15)), 
-						startBottom = new Point(makeInt(bPosX, 15), makeInt(bPosY, 15));
-
-				scene.setStartLeft(startLeft);
-				scene.setStartRight(startRight);
-				scene.setStartTop(startTop);
-				scene.setStartBottom(startBottom);
-
-				scene.blockWall(makeInt(e.getAttribute("blockedWallHeight"), 0));
-				// add items
-
-				//NodeList itemsInScene = e.getChildNodes();
-				List<Element> itemsInScene = getChildElements(e);
-				for (Element element : itemsInScene) {
-						if (element.getNodeName().equals("item")) {
-							Item it = items.get(element.getAttribute("name"));
-							if (it != null)
-								scene.add(
-										it,
-										new Point(
-												makeInt(element
-														.getAttribute("posX"),
-														0), makeInt(element
-														.getAttribute("posY"),
-														0)));
-						}else if(element.getNodeName().equals("npc")){
-							NPC npc = npcs.get(element.getAttribute("name"));
-							if(npc != null){
-								npc.setPos(new Point(makeInt(element.getAttribute("posX"), 0), makeInt(element.getAttribute("posY"), 0)));
-								scene.addNPC(npc);
-							}
-						}
-					}
-				scenes.put(scene.getName(), scene);
-			}
-		}
-
-		// get neighbour scenes
-		for (Element e : xmlScenes) {
-			if (e.getParentNode().getNodeName().equals("story")) {
-				String name = e.getAttribute("name");
-				String topSceneName = e.getAttribute("topNeighbour"), bottomSceneName = e
-						.getAttribute("bottomNeighbour"), rightSceneName = e
-						.getAttribute("rightNeighbour"), leftSceneName = e
-						.getAttribute("leftNeighbour");
-
-				scenes.get(name).setTop(scenes.get(topSceneName));
-				scenes.get(name).setBottom(scenes.get(bottomSceneName));
-				scenes.get(name).setRight(scenes.get(rightSceneName));
-				scenes.get(name).setLeft(scenes.get(leftSceneName));
-			}
-
-		}
-	}
-
-	private void parseItems(Document doc) {
-		// items
-		List<Element> xmlItems = getElementsByTag(doc.getElementsByTagName("item"), "item");
-		//List<Element> xmlItems =  new LinkedList<Element>();
-		Item item;
-		for (Element e : xmlItems) {
-			if(!e.getParentNode().getNodeName().equals("story"))
-				continue;
-			item = new Item();
-			item.setHeight(makeInt(e.getAttribute("height"), 1));
-			item.setWidth(makeInt(e.getAttribute("width"), 1));
-			item.setName(e.getAttribute("name"));
-			String cur = e.getAttribute("displayName");
-			if(cur.equals("")) cur = item.getName();
-			item.setDisplayName(cur);
-			item.setDescription(e.getAttribute("description"));
-			item.setGrapable(makeBoolean(e.getAttribute("grappable"), false));
-			items.put(item.getName(), item);
-		}
-
-		// interactiveItems
-		for (Element e : xmlItems) {
-			if(!e.getParentNode().getNodeName().equals("story"))
-				continue;
-			List<Node> xmlInteractiveItems = getNodesByTag(e.getChildNodes(), "interaction");
-			 // interactionNodes
-			for (Node interactionNode : xmlInteractiveItems) {
-				Element interactionElement;
-				if(interactionNode.getNodeType() != Node.ELEMENT_NODE)
-					continue;
-				interactionElement = (Element) interactionNode;
-				if (interactionElement.getAttribute("item").equals(""))
-					items.get(e.getAttribute("name")).setUseNode(interactionNode);
-				else
-					items.get(e.getAttribute("name")).addInteractItem(
-							items.get(interactionElement.getAttribute("item")),
-							interactionNode);
-			}
-
-		}
-
-	}
-	
-	private void parseNPC(Document doc) {
-		// npcs
-		List<Element> xmlNPCs = getElementsByTag(doc.getElementsByTagName("npc"), "npc");
-		NPC npc;
-		for (Element e : xmlNPCs) {
-			if (!e.getParentNode().getNodeName().equals("story"))
-				continue;
-			npc = new NPC();
-			npc.setHeight(makeInt(e.getAttribute("height"), 1));
-			npc.setWidth(makeInt(e.getAttribute("width"), 1));
-			npc.setName(e.getAttribute("name"));
-			npc.setDescription(e.getAttribute("description"));
-			npcs.put(npc.getName(), npc);
-		}
-		
-
-		// interactiveItems and dialog
-		for (Element e : xmlNPCs) {
-			if (!e.getParentNode().getNodeName().equals("story"))
-				continue;
-			NodeList xmlInteractiveItems = e.getChildNodes(); // interactionNodes
-			int interactiveLength = xmlInteractiveItems.getLength();
-			for (int j = 0; j < interactiveLength; j++) {
-				Node node;
-				if ((node = xmlInteractiveItems.item(j)).getNodeType() != Node.ELEMENT_NODE
-						|| !node.getNodeName().equals("interaction")){
-					if(node != null && node.getNodeType() == Node.ELEMENT_NODE
-							|| node.getNodeName().equals("dialog")){
-						npcs.get(e.getAttribute("name")).setDialogNode(node);
-					}
-					continue;
-				}
-
-				Element interactionElement = (Element) node;
-				if (interactionElement.getAttribute("item").equals(""))
-					npcs.get(e.getAttribute("name")).setUseNode(node);
-				else
-					npcs.get(e.getAttribute("name")).addInteractItem(
-							items.get(interactionElement.getAttribute("item")),
-							node);
-					
-			}
-
-		}
-
-	}
-
-	private void parsePlayer(Document doc) {
-		// Player
-
-		player = new Player();
-		Element e = doc.getDocumentElement();
-
-		Point playerPosition = new Point(makeInt(e.getAttribute("playerPosX"),
-				15), makeInt(e.getAttribute("playerPosY"), 15));
-		if (playerPosition != null)
-			player.setPosition(playerPosition);
-
-		String startSceneStr = e.getAttribute("startScene");
-
-		if (startSceneStr != null && scenes.containsKey(startSceneStr))
-			player.setScene(scenes.get(startSceneStr));
-
-		player.setInventory(parseInventory(doc));
+		parseInteraction((Element)useNode);
 	}
 
 	private Inventory parseInventory(Document doc) {
@@ -432,68 +534,5 @@ public class StoryParser implements Serializable {
 		return inventory;
 	}
 
-	private int makeInt(String value, int standardValue) {
-		try {
-			return Integer.parseInt(value);
-		} catch (Exception e) {
-			return standardValue;
-		}
-	}
 
-	private boolean makeBoolean(String value, boolean standardValue) {
-		try {
-			return Boolean.parseBoolean(value);
-		} catch (Exception e) {
-			return standardValue;
-		}
-	}
-
-	private List<Node> getNodesByTag(NodeList list, String tag){
-		List<Node> nodesByTag = new LinkedList<Node>();
-		Node node;
-		for(int i = 0; i < list.getLength(); i++)
-		{
-			if(!(node = list.item(i)).getNodeName().equals(tag))
-				continue;
-			
-			nodesByTag.add(node);
-		}
-		return nodesByTag;
-	}
-	
-	private List<Element> getElementsByTag(NodeList list, String tag){
-		List<Element> elementsByTag = new LinkedList<Element>();
-		Node node;
-		for(int i = 0; i < list.getLength(); i++)
-		{
-			if(!(node = list.item(i)).getNodeName().equals(tag) ||
-					node.getNodeType() != Node.ELEMENT_NODE)
-				continue;
-			
-			elementsByTag.add((Element)node);
-		}
-		return elementsByTag;
-	}
-	
-	private List<Element> getChildElements(Node node){
-		NodeList list = node.getChildNodes();
-		List<Element> elements = new LinkedList<Element>();
-		Node childNode;
-		for(int i = 0; i < list.getLength(); i++)
-		{
-			if((childNode = list.item(i)).getNodeType() != Node.ELEMENT_NODE)
-				continue;
-			
-			elements.add((Element)childNode);
-		}
-		return elements;
-	}
-	
-	private List<Node> getChildNodesByTag(Node parent, String tag){
-		return getNodesByTag(parent.getChildNodes(), tag);
-	}
-	
-	private List<Element> getChildElementsByTag(Node parent, String tag){
-		return getElementsByTag(parent.getChildNodes(), tag);
-	}
 }

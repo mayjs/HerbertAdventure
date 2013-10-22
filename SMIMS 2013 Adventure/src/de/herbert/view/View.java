@@ -18,11 +18,15 @@ public class View implements ButtonListener{
 	
 	public View(Control control){
 		this.control = control;
-		
 		components = new LinkedList<Component>();
-		
+	}
+	
+	public void init(GameContainer container) throws SlickException {
 		//Add components here!
+		Component c = new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
+		components.add(c);
 		
+
 		Button b1 = new TxtButton(new Rectangle(50, 350, 20, 20), "1");
 		b1.addButtonListener(this, "Button1");
 		Button b2 = new TxtButton(new Rectangle(70, 350, 20, 20), "2");
@@ -44,11 +48,21 @@ public class View implements ButtonListener{
 		Button b3 = new TxtButton(new Rectangle(50, 400, 100, 100), "idzeugs");
 		b3.addButtonListener(this);
 		components.add(b3);
+		
+		addAnnotation(c, "HAMMER!");
+		
+		components.add(new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld")));
+		
+		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 	}
 	
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		for(Component c : components){
+			if(!c.isStillUsed()){
+				components.remove(c);
+				continue;
+			}
 			c.update(container, delta);
 		}
 	}
@@ -65,5 +79,13 @@ public class View implements ButtonListener{
 	@Override
 	public void buttonClicked(String buttonId) {
 		System.out.println("Button " + buttonId + " clicked.");
+	}
+	
+	public void addComponent(Component component){
+		components.add(component);
+	}
+	
+	public void addAnnotation(Component c, String t){
+		components.add(new Annotation(c,t,500));
 	}
 }

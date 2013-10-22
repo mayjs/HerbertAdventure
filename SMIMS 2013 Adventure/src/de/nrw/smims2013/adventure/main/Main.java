@@ -9,7 +9,7 @@ import de.nrw.smims2013.adventure.parser.StoryParser;
 import de.nrw.smims2013.adventure.view.AdventureFrame;
 
 public class Main {
-	public static final boolean DEBUG_ON = false;
+	public static final boolean DEBUG_ON = true;
 
 	public static void main(String[] args){
 //		String s = System.getProperty("user.dir") + "/src/de/nrw/smims2013/adventure/story/xml/Herbert.xml";
