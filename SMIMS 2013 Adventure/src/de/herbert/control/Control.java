@@ -7,11 +7,13 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import de.herbert.model.Model;
 import de.herbert.view.View;
 
 public class Control extends BasicGame {
 
 	private View view;
+	private Model model;
 	private GameContainer container;
 	
 	private static Control instance;
@@ -43,6 +45,8 @@ public class Control extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 		// TODO Auto-generated method stub
 		this.container = container;
+		model = new Model();
+		//Todo: Load Player
 		view = new View(this);
 		view.init(container);
 	}

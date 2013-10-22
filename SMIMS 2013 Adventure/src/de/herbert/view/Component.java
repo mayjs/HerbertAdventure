@@ -32,7 +32,7 @@ public abstract class Component {
 	
 	/**
 	 * If false, the View will remove the Component in the next update
-	 * @return If the control is still needed
+	 * @return true if the control is still needed
 	 */
 	public boolean isStillUsed(){
 		return true;

@@ -1,11 +1,22 @@
 package de.herbert.model;
 
-import de.herbert.control.Control;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.SlickException;
+
 
 public class Model {
-	private Control control;
 	
-	public Model(Control control){
-		this.control = control;
+	private Player player;
+	
+	public Model(){
+
+	}
+	
+	public void setPlayer(Player p){
+		player = p;
+	}
+	
+	public Player getPlayer(){
+		return player;
 	}
 }
