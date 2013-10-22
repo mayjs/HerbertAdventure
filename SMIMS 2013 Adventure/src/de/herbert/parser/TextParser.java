@@ -56,16 +56,20 @@ public class TextParser {
 			doc.getDocumentElement().normalize();
 			
 			Element e = doc.getDocumentElement();
-			fonts = ParserFunctions.getChildElementsByTag(e, "font");
-			List<Text> textList = new LinkedList<Text>();
-			for(Element el : fonts){
-				textList.add(makeText(el));
-			}
-			return textList;
+			return parseText(e);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<Text> parseText(Element e){
+		fonts = ParserFunctions.getChildElementsByTag(e, "font");
+		List<Text> textList = new LinkedList<Text>();
+		for(Element el : fonts){
+			textList.add(makeText(el));
+		}
+		return textList;
 	}
 	
 	private Text makeText(Element e){
@@ -82,8 +86,15 @@ public class TextParser {
 	}
 	
 	public Font getFont(Element e){
-		Font f = new Font(e.getAttribute("name"), Font.BOLD, ParserFunctions.makeInt(e.getAttribute("size"), 12));
+		Font f = new Font(e.getAttribute("name"), getFontStyle(e.getAttribute("style")), ParserFunctions.makeInt(e.getAttribute("size"), 12));
 		return f;
+	}
+	
+	public int getFontStyle(String str){
+		if(str == null) return Font.PLAIN;
+				if(str.equals("bold"))		return Font.BOLD;
+		else 	if(str.equals("italic")) 	return Font.ITALIC;
+		else 								return Font.PLAIN;
 	}
 	
 	public static void main(String[] args){

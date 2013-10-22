@@ -25,13 +25,13 @@ public class View implements ButtonListener{
 	
 	public void init(GameContainer container) throws SlickException {
 		//Add components here!
-		Component c = new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
+		Component c = new TextButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
 		components.add(c);
 		
 
-		Button b1 = new TxtButton(new Rectangle(50, 350, 20, 20), "1");
+		Button b1 = new TextButton(new Rectangle(50, 350, 20, 20), "1");
 		b1.addButtonListener(this, "Button1");
-		Button b2 = new TxtButton(new Rectangle(70, 350, 20, 20), "2");
+		Button b2 = new TextButton(new Rectangle(70, 350, 20, 20), "2");
 		b2.addButtonListener(this);
 		//Button tb = new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
 		//tb.addButtonListener(this);
@@ -47,7 +47,7 @@ public class View implements ButtonListener{
 			Button b = new Button(new Rectangle(0, 0, 0, 0));
 			System.out.println(b.getUniqueID());
 		}
-		Button b3 = new TxtButton(new Rectangle(50, 400, 100, 100), "idzeugs");
+		Button b3 = new TextButton(new Rectangle(50, 400, 100, 100), "idzeugs");
 		b3.addButtonListener(this);
 		components.add(b3);
 		
@@ -58,8 +58,8 @@ public class View implements ButtonListener{
 		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 		
 		try {
-			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("/src/de/herbert/parser/example.xml").toURI()), false); // irgendwie findet der die Date nicht :(
-		} catch (URISyntaxException e) {
+			TextPanel_ext.popUp(300, 500, new File("C:/example.xml"), false); // irgendwie findet der die Date nicht :(
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
