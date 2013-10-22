@@ -23,8 +23,11 @@ public class View {
 	
 	public void init(GameContainer container) throws SlickException {
 		//Add components here!
+		Component c = new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
+		components.add(c);
 		
-		components.add(new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?"));
+		addAnnotation(c, "HAMMER!");
+		
 		components.add(new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld")));
 		
 		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
@@ -52,5 +55,9 @@ public class View {
 	
 	public void addComponent(Component component){
 		components.add(component);
+	}
+	
+	public void addAnnotation(Component c, String t){
+		components.add(new Annotation(c,t,500));
 	}
 }
