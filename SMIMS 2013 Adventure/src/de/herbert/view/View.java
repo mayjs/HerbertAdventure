@@ -58,7 +58,7 @@ public class View implements ButtonListener{
 		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 		
 		try {
-			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("/SMIMS 2013 Adventure/src/de/herbert/parser/exapmle.xml").toURI()), false); // irgendwie findet der die Date nicht :(
+			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("/src/de/herbert/parser/example.xml").toURI()), false); // irgendwie findet der die Date nicht :(
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
