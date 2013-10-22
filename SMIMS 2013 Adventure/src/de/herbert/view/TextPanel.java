@@ -10,7 +10,7 @@ import org.newdawn.slick.SlickException;
 
 import de.herbert.control.Control;
 
-public class TextPanel extends Panel {
+public class TextPanel extends NotificationPanel {
 
 	private Font font;
 	private String text = "";
