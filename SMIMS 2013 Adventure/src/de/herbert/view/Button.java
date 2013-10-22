@@ -92,8 +92,6 @@ public class Button extends Component {
 		
 		g.setColor(Color.darkGray);
 		g.drawRect(b.getX(), b.getY(), b.getWidth(), b.getHeight());
-		//g.drawRoundRect(b.getX(), b.getY(), b.getWidth(), b.getHeight(), 10, 2);
-		
 		g.fill(b, new GradientFill(b.getX() + b.getWidth()/2, b.getY(), grCol, b.getX() + b.getWidth() / 2, b.getY() + b.getHeight(), c));
 	}
 	

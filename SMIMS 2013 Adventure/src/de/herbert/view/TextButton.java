@@ -9,24 +9,26 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.geom.Rectangle;
 
-public class TxtButton extends Button{
+public class TextButton extends Button{
 	
-	Color txtColor = new Color(50, 60, 70);
+	private Color txtColor = new Color(50, 60, 70);
 	
-	String text;
-	Font font;
-	TrueTypeFont ttf;
+	private String text;
+	private Font font;
+	private TrueTypeFont ttf;
 	
-	public TxtButton(Rectangle boundings, String text){
+	private float renderX, renderY;
+	
+	public TextButton(Rectangle boundings, String text){
 		super(boundings);
-		setText(text);
 		setFont(new Font("Verdana", Font.BOLD, 20));
+		setText(text);
 	}
 	
-	public TxtButton(Rectangle boundings, String text, Font font){
+	public TextButton(Rectangle boundings, String text, Font font){
 		super(boundings);
-		setText(text);
 		setFont(font);
+		setText(text);
 	}
 	
 	public void update(GameContainer container, int delta) throws SlickException{
@@ -36,7 +38,7 @@ public class TxtButton extends Button{
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		super.render(container, g);
-		ttf.drawString(getBoundings().getX(), getBoundings().getY(), text, txtColor);
+		ttf.drawString(renderX, renderY, text, txtColor);
 	}
 
 	public String getText() {
@@ -45,6 +47,12 @@ public class TxtButton extends Button{
 
 	public void setText(String text) {
 		this.text = text;
+		Rectangle textBoundings = new Rectangle(boundings.getX()+GAP,boundings.getY()+GAP, ttf.getWidth(text), ttf.getHeight(text));
+		float dx = boundings.getCenterX() - textBoundings.getCenterX();
+		float dy = boundings.getCenterY() - textBoundings.getCenterY();
+		
+		renderX = boundings.getX() + GAP + dx;
+		renderY = boundings.getY() + GAP + dy;
 	}
 	
 	public Font getFont(){
