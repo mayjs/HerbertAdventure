@@ -112,6 +112,15 @@ public class Button extends Component {
 	private void fireButtonClicked(){
 		for(ButtonListener listener : listeners.keySet())
 			listener.buttonClicked(listeners.get(listener));
+		
+		// with thread:
+//		Thread thread = new Thread(){
+//			public void run(){
+//				for(ButtonListener listener : listeners.keySet())
+//					listener.buttonClicked(listeners.get(listener));
+//				}
+//			};
+//		thread.start();
 	}
 	
 	public Color getBgCol() {
