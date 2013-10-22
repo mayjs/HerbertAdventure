@@ -18,18 +18,25 @@ public class View {
 	
 	public View(Control control){
 		this.control = control;
-		
 		components = new LinkedList<Component>();
-		
+	}
+	
+	public void init(GameContainer container) throws SlickException {
 		//Add components here!
 		
 		components.add(new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?"));
 		components.add(new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld")));
+		
+		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 	}
 	
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		for(Component c : components){
+			if(!c.isStillUsed()){
+				components.remove(c);
+				continue;
+			}
 			c.update(container, delta);
 		}
 	}
@@ -41,5 +48,9 @@ public class View {
 		for(Component c : components){
 			c.render(container, g);
 		}
+	}
+	
+	public void addComponent(Component component){
+		components.add(component);
 	}
 }

@@ -7,6 +7,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
+import de.herbert.control.Control;
+
 public abstract class Panel extends Component {
 	private boolean closeOnClick;
 	private Color bgColor = Color.blue;
@@ -45,6 +47,7 @@ public abstract class Panel extends Component {
 	
 	public void popUp(){
 		inUse = true;
+		Control.getInstance().getView().addComponent(this);
 	}
 	
 	public void close(){
