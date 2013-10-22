@@ -11,7 +11,7 @@ import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Button extends Component {
-	final int GAP = 20; // gap between border and image
+	int GAP = 4; // gap between border and image
 	
 	final static char ID_CHAR_MIN = (char)65;
 	final static char ID_CHAR_MAX = (char)90;
@@ -20,13 +20,15 @@ public class Button extends Component {
 	private String uniqueID = null;
 	private Map<ButtonListener, String> listeners = new HashMap<ButtonListener, String>();
 	
-	Color bgCol = new Color(0, 0, 0, 130);
-	Color bgColMo = new Color(0, 0, 0, 160);
+	Color bgCol = Color.lightGray;
+	Color bgColMo = Color.lightGray.darker();
 	Color bgColMd = new Color(100, 50, 0, 400);
-	Color grCol = new Color(20,20,20,100);
+	Color grCol = new Color(30,30,30,90);
+	Color bgColDis = new Color(0, 0, 0, 150);
 	
-	boolean mouseOver = false;
-	boolean mouseDown = false;
+	private boolean mouseOver = false;
+	private boolean mouseDown = false;
+	private boolean enabled = true;
 	
 	public Button(Rectangle boundings) {
 		super(boundings);
@@ -61,6 +63,7 @@ public class Button extends Component {
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		
+		if(!enabled)return;
 		//  Mouse
 		int mouseX = container.getInput().getMouseX(),
 				mouseY = container.getInput().getMouseY();
@@ -86,13 +89,18 @@ public class Button extends Component {
 			throws SlickException {
 		Rectangle b = getBoundings();
 		
-		Color c = mouseOver? bgColMo : bgCol;
-		if(mouseDown) 
-			c = bgColMd;
+		Color c;
+		if(enabled){
+			c = mouseOver? bgColMo : bgCol;
+			if(mouseDown) 
+				c = bgColMd;
+		}else{
+			c = bgColDis;
+		}
+			g.setColor(Color.darkGray);
+			g.drawRect(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+			g.fill(b, new GradientFill(b.getX() + b.getWidth()/2, b.getY(), grCol, b.getX() + b.getWidth() / 2, b.getY() + b.getHeight(), c));
 		
-		g.setColor(Color.darkGray);
-		g.drawRect(b.getX(), b.getY(), b.getWidth(), b.getHeight());
-		g.fill(b, new GradientFill(b.getX() + b.getWidth()/2, b.getY(), grCol, b.getX() + b.getWidth() / 2, b.getY() + b.getHeight(), c));
 	}
 	
 	public String getListenerID(ButtonListener listener){
@@ -158,5 +166,17 @@ public class Button extends Component {
 
 	public void setGrCol(Color grCol) {
 		this.grCol = grCol;
+	}
+	
+	public void enable(){
+		enabled = true;
+	}
+	
+	public void disable(){
+		enabled = false;
+	}
+	
+	public boolean isEnabled(){
+		return enabled;
 	}
 }
