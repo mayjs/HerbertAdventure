@@ -57,6 +57,7 @@ public class View implements ButtonListener{
 //		
 //		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 		
+
 		components.add(new NotAnimatedInventoryPanel(new Rectangle(10, 10, 600, 70), 8));
 		components.add(new InventoryPanel(new Rectangle(10, 100, 600, 70), 8));
 		try {
@@ -65,17 +66,38 @@ public class View implements ButtonListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//components.add(new InventoryPanel(new Rectangle(10, 10, 600, 70), 8));
+		
+		Textbox box = new Textbox(600,500,60,20);
+		box.setDefaultText("Default Text");
+		box.setCurrentBoundingAsMinimal();
+		components.add(box);
+		
+		ScrollList list = new ScrollList(new Rectangle(30,200,249,150));
+		for(int i = 0; i < 10; i++) list.addEntry(""+i);
+		components.add(list);
+		
+		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation wich instantly shows up when you hover the component
+		
+//		try {
+//			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("C:/example.xml").toURI()), false); // irgendwie findet der die Date nicht :(
+//		} catch (URISyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
 	}
 	
 	public void update(GameContainer container, int delta)
 			throws SlickException {
+		List<Component> newComps = new LinkedList<Component>();
 		for(Component c : components){
-			if(!c.isStillUsed()){
-				components.remove(c);
-				continue;
+			if(c.isStillUsed()){
+				c.update(container, delta);
+				newComps.add(c);
 			}
-			c.update(container, delta);
 		}
+		components = newComps;
 	}
 	
 	public void render(GameContainer container, Graphics g)
