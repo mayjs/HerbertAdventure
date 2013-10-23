@@ -64,6 +64,10 @@ public class View implements ButtonListener{
 		box.setCurrentBoundingAsMinimal();
 		components.add(box);
 		
+		ScrollList list = new ScrollList(new Rectangle(30,100,249,150));
+		for(int i = 0; i < 10; i++) list.addEntry(""+i);
+		components.add(list);
+		
 		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation wich instantly shows up when you hover the component
 		
 //		try {
