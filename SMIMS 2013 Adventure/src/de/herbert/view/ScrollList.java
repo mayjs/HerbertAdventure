@@ -54,6 +54,16 @@ public class ScrollList extends Component {
 		g.translate(0, 0);
 		g.setWorldClip(oldClip);
 	}
+	
+	private void adjustScrollBar(){
+		float dispCap = this.boundings.getHeight()/(font.getLineHeight() + lineDistance);
+		if((int)dispCap < entries.size()){
+			scrollbar.unblock();
+			scrollbar.setMax(entries.size()-(int)dispCap);
+		}
+		else
+			scrollbar.block();
+	}
 
 	/**
 	 * You can use this method to get the entries in the List.
@@ -66,7 +76,7 @@ public class ScrollList extends Component {
 
 	public void setEntries(List<String> entries) {
 		this.entries = entries;
-		scrollbar.setMax(entries.size());
+		this.adjustScrollBar();
 	}
 
 	public Color getBackgroundColor() {
@@ -115,16 +125,16 @@ public class ScrollList extends Component {
 	
 	public void addEntry(String entry){
 		entries.add(entry);
-		scrollbar.setMax(entries.size());
+		this.adjustScrollBar();
 	}
 	public boolean removeEntry(String entry){
 		boolean res = entries.remove(entry);
-		scrollbar.setMax(entries.size());
+		this.adjustScrollBar();
 		return res;
 	}
 	public String removeEntry(int i){
 		String res = entries.remove(i);
-		scrollbar.setMax(entries.size());
+		this.adjustScrollBar();
 		return res;
 	}
 }
