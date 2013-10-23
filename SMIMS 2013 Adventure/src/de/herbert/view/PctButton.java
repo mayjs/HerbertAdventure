@@ -1,5 +1,6 @@
 package de.herbert.view;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -52,7 +53,13 @@ public class PctButton extends Button{
 			throws SlickException {
 		// background is rendered in super.render(...)
 		super.render(container, g);
-//		g.drawImage(img, getBoundings().getX() + GAP, getBoundings().getY() + GAP);
-		g.drawImage(img, renderX, renderY);
+		
+		// make image a little bit transparent when disabled
+		if(!isEnabled())
+			img.setAlpha(0.3f);
+		else
+			img.setAlpha(1);
+		
+			img.draw(renderX, renderY);
 	}
 }

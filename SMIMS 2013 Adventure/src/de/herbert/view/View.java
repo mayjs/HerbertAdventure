@@ -25,37 +25,39 @@ public class View implements ButtonListener{
 	
 	public void init(GameContainer container) throws SlickException {
 		//Add components here!
-		Component c = new TextButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
-		components.add(c);
+//		Component c = new TextButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
+//		components.add(c);
+//		
+//
+//		Button b1 = new TextButton(new Rectangle(50, 350, 20, 20), "1");
+//		b1.addButtonListener(this, "Button1");
+//		Button b2 = new TextButton(new Rectangle(70, 350, 20, 20), "2");
+//		b2.addButtonListener(this);
+//		//Button tb = new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
+//		//tb.addButtonListener(this);
+//		Button pctb = new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld"));
+//		pctb.addButtonListener(this);
+//		//components.add(tb);
+//		components.add(pctb);
+//		components.add(b1);
+//		components.add(b2);
+//		
+//		// to test uniqueID generation: 
+//		for(int i = 0; i < 200; i++){
+//			Button b = new Button(new Rectangle(0, 0, 0, 0));
+//			System.out.println(b.getUniqueID());
+//		}
+//		Button b3 = new TextButton(new Rectangle(50, 400, 100, 100), "idzeugs");
+//		b3.addButtonListener(this);
+//		components.add(b3);
+//		
+//		addAnnotation(c, "HAMMER!");
+//		
+//		components.add(new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld")));
+//		
+//		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 		
-
-		Button b1 = new TextButton(new Rectangle(50, 350, 20, 20), "1");
-		b1.addButtonListener(this, "Button1");
-		Button b2 = new TextButton(new Rectangle(70, 350, 20, 20), "2");
-		b2.addButtonListener(this);
-		//Button tb = new TxtButton(new Rectangle(300, 100, 200, 200), "Hammer.¿?");
-		//tb.addButtonListener(this);
-		Button pctb = new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld"));
-		pctb.addButtonListener(this);
-		//components.add(tb);
-		components.add(pctb);
-		components.add(b1);
-		components.add(b2);
-		
-		// to test uniqueID generation: 
-		for(int i = 0; i < 200; i++){
-			Button b = new Button(new Rectangle(0, 0, 0, 0));
-			System.out.println(b.getUniqueID());
-		}
-		Button b3 = new TextButton(new Rectangle(50, 400, 100, 100), "idzeugs");
-		b3.addButtonListener(this);
-		components.add(b3);
-		
-		addAnnotation(c, "HAMMER!");
-		
-		components.add(new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld")));
-		
-		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
+		components.add(new InventoryPanel(new Rectangle(10, 10, 600, 70), 8));
 		
 		Textbox box = new Textbox(new Rectangle(600,500, 50,10));
 		components.add(box);
