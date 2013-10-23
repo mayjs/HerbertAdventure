@@ -162,6 +162,7 @@ public class InventoryPanel extends Component implements ButtonListener{
 		pos = buttonWidth;
 	}
 	
+	
 	Inventory in;
 	public Inventory getInventory(){
 		// create a test inventory ...
