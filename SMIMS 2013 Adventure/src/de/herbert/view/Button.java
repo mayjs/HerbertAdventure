@@ -12,7 +12,7 @@ import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Button extends Component {
-	int GAP = 4; // gap between border and image
+	protected int gap = 4; // gap between border and image
 	
 	final static char ID_CHAR_MIN = (char)65;
 	final static char ID_CHAR_MAX = (char)90;

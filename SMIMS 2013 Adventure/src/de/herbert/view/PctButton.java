@@ -38,24 +38,24 @@ public class PctButton extends Button{
 	}
 	
 	public void scaleImage(){
-		if(img.getWidth() > boundings.getWidth() - 2*this.GAP || img.getHeight() > boundings.getHeight() - 2*this.GAP){
+		if(img.getWidth() > boundings.getWidth() - 2*this.gap || img.getHeight() > boundings.getHeight() - 2*this.gap){
 			float scale = 1f;
 			if((img.getWidth() - getBoundings().getWidth()) > (img.getHeight() - getBoundings().getHeight())){
-				scale = (getBoundings().getWidth() - 2*GAP) / img.getWidth();
+				scale = (getBoundings().getWidth() - 2*gap) / img.getWidth();
 			}else{
-				scale = (getBoundings().getHeight() - 2*GAP)/  img.getHeight();
+				scale = (getBoundings().getHeight() - 2*gap)/  img.getHeight();
 			}
 			scaledImg = img.getScaledCopy(scale);
 		}else{
 			scaledImg = img;
 		}
 		
-		Rectangle imgBoundings = new Rectangle(boundings.getX()+GAP,boundings.getY()+GAP,scaledImg.getWidth(),scaledImg.getHeight());
+		Rectangle imgBoundings = new Rectangle(boundings.getX()+gap,boundings.getY()+gap,scaledImg.getWidth(),scaledImg.getHeight());
 		float dx = boundings.getCenterX() - imgBoundings.getCenterX();
 		float dy = boundings.getCenterY() - imgBoundings.getCenterY();
 		
-		renderX = boundings.getX() + GAP + dx;
-		renderY = boundings.getY() + GAP + dy;
+		renderX = boundings.getX() + gap + dx;
+		renderY = boundings.getY() + gap + dy;
 	}
 	
 	public void update(GameContainer container, int delta)

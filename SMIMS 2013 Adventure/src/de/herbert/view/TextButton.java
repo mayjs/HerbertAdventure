@@ -47,12 +47,12 @@ public class TextButton extends Button{
 
 	public void setText(String text) {
 		this.text = text;
-		Rectangle textBoundings = new Rectangle(boundings.getX()+GAP,boundings.getY()+GAP, ttf.getWidth(text), ttf.getHeight(text));
+		Rectangle textBoundings = new Rectangle(boundings.getX()+gap,boundings.getY()+gap, ttf.getWidth(text), ttf.getHeight(text));
 		float dx = boundings.getCenterX() - textBoundings.getCenterX();
 		float dy = boundings.getCenterY() - textBoundings.getCenterY();
 		
-		renderX = boundings.getX() + GAP + dx;
-		renderY = boundings.getY() + GAP + dy;
+		renderX = boundings.getX() + gap + dx;
+		renderY = boundings.getY() + gap + dy;
 	}
 	
 	public Font getFont(){

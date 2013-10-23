@@ -163,6 +163,7 @@ public class InventoryPanel extends Component implements ButtonListener{
 	}
 	
 	
+	
 	Inventory in;
 	public Inventory getInventory(){
 		// create a test inventory ...

@@ -12,12 +12,12 @@ public class Text {
 	private Font font;
 	private org.newdawn.slick.Font slickFont;
 	
-	public Text(String text, Font font, Color color) {
+	public Text(String text, Font f, Color black) {
 		super();
 		this.text = text;
-		this.font = font;
-		this.slickFont = new TrueTypeFont(font, true);
-		this.color = color;
+		this.font = f;
+		this.slickFont = new TrueTypeFont(f, true);
+		this.color = black;
 	}
 	
 	public String getText() {
