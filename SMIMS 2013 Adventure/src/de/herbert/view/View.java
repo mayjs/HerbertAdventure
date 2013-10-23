@@ -57,11 +57,11 @@ public class View implements ButtonListener{
 //		
 //		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 		
-		components.add(new InventoryPanel(new Rectangle(10, 10, 600, 70), 8));
+		//components.add(new InventoryPanel(new Rectangle(10, 10, 600, 70), 8));
 		
-		Textbox box = new Textbox(new Rectangle(600,500, 50,10));
+		Textbox box = new Textbox(600,500,60,20);
 		components.add(box);
-		components.add(new Annotation(box,"!!!!",1));
+		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation wich instantly shows up when you hover the component
 		
 //		try {
 //			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("C:/example.xml").toURI()), false); // irgendwie findet der die Date nicht :(
