@@ -9,6 +9,7 @@ import org.newdawn.slick.geom.Rectangle;
 
 public class PctButton extends Button{
 	private Image img;
+	private Image scaledImg;
 	private float renderX, renderY;
 	
 	public PctButton(Rectangle boundings, Image image){
@@ -24,8 +25,19 @@ public class PctButton extends Button{
 		setImage(image);
 	}
 	
+	public void setBoundings(Rectangle boundings){
+		super.setBoundings(boundings);
+		
+		//if(Math.min(boundings.getWidth(), boundings.getHeight()) != Math.min(this.boundings.getWidth(), this.boundings.getHeight()))
+			scaleImage();
+	}
+	
 	public void setImage(Image pImg){
 		img = pImg;
+		scaleImage();
+	}
+	
+	public void scaleImage(){
 		if(img.getWidth() > boundings.getWidth() - 2*this.GAP || img.getHeight() > boundings.getHeight() - 2*this.GAP){
 			float scale = 1f;
 			if((img.getWidth() - getBoundings().getWidth()) > (img.getHeight() - getBoundings().getHeight())){
@@ -33,10 +45,12 @@ public class PctButton extends Button{
 			}else{
 				scale = (getBoundings().getHeight() - 2*GAP)/  img.getHeight();
 			}
-			img = img.getScaledCopy(scale);
+			scaledImg = img.getScaledCopy(scale);
+		}else{
+			scaledImg = img;
 		}
 		
-		Rectangle imgBoundings = new Rectangle(boundings.getX()+GAP,boundings.getY()+GAP,img.getWidth(),img.getHeight());
+		Rectangle imgBoundings = new Rectangle(boundings.getX()+GAP,boundings.getY()+GAP,scaledImg.getWidth(),scaledImg.getHeight());
 		float dx = boundings.getCenterX() - imgBoundings.getCenterX();
 		float dy = boundings.getCenterY() - imgBoundings.getCenterY();
 		
@@ -56,10 +70,10 @@ public class PctButton extends Button{
 		
 		// make image a little bit transparent when disabled
 		if(!isEnabled())
-			img.setAlpha(0.3f);
+			scaledImg.setAlpha(0.3f);
 		else
-			img.setAlpha(1);
+			scaledImg.setAlpha(1);
 		
-			img.draw(renderX, renderY);
+			scaledImg.draw(renderX, renderY);
 	}
 }

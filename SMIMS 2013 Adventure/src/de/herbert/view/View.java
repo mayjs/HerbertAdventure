@@ -57,8 +57,8 @@ public class View implements ButtonListener{
 //		
 //		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 		
-		components.add(new InventoryPanel(new Rectangle(10, 10, 600, 70), 8));
-		
+		components.add(new NotAnimatedInventoryPanel(new Rectangle(10, 10, 600, 70), 8));
+		components.add(new InventoryPanel(new Rectangle(10, 100, 600, 70), 8));
 		try {
 			TextPanel_ext.popUp(300, 500, new File("C:/example.xml"), false); // irgendwie findet der die Date nicht :(
 		} catch (Exception e) {
