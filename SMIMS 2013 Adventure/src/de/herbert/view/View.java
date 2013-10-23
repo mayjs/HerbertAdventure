@@ -63,6 +63,7 @@ public class View implements ButtonListener{
 		box.setDefaultText("Default Text");
 		box.setCurrentBoundingAsMinimal();
 		components.add(box);
+		
 		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation wich instantly shows up when you hover the component
 		
 //		try {
