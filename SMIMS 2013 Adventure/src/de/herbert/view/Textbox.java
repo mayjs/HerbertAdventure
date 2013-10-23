@@ -21,7 +21,7 @@ import de.herbert.control.Control;
 public class Textbox extends Component implements KeyListener{
 
 	private Font font;
-	private String text = "";
+	private String text = "", defaultText="";
 	private boolean focused;
 	private int maxLength = 20;
 	
@@ -56,7 +56,10 @@ public class Textbox extends Component implements KeyListener{
 		g.setColor(borderColor);
 		g.draw(boundings);
 		
-		font.drawString(boundings.getX(), boundings.getY(), text, textColor);
+		if(!text.isEmpty())
+			font.drawString(boundings.getX(), boundings.getY(), text, textColor);
+		else
+			font.drawString(boundings.getX(), boundings.getY(), defaultText, textColor.darker(0.3f));
 		
 		if(focused){
 			g.setColor(Color.white);
@@ -72,7 +75,12 @@ public class Textbox extends Component implements KeyListener{
 	
 	private void adjustBoundings(){
 		boundings.setHeight(Math.max(font.getLineHeight(),minHeight));
-		boundings.setWidth(Math.max(font.getWidth(text)+7,minWidth));
+		boundings.setWidth(Math.max((text.isEmpty()?font.getWidth(defaultText):font.getWidth(text))+7,minWidth));
+	}
+	
+	public void setCurrentBoundingAsMinimal(){
+		minWidth = boundings.getWidth();
+		minHeight = boundings.getHeight();
 	}
 
 	public Font getFont() {
@@ -178,7 +186,14 @@ public class Textbox extends Component implements KeyListener{
 
 	public void setTextColor(Color textColor) {
 		this.textColor = textColor;
-	}	
-	
-	
+	}
+
+	public String getDefaultText() {
+		return defaultText;
+	}
+
+	public void setDefaultText(String defaultText) {
+		this.defaultText = defaultText;
+		this.adjustBoundings();
+	}
 }

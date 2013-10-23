@@ -60,6 +60,8 @@ public class View implements ButtonListener{
 		//components.add(new InventoryPanel(new Rectangle(10, 10, 600, 70), 8));
 		
 		Textbox box = new Textbox(600,500,60,20);
+		box.setDefaultText("Default Text");
+		box.setCurrentBoundingAsMinimal();
 		components.add(box);
 		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation wich instantly shows up when you hover the component
 		
