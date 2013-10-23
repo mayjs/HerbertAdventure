@@ -57,6 +57,10 @@ public class View implements ButtonListener{
 		
 		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 		
+		Textbox box = new Textbox(new Rectangle(600,500, 50,10));
+		components.add(box);
+		components.add(new Annotation(box,"!!!!",1));
+		
 //		try {
 //			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("C:/example.xml").toURI()), false); // irgendwie findet der die Date nicht :(
 //		} catch (URISyntaxException e) {
@@ -67,13 +71,14 @@ public class View implements ButtonListener{
 	
 	public void update(GameContainer container, int delta)
 			throws SlickException {
+		List<Component> newComps = new LinkedList<Component>();
 		for(Component c : components){
-			if(!c.isStillUsed()){
-				components.remove(c);
-				continue;
+			if(c.isStillUsed()){
+				c.update(container, delta);
+				newComps.add(c);
 			}
-			c.update(container, delta);
 		}
+		components = newComps;
 	}
 	
 	public void render(GameContainer container, Graphics g)
