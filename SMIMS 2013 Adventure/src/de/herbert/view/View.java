@@ -15,6 +15,8 @@ import de.herbert.control.Control;
 //import de.herbert.parser.FormattedText;
 import de.herbert.parser.TextParser;
 
+//commit test von Christopher
+
 public class View implements ButtonListener{
 	private Control control;
 	
