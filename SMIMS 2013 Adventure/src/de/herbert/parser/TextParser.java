@@ -47,7 +47,7 @@ public class TextParser {
 		}
 	}
 	
-	public List<Text> parseText(File file){
+	public FormattedText parseText(File file){
 		try{
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -63,13 +63,13 @@ public class TextParser {
 		return null;
 	}
 	
-	public List<Text> parseText(Element e){
+	public FormattedText parseText(Element e){
 		fonts = ParserFunctions.getChildElementsByTag(e, "font");
 		List<Text> textList = new LinkedList<Text>();
 		for(Element el : fonts){
 			textList.add(makeText(el));
 		}
-		return textList;
+		return new FormattedText(textList);
 	}
 	
 	private Text makeText(Element e){
