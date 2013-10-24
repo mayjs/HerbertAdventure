@@ -47,9 +47,10 @@ public class FormattedText {
 			String text = t.getText();
 			String sub;
 			int enterInd = -1;
-			while((enterInd = text.indexOf("\\n")) > -1){
+			while((enterInd = text.indexOf("\n")) > -1){
 				sub = text.substring(0, enterInd);
-				text = text.substring(enterInd + 1, text.length() - 1);
+				if(enterInd >= text.length() - 1)text="";
+				else text = text.substring(enterInd + 1, text.length() - 1);
 				g.drawString(sub, textPosX, textPosY);
 				textPosY += g.getFont().getHeight(sub);
 			}
@@ -73,9 +74,10 @@ public class FormattedText {
 			
 			height = Math.max(t.getSlickFont().getHeight(t.getText()), height);
 			sub = t.getText();
-			while((ind = sub.indexOf("\\n")) > -1){
+			while((ind = sub.indexOf("\n")) > -1){
 				c++;
-				sub = sub.substring(ind + 1, sub.length() - 1);
+				if(ind >= sub.length() - 1)sub="";
+				else sub = sub.substring(ind + 1, sub.length() - 1);
 				float w = t.getSlickFont().getWidth(sub);
 				if(b) width += w;
 				b =false;
