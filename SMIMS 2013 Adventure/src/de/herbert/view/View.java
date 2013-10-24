@@ -11,8 +11,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import de.herbert.control.Control;
-import de.herbert.model.Dialogue;
-import de.herbert.parser.FormattedText;
+//import de.herbert.model.Dialogue;
+//import de.herbert.parser.FormattedText;
 import de.herbert.parser.TextParser;
 
 public class View implements ButtonListener{
@@ -63,7 +63,7 @@ public class View implements ButtonListener{
 		components.add(new NotAnimatedInventoryPanel(new Rectangle(10, 10, 600, 70), 8));
 		components.add(new InventoryPanel(new Rectangle(10, 100, 600, 70), 8));
 		try {
-			FormattedTextPanel.popUp(300, 500, new FormattedText(TextParser.getInstance().parseText(new File("C:/example.xml"))), true); // irgendwie findet der die Date nicht :(
+//			FormattedTextPanel.popUp(300, 500, new FormattedText(TextParser.getInstance().parseText(new File("C:/example.xml"))), true); // irgendwie findet der die Date nicht :(
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
