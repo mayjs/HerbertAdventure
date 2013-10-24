@@ -76,7 +76,7 @@ public class TextParser {
 		String str = e.getTextContent();
 		int ind;
 		while((ind = str.indexOf("\\n"))>=0){
-			str = str.substring(0, ind) + "\n" + str.substring(ind + 1, str.length() - 1);
+			str = str.substring(0, ind) + "\n" + ((ind + 2 >= str.length() - 1)?"":str.substring(ind + 2, str.length()));
 		}
 		Text text = new Text(str, getFont(e), getColor(e));
 		return text;
@@ -102,16 +102,5 @@ public class TextParser {
 				if(str.contains("italic")) 	returnValue = returnValue | Font.ITALIC;
 		else 								returnValue = Font.PLAIN;
 				return returnValue;
-	}
-	
-	public static void main(String[] args){
-		TextParser p = new TextParser();
-		try {
-			//p.parseText(new File(Main.class.getResource("/de/nrw/smims2013/adventure/story/xml/Herbert.xml").toURI()));
-			p.parseText(new File("C:/exapmle.xml"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

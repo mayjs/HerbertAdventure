@@ -86,7 +86,8 @@ public class View implements ButtonListener{
 		
 		components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
 		
-		//components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File("C:/example1.xml"))));
+		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
+		components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File("C:/example1.xml"))));
 		//FormattedTextPanel.popUp(200, 200, new FormattedText("Testtext\nund Absatz"), false);
 		
 //		try {

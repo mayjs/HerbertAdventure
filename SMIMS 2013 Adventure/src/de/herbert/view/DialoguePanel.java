@@ -14,7 +14,7 @@ import de.herbert.model.Dialogue;
 
 public class DialoguePanel extends Component{
 
-	FormattedTextPanel textPanel;
+	ScrollableFormattedTextPanel textPanel;
 	List<FormattedTextButton> buttons = new LinkedList<FormattedTextButton>();
 	List<FormattedTextButton> buttonsNew = new LinkedList<FormattedTextButton>();
 	Dialogue dialogue;
@@ -29,7 +29,7 @@ public class DialoguePanel extends Component{
 	public DialoguePanel(Rectangle boundings, Dialogue dialogue) {
 		super(boundings);
 		this.dialogue = dialogue;
-		textPanel = new FormattedTextPanel(boundings, false, dialogue.getCurPart().getContent());
+		textPanel = new ScrollableFormattedTextPanel(boundings, dialogue.getCurPart().getContent());
 		uAnswerButtons();
 	}
 	
@@ -126,8 +126,9 @@ public class DialoguePanel extends Component{
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		//g.fill(boundings, new GradientFill(0, 0, Color.black, 1, 1, Color.blue));
-		g.setColor(Color.green);
-		g.fillRect(boundings.getX(), boundings.getY(), boundings.getWidth(), boundings.getHeight());
+		g.setColor(Color.gray);
+		g.draw(boundings);
+		g.fill(boundings, new GradientFill(boundings.getX(), boundings.getCenterY(), Color.white, boundings.getX(), boundings.getMaxY(), new Color(0xFFEBCD)));//new Color(0xFFDAB9)));
 		textPanel.render(container, g);
 		for(FormattedTextButton b : buttons){
 			b.render(container, g);

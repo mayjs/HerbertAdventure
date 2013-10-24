@@ -13,18 +13,18 @@ public class Dialogue {
 	DialoguePart first;
 	
 	public Dialogue(){
-//		List<DialogueAnswer> ans = new LinkedList<DialogueAnswer>();
-//		ans.add(new DialogueAnswer(new FormattedText("weiter"), "part2"));
-//		DialoguePart p = new DialoguePart(new FormattedText("Hast du Käse für mich?"), ans);
-//		parts.put("part1", p);
-//		curPart = p;
-//		ans = new LinkedList<DialogueAnswer>();
-//		ans.add(new DialogueAnswer(new FormattedText("Hier, kannst ihn haben."), "part1"));
-//		ans.add(new DialogueAnswer(new FormattedText("Nein!"), "part2"));
-//		ans.add(new DialogueAnswer(new FormattedText("Nein, nein \nNEIN!"), "part2"));
-//		ans.add(new DialogueAnswer(new FormattedText("von mir aus ?¿"), "part1"));
-//		p = new DialoguePart(new FormattedText("Bitte! :( \n\nsonst kann ich keinen Auflauf machen!"), ans);
-//		parts.put("part2", p);
+		List<DialogueAnswer> ans = new LinkedList<DialogueAnswer>();
+		ans.add(new DialogueAnswer(new FormattedText("weiter"), "part2"));
+		DialoguePart p = new DialoguePart(new FormattedText("Hast du Käse für\n mich?"), ans);
+		parts.put("part1", p);
+		curPart = p;
+		ans = new LinkedList<DialogueAnswer>();
+		ans.add(new DialogueAnswer(new FormattedText("Hier, kannst ihn haben."), "part1"));
+		ans.add(new DialogueAnswer(new FormattedText("Nein!"), "part2"));
+		ans.add(new DialogueAnswer(new FormattedText("Nein, nein \nNEIN!"), "part2"));
+		ans.add(new DialogueAnswer(new FormattedText("von mir aus ?¿"), "part1"));
+		p = new DialoguePart(new FormattedText("Bitte! :( \n\nsonst kann ich keinen Auflauf machen!"), ans);
+		parts.put("part2", p);
 	}
 	
 	public void setFirstPart(String id){

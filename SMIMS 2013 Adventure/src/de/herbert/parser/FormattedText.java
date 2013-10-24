@@ -50,7 +50,7 @@ public class FormattedText {
 			while((enterInd = text.indexOf("\n")) > -1){
 				sub = text.substring(0, enterInd);
 				if(enterInd >= text.length() - 1)text="";
-				else text = text.substring(enterInd + 1, text.length() - 1);
+				else text = text.substring(enterInd + 1, text.length());
 				g.drawString(sub, textPosX, textPosY);
 				textPosY += g.getFont().getHeight(sub);
 			}
@@ -69,6 +69,7 @@ public class FormattedText {
 		int c = 0;
 		boolean b = true;
 		String sub;
+		float w = 0;
 		for(Text t : wrappedParts){
 			c = 0;
 			
@@ -76,17 +77,20 @@ public class FormattedText {
 			sub = t.getText();
 			while((ind = sub.indexOf("\n")) > -1){
 				c++;
+				w = t.getSlickFont().getWidth(sub.substring(0, ind));
 				if(ind >= sub.length() - 1)sub="";
-				else sub = sub.substring(ind + 1, sub.length() - 1);
-				float w = t.getSlickFont().getWidth(sub);
+				else sub = sub.substring(ind + 1, sub.length());
+				
 				if(b) width += w;
 				b =false;
-				width =  w > width?w:width;
+				width =  Math.max(width, w);
+				w=0;
 			}
 			if(c > 0)
 				finalHeight += c * height;
 			else
-				width += t.getSlickFont().getWidth(sub);
+				w += t.getSlickFont().getWidth(sub);
+			width =  Math.max(width, w);
 		}
 		finalHeight += height;
 		boundings.setWidth(width);
@@ -96,5 +100,9 @@ public class FormattedText {
 
 	public float getHeight() {
 		return calcBoundings().getHeight();
+	}
+	
+	public float getWidth(){
+		return calcBoundings().getWidth();
 	}
 }
