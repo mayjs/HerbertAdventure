@@ -11,6 +11,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import de.herbert.control.Control;
+import de.herbert.model.Dialogue;
+import de.herbert.parser.DialogueParser;
+import de.herbert.parser.FormattedText;
 //import de.herbert.model.Dialogue;
 //import de.herbert.parser.FormattedText;
 import de.herbert.parser.TextParser;
@@ -62,8 +65,8 @@ public class View implements ButtonListener{
 //		TextPanel.popUp(100, 500, "Hallo Welt!\r\nDas ist ein Text.",true);
 		
 
-		components.add(new NotAnimatedInventoryPanel(new Rectangle(10, 10, 600, 70), 8));
-		components.add(new InventoryPanel(new Rectangle(10, 100, 600, 70), 8));
+		//components.add(new NotAnimatedInventoryPanel(new Rectangle(10, 10, 600, 70), 8));
+		//components.add(new InventoryPanel(new Rectangle(10, 100, 600, 70), 8));
 		try {
 //			FormattedTextPanel.popUp(300, 500, new FormattedText(TextParser.getInstance().parseText(new File("C:/example.xml"))), true); // irgendwie findet der die Date nicht :(
 		} catch (Exception e) {
@@ -75,15 +78,17 @@ public class View implements ButtonListener{
 		Textbox box = new Textbox(600,500,60,20);
 		box.setDefaultText("Default Text");
 		box.setCurrentBoundingAsMinimal();
-		components.add(box);
+		//components.add(box);
 		
 		ScrollList list = new ScrollList(new Rectangle(30,200,249,150));
 		for(int i = 0; i < 10; i++) list.addEntry(""+i);
-		components.add(list);
+		//components.add(list);
 		
 		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
 		
-		//components.add(new DialoguePanel(new Rectangle(300, 100, 200, 200), new Dialogue()));
+		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
+		components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File("C:/example1.xml"))));
+		//FormattedTextPanel.popUp(200, 200, new FormattedText("Testtext\nund Absatz"), false);
 		
 //		try {
 //			TextPanel_ext.popUp(300, 500, new File(View.class.getResource("C:/example.xml").toURI()), false); // irgendwie findet der die Date nicht :(

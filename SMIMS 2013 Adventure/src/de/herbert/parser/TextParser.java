@@ -47,7 +47,7 @@ public class TextParser {
 		}
 	}
 	
-	public List<Text> parseText(File file){
+	public FormattedText parseText(File file){
 		try{
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -63,17 +63,22 @@ public class TextParser {
 		return null;
 	}
 	
-	public List<Text> parseText(Element e){
+	public FormattedText parseText(Element e){
 		fonts = ParserFunctions.getChildElementsByTag(e, "font");
 		List<Text> textList = new LinkedList<Text>();
 		for(Element el : fonts){
 			textList.add(makeText(el));
 		}
-		return textList;
+		return new FormattedText(textList);
 	}
 	
 	private Text makeText(Element e){
-		Text text = new Text(e.getTextContent(), getFont(e), getColor(e));
+		String str = e.getTextContent();
+		int ind;
+		while((ind = str.indexOf("\\n"))>=0){
+			str = str.substring(0, ind) + "\n" + ((ind + 2 >= str.length() - 1)?"":str.substring(ind + 2, str.length()));
+		}
+		Text text = new Text(str, getFont(e), getColor(e));
 		return text;
 	}
 	
@@ -92,19 +97,10 @@ public class TextParser {
 	
 	public int getFontStyle(String str){
 		if(str == null) return Font.PLAIN;
-				if(str.equals("bold"))		return Font.BOLD;
-		else 	if(str.equals("italic")) 	return Font.ITALIC;
-		else 								return Font.PLAIN;
-	}
-	
-	public static void main(String[] args){
-		TextParser p = new TextParser();
-		try {
-			//p.parseText(new File(Main.class.getResource("/de/nrw/smims2013/adventure/story/xml/Herbert.xml").toURI()));
-			p.parseText(new File("C:/exapmle.xml"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		int returnValue = 0;
+				if(str.contains("bold"))	returnValue = Font.BOLD;
+				if(str.contains("italic")) 	returnValue = returnValue | Font.ITALIC;
+		else 								returnValue = Font.PLAIN;
+				return returnValue;
 	}
 }
