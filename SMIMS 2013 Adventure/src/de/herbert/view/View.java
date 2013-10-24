@@ -81,7 +81,7 @@ public class View implements ButtonListener{
 		for(int i = 0; i < 10; i++) list.addEntry(""+i);
 		components.add(list);
 		
-		components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
+		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
 		
 		//components.add(new DialoguePanel(new Rectangle(300, 100, 200, 200), new Dialogue()));
 		
