@@ -38,6 +38,18 @@ public class FormattedText {
 		textParts.add(part);
 	}
 	
+	public void wrapToWidth(float width){
+		float startWidth = 0;
+		wrappedParts = textParts;
+		for(Text part : wrappedParts){
+			part.wrapToWidth(width, startWidth);
+			if(part.getCountOfLines() > 1)
+				startWidth = part.getLastLine().getWidth();
+			else
+				startWidth += part.getLastLine().getWidth();
+		}
+	}
+	
 	public void draw(Graphics g, float x, float y){
 		if(wrappedParts.size() == 0) wrappedParts = textParts;
 		float textPosX = x, textPosY = y;
@@ -48,11 +60,15 @@ public class FormattedText {
 			String sub;
 			int enterInd = -1;
 			while((enterInd = text.indexOf("\n")) > -1){
+				// draw line
 				sub = text.substring(0, enterInd);
 				if(enterInd >= text.length() - 1)text="";
 				else text = text.substring(enterInd + 1, text.length());
 				g.drawString(sub, textPosX, textPosY);
+				
+				// jump into next line
 				textPosY += g.getFont().getHeight(sub);
+				textPosX= x;
 			}
 			g.drawString(text, textPosX, textPosY);
 			textPosX += g.getFont().getWidth(text);

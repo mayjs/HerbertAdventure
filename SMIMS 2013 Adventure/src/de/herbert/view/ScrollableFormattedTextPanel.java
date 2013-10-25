@@ -31,6 +31,7 @@ public class ScrollableFormattedTextPanel extends Component {
 	public void setText(FormattedText text){
 		this.text = text;
 		calcScrollbarValues();
+		text.wrapToWidth(boundings.getWidth() - 2 * gap - scrollbar.getBoundings().getWidth());
 	}
 	
 	public void calcScrollbarValues(){

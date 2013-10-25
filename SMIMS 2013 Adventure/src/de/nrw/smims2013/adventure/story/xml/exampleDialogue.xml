@@ -1,0 +1,25 @@
+
+
+<dialogue startPart="startPart">
+	<part id="startPart">
+		<font name="TimesNewRoman" size="23" style="bold italic" color="0xFF0022">KÄSE!!!!\n1\n2\n3\n4\n5\n6ist gelb und manchmal löcherig</font>
+		<answer id="part2"><font name="Verdana" size="12" color="0xFFFFFF">weiter</font></answer>
+	</part>
+	<part id="part2">
+		<font name="TimesNewRoman" size="15" color="0xFFFFFF" style="bold">la\n</font>
+		<font name="TimesNewRoman" size="11" color="0x000000" style="italic">ich habe Käse!\n</font>
+		<font name="TimesNewRoman" size="20" color="0xFFFFFF" style="bold">Dieser Text ist vieeeeel zu lang für eine einzelne Zeile und wird hoffentlich auf mindestens zwei verteilt.</font>
+		
+		<answer id="startPart"><font name="TimesNewRoman" size="12" color="0xff00f0" style="plain">zurück</font></answer>
+		<answer id="part3"><font name="TimesNewRoman" size="25" color="0x00FF00" style="bold">Käse ist cool!\n</font>
+		<font name="TimesNewRoman" size="12" color="0xFFCCFF" style="plain">sehr cool.</font>
+		</answer>
+	</part>
+	<part id="part3">
+		<font name="TimesNewRoman" size="15" color="0xFFFFFF" style="bold">Das sehe ich genauso!</font>
+
+		<answer id="startPart"><font name="TimesNewRoman" size="12" color="0xff00f0" style="plain">zurück!\nzum Anfang</font></answer>
+		<answer id="part3"><font name="TimesNewRoman" size="25" color="0x00FF00" style="bold">hier bleiben</font></answer>
+		<answer id="part2"><font name="TimesNewRoman" size="25" color="0x00FF00" style="bold">eins zurück</font></answer>
+	</part>
+</dialogue>

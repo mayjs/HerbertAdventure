@@ -39,8 +39,6 @@ public class FormattedTextButton extends Button{
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		super.render(container, g);
-		g.setColor(Color.green);
-		g.draw(text.calcBoundings());
 		text.draw(g, renderX, renderY);
 	}
 	
