@@ -15,12 +15,20 @@ public class Text {
 	private Color color;
 	private org.newdawn.slick.Font slickFont;
 	private float width, height;
+	private List<Text> lines;
 	
 	public Text(String text, Font f, Color black) {
 		super();
 		this.text = text;
 		this.font = f;
 		this.slickFont = new TrueTypeFont(f, true);
+		this.color = black;
+	}
+	
+	private Text(String text, Font f, Color black, org.newdawn.slick.Font slickFont){
+		this.text = text;
+		this.font =f;
+		this.slickFont = slickFont;
 		this.color = black;
 	}
 	
@@ -33,11 +41,11 @@ public class Text {
 	}
 	
 	public Text sub(int index){
-		return new Text(text.substring(index), font, color);
+		return new Text(text.substring(index), font, color, slickFont);
 	}
 	
 	public Text sub(int fromIndex, int toIndex){
-		return new Text(text.substring(fromIndex, toIndex), font, color);
+		return new Text(text.substring(fromIndex, toIndex), font, color, slickFont);
 	}
 	
 	public int indexOf(char c){
@@ -77,10 +85,12 @@ public class Text {
 	}
 	
 	public float getWidth(){
+		if(width == 0) width = slickFont.getWidth(text);
 		return width;
 	}
 	
 	public float getHeight(){
+		if(height == 0) height = slickFont.getLineHeight();
 		return height;
 	}
 	
@@ -108,18 +118,27 @@ public class Text {
 	}
 	
 	public List<Text> getLines(){
-		int ind;
-		List<Text> lines = new LinkedList<Text>();
-		String sub = getText();
-		while((ind = sub.indexOf("\\n")) > -1){
-			sub = sub.substring(ind + 2, sub.length()-1);
-			lines.add(new Text(sub, font, color));
-		}
+		if(lines == null) calcLines();
 		return lines;
+	}
+	
+	public void calcLines(){
+		int ind;
+		lines = new LinkedList<Text>();
+		String sub = getText();
+		while((ind = sub.indexOf("\n")) > -1){
+			lines.add(new Text(sub.substring(0, ind + 1), font, color, slickFont));
+			if(ind + 2 > sub.length())
+				sub = "";
+			else
+				sub = sub.substring(ind + 1, sub.length());
+		}
+		lines.add(new Text(sub, font, color, slickFont));
 	}
 	
 	public Text getLastLine(){
 		List<Text> lines = getLines();
+		if(lines.size() == 0) return null;
 		return lines.get(lines.size() - 1);
 	}
 	
@@ -129,24 +148,55 @@ public class Text {
 	
 	public void wrapToWidth(float width, float startWidth){
 		List<Text> lines = getLines();
-		int countOfWraps = 0;
-		int curLength = 0;
-		for(int i = 0; i < lines.size(); i++){
-			Text curLine = lines.get(i);
-			int wrapInd = lines.get(i).length() - 1;
-			int ind = 0;
-			while(curLine.getWidth(0, wrapInd) + startWidth > width){
-				ind = curLine.lastIndexOf(" ", wrapInd);
-				if(ind == -1) break;
-				wrapInd = ind;
+		text = "";
+		int startInd = 0;
+		int wrapInd = 0;
+		for(Text line : lines){
+			startInd = 0;
+			while(startInd < line.length()){
+				if(line.getWidth(startInd, line.length()) + startWidth > width){
+					// find wrapInd, so that it is out of width
+					wrapInd = startInd;//(int) (width/(line.getWidth() + startWidth) * text.length());
+					while(line.getWidth(startInd, wrapInd) + startWidth <= width + 1)
+						wrapInd++;
+					
+					// find last occurrence of " " before width
+					while(wrapInd > startInd && line.getWidth(startInd, wrapInd) + startWidth >= width && wrapInd >= 0)
+						wrapInd = line.lastIndexOf(" ", wrapInd) - 1;
+					
+					wrapInd+= 2;
+					if(wrapInd <= startInd){	// the first word of the line is longer than width
+						if(startWidth > 0){
+							text += "\n";
+						}else{
+							int ind = line.indexOf(" ", startInd);
+							if(ind < 0) {// line only consists of one word, it should have a "\n" at the end
+								text += line.sub(startInd, line.length()).getText();
+								startInd = line.length();
+							}else {
+								text += line.sub(startInd, ind).getText() + "\n";
+								startInd = ind;
+							}
+						}
+						
+					}else{	// add word wrap
+						text += line.sub(startInd, wrapInd).getText() + "\n";
+						startInd = wrapInd;
+					}
+					
+					startWidth = 0;
+				}else{	// line doesn't need to be wrapped
+					startWidth = 0;
+					text += line.sub(startInd, line.length()).getText();
+					startInd = line.length();
+				}
 			}
-			if(wrapInd > 0){
-				text = text.substring(0, countOfWraps + wrapInd - 1 + curLength) + "\n" + text.substring(wrapInd + 1, text.length() - 1);
-				countOfWraps++;
-			}
-			curLength += curLine.length();
 		}
 		calcWidthAndHeight();
+	}
+	
+	public int getCountOfLines(){
+		return getLines().size();
 	}
 	
 	private void wrapToWidth(float width, int startInd){

@@ -1,6 +1,7 @@
 package de.herbert.view;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -87,7 +88,12 @@ public class View implements ButtonListener{
 		components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
 		
 		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
-		components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File("C:/example1.xml"))));
+		try {
+			components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File(View.class.getResource("/de/nrw/smims2013/adventure/story/xml/exampleDialogue.xml").toURI()))));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//FormattedTextPanel.popUp(200, 200, new FormattedText("Testtext\nund Absatz"), false);
 		
 //		try {
