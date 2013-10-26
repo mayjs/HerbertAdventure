@@ -81,21 +81,21 @@ public class View implements ButtonListener{
 		box.setCurrentBoundingAsMinimal();
 		//components.add(box);
 		
-		ScrollList list = new ScrollList(new Rectangle(30,200,249,150));
+		ScrollList list = new SelectorScrollList(new Rectangle(30,200,249,150));
 		for(int i = 0; i < 10; i++) list.addEntry(""+i);
-		//components.add(list);
+		components.add(list);
 		
 		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
 		
 		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
 		
-		try {
-			components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File(View.class.getResource("/de/nrw/smims2013/adventure/story/xml/exampleDialogue.xml").toURI()))));
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+//		try {
+//			components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File(View.class.getResource("/de/nrw/smims2013/adventure/story/xml/exampleDialogue.xml").toURI()))));
+//		} catch (URISyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
 		//FormattedTextPanel.popUp(200, 200, new FormattedText("Testtext\nund Absatz"), false);
 		
 //		try {

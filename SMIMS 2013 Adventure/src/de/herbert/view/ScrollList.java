@@ -15,11 +15,11 @@ import de.herbert.control.Control;
 
 public class ScrollList extends Component {
 
-	private VerticalScrollbar scrollbar;
-	private List<String> entries = new LinkedList<String>();
-	private Color backgroundColor = Color.lightGray, borderColor = Color.gray, textColor = Color.white;
-	private Font font;
-	private float lineDistance = 1f;
+	protected VerticalScrollbar scrollbar;
+	protected List<String> entries = new LinkedList<String>();
+	protected Color backgroundColor = Color.lightGray, borderColor = Color.gray, textColor = Color.white;
+	protected Font font;
+	protected float lineDistance = 1f;
 	
 	public ScrollList(Rectangle boundings) {
 		super(boundings);
