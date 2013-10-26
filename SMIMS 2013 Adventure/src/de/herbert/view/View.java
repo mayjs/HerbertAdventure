@@ -19,7 +19,6 @@ import de.herbert.parser.FormattedText;
 //import de.herbert.parser.FormattedText;
 import de.herbert.parser.TextParser;
 
-//commit test von Christopher
 
 public class View implements ButtonListener{
 	private Control control;
@@ -87,15 +86,21 @@ public class View implements ButtonListener{
 		
 		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
 		
+
 //		components.add(new ScrollableFormattedTextPanel(new Rectangle(100, 10, 200, 100), new FormattedText("ein sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr "
 //				+ "sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr"
 //				+ "sehr sehr sehr sehrsehr sehr sehr sehr sehr sehr sehr sehrsehr sehr sehr sehr langer Text.")));
+
+		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
+		
+
 		try {
 			components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File(View.class.getResource("/de/nrw/smims2013/adventure/story/xml/exampleDialogue.xml").toURI()))));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		//FormattedTextPanel.popUp(200, 200, new FormattedText("Testtext\nund Absatz"), false);
 		
 //		try {

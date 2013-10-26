@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/de/herbert/parser/exampleDialog.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-5-PROJECT_LOC/example1.xml</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
