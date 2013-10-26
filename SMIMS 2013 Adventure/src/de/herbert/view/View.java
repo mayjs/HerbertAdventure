@@ -85,12 +85,14 @@ public class View implements ButtonListener{
 		for(int i = 0; i < 10; i++) list.addEntry(""+i);
 		//components.add(list);
 		
-		components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
+		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
 		
-		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
+//		components.add(new ScrollableFormattedTextPanel(new Rectangle(100, 10, 200, 100), new FormattedText("ein sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr "
+//				+ "sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr"
+//				+ "sehr sehr sehr sehrsehr sehr sehr sehr sehr sehr sehr sehrsehr sehr sehr sehr langer Text.")));
 		try {
 			components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File(View.class.getResource("/de/nrw/smims2013/adventure/story/xml/exampleDialogue.xml").toURI()))));
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

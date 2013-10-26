@@ -6,8 +6,8 @@
 		<answer id="part2"><font name="Verdana" size="12" color="0xFFFFFF">weiter</font></answer>
 	</part>
 	<part id="part2">
-		<font name="TimesNewRoman" size="15" color="0xFFFFFF" style="bold">la\n</font>
-		<font name="TimesNewRoman" size="11" color="0x000000" style="italic">ich habe Käse!\n</font>
+		<font name="TimesNewRoman" size="15" color="0xFFFFFF" style="bold">la</font>
+		<font name="TimesNewRoman" size="11" color="0x000000" style="italic">ich habe Käääse!</font>
 		<font name="TimesNewRoman" size="20" color="0xFFFFFF" style="bold">Dieser Text ist vieeeeel zu lang für eine einzelne Zeile und wird hoffentlich auf mindestens zwei verteilt.</font>
 		
 		<answer id="startPart"><font name="TimesNewRoman" size="12" color="0xff00f0" style="plain">zurück</font></answer>

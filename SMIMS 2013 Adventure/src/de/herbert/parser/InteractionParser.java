@@ -9,6 +9,7 @@ import java.util.Map;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import de.herbert.model.Dialogue;
 import de.herbert.model.Item;
 import de.herbert.model.NPC;
 import de.herbert.model.Point;
@@ -145,5 +146,47 @@ public class InteractionParser {
 
 	public void parseUse(Node useNode) {
 		parseInteraction((Element)useNode);
+	}
+	
+	@SuppressWarnings("unused")
+	private void interaction_replace(Element e){
+		Item item1 = StoryParser.getInstance().getItem(e.getAttribute("item1")), item2 = StoryParser.getInstance().getItem(e.getAttribute("item2"));
+		if(item1 == null || item2 == null || !e.getNodeName().equals("replace")) return;
+		
+		// find out the location of item1
+		String location = e.getAttribute("location");
+		if (location.equals("inventory"))
+			;	//TODO add method replace() in Inventory
+		else if (location.equals("scene"))
+			interactionReplace(item1, item2, StoryParser.getInstance().getPlayer().getScene());
+		else
+			interactionReplace(item1, item2, StoryParser.getInstance().getScene(location));
+			
+	}
+	
+	private void interactionReplace(Item item1, Item item2, Scene scene){
+		if(scene == null){
+			_err("interaction replace: unknown scene");
+			return;
+		}
+		Point itemPos = scene.getItemsAsMap().get(item1);
+		scene.remove(item1);
+		scene.add(item2, itemPos);
+	}
+	
+	@SuppressWarnings("unused")
+	private void interaction_openDialogue(Element interactionElement){
+		if(!interactionElement.getNodeName().equals("openDialogue"))	return;
+		Dialogue dialogue = DialogueParser.getInstance().getDialogue(interactionElement.getAttribute("dialogueName"));
+		// TODO add code to open the dialoge
+	}
+	
+	@SuppressWarnings("unused")
+	private void interaction_closeDialogue(Element interactionElement){
+		// TODO add code to close dialogue
+	}
+	
+	private void _err(String msg){
+		System.out.println(msg);
 	}
 }

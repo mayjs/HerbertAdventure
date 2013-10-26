@@ -15,7 +15,7 @@ public class Dialogue {
 	public Dialogue(){
 		List<DialogueAnswer> ans = new LinkedList<DialogueAnswer>();
 		ans.add(new DialogueAnswer(new FormattedText("weiter"), "part2"));
-		DialoguePart p = new DialoguePart(new FormattedText("Hast du Käse für\n mich?"), ans);
+		DialoguePart p = new DialoguePart(new FormattedText("Hast du Käse für\n mich?"), ans, null, null);
 		parts.put("part1", p);
 		curPart = p;
 		ans = new LinkedList<DialogueAnswer>();
@@ -23,7 +23,7 @@ public class Dialogue {
 		ans.add(new DialogueAnswer(new FormattedText("Nein!"), "part2"));
 		ans.add(new DialogueAnswer(new FormattedText("Nein, nein \nNEIN!"), "part2"));
 		ans.add(new DialogueAnswer(new FormattedText("von mir aus ?¿"), "part1"));
-		p = new DialoguePart(new FormattedText("Bitte! :( \n\nsonst kann ich keinen Auflauf machen!"), ans);
+		p = new DialoguePart(new FormattedText("Bitte! :( \n\nsonst kann ich keinen Auflauf machen!"), ans, null, null);
 		parts.put("part2", p);
 	}
 	

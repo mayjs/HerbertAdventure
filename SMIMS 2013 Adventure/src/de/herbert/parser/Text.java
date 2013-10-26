@@ -8,14 +8,14 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 
 public class Text {
-	
+	public static Text emptyText = new Text("", new Font("Verdana", 0, 12), Color.black);
 	
 	private String text;
 	private Font font;
 	private Color color;
 	private org.newdawn.slick.Font slickFont;
 	private float width, height;
-	private List<Text> lines;
+	private List<Text> lines = null;
 	
 	public Text(String text, Font f, Color black) {
 		super();
@@ -33,7 +33,9 @@ public class Text {
 	}
 	
 	public void append(String s){
-		text += "s";
+		text += s;
+		lines = null;
+		calcWidthAndHeight();
 	}
 	
 	public int length(){
@@ -103,6 +105,8 @@ public class Text {
 	 */
 	public void eraseAllWraps(){
 		text.replaceAll("\n", " ");
+		lines = null; // they change and have to be calculated again
+		calcWidthAndHeight();
 	}
 	
 	public void calcWidthAndHeight(){
@@ -127,7 +131,7 @@ public class Text {
 		lines = new LinkedList<Text>();
 		String sub = getText();
 		while((ind = sub.indexOf("\n")) > -1){
-			lines.add(new Text(sub.substring(0, ind + 1), font, color, slickFont));
+			lines.add(new Text(sub.substring(0, ind), font, color, slickFont));
 			if(ind + 2 > sub.length())
 				sub = "";
 			else
@@ -188,10 +192,12 @@ public class Text {
 				}else{	// line doesn't need to be wrapped
 					startWidth = 0;
 					text += line.sub(startInd, line.length()).getText();
+					if(line != getLastLine()) text+="\n";
 					startInd = line.length();
 				}
 			}
 		}
+		this.lines = null; // need to be recalculated
 		calcWidthAndHeight();
 	}
 	
@@ -199,15 +205,13 @@ public class Text {
 		return getLines().size();
 	}
 	
-	private void wrapToWidth(float width, int startInd){
-		
-	}
-	
 	public String getText() {
 		return text;
 	}
 	public void setText(String text) {
 		this.text = text;
+		lines = null;
+		calcWidthAndHeight();
 	}
 	public Font getFont() {
 		return font;
@@ -217,13 +221,12 @@ public class Text {
 	}
 	public void setFont(Font font) {
 		this.font = font;
+		this.slickFont = new TrueTypeFont(font, false);
 	}
 	public Color getColor() {
 		return color;
 	}
 	public void setColor(Color color) {
 		this.color = color;
-	}
-	
-	
+	}	
 }
