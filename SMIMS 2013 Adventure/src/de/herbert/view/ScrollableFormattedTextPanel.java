@@ -26,6 +26,7 @@ public class ScrollableFormattedTextPanel extends Component {
 		super.setBoundings(boundings);
 		scrollbar.setBoundings(new Rectangle(boundings.getMaxX() - scrollbarWidth, boundings.getY(), scrollbarWidth, boundings.getHeight()));
 		calcScrollbarValues();
+		bgFill = ButtonStyle.BS_Default.getMouseOverFill(boundings);
 	}
 	
 	public void setText(FormattedText text){
@@ -56,13 +57,20 @@ public class ScrollableFormattedTextPanel extends Component {
 		if(scrollbar.getMax() > 0) scrollbar.render(container, g);
 		
 		Rectangle oldClip = g.getWorldClip();
-		g.setWorldClip(boundings.getX(),boundings.getY(),boundings.getWidth() - scrollbar.getBoundings().getWidth(), boundings.getHeight());
+		g.setWorldClip(	boundings.getX() < oldClip.getX() ? oldClip.getX() : boundings.getX(),
+						boundings.getY() < oldClip.getY() ? oldClip.getY() : boundings.getY(),
+						(boundings.getWidth() - scrollbar.getBoundings().getWidth()) < oldClip.getWidth() ? (boundings.getWidth() - scrollbar.getBoundings().getWidth()) : oldClip.getWidth(), 
+						boundings.getHeight() < oldClip.getHeight() ? boundings.getHeight() : oldClip.getHeight());
 		g.translate(0, -scrollbar.getValue());
 		text.draw(g, boundings.getMinX() + gap, boundings.getMinY() + gap);
 		g.translate(0, scrollbar.getValue());
 		g.setWorldClip(oldClip);
 		
 		
+	}
+
+	public FormattedText getText() {
+		return text;
 	}
 
 }

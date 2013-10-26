@@ -1,7 +1,6 @@
 package de.herbert.view;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,12 +11,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import de.herbert.control.Control;
-import de.herbert.model.Dialogue;
 import de.herbert.parser.DialogueParser;
 import de.herbert.parser.FormattedText;
 //import de.herbert.model.Dialogue;
 //import de.herbert.parser.FormattedText;
-import de.herbert.parser.TextParser;
 
 
 public class View implements ButtonListener{
@@ -58,7 +55,7 @@ public class View implements ButtonListener{
 //		b3.addButtonListener(this);
 //		components.add(b3);
 //		
-//		addAnnotation(c, "HAMMER!");
+		//addAnnotation(c, "HAMMER!");
 //		
 //		components.add(new PctButton(new Rectangle(50, 100, 200, 200), ImageLoader.getImage("Geld")));
 //		
@@ -67,32 +64,27 @@ public class View implements ButtonListener{
 
 		//components.add(new NotAnimatedInventoryPanel(new Rectangle(10, 10, 600, 70), 8));
 		//components.add(new InventoryPanel(new Rectangle(10, 100, 600, 70), 8));
-		try {
-//			FormattedTextPanel.popUp(300, 500, new FormattedText(TextParser.getInstance().parseText(new File("C:/example.xml"))), true); // irgendwie findet der die Date nicht :(
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//components.add(new InventoryPanel(new Rectangle(10, 10, 600, 70), 8));
-		
-		Textbox box = new Textbox(600,500,60,20);
-		box.setDefaultText("Default Text");
-		box.setCurrentBoundingAsMinimal();
-		//components.add(box);
-		
-		ScrollList list = new ScrollList(new Rectangle(30,200,249,150));
-		for(int i = 0; i < 10; i++) list.addEntry(""+i);
-		//components.add(list);
-		
-		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
-		
 
+//		components.add(new InventoryPanel(new Rectangle(0, 530, 600, 70), 8));
+//		
+//		Textbox box = new Textbox(600,500,60,20);
+//		box.setDefaultText("Default Text");
+//		box.setCurrentBoundingAsMinimal();
+//		components.add(box);
+//		
+//		ScrollList list = new ScrollList(new Rectangle(30,200,249,150));
+//		for(int i = 0; i < 10; i++) list.addEntry(""+i);
+//		components.add(list);
+//		
+//		components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
+//		
+//
 //		components.add(new ScrollableFormattedTextPanel(new Rectangle(100, 10, 200, 100), new FormattedText("ein sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr "
 //				+ "sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr"
 //				+ "sehr sehr sehr sehrsehr sehr sehr sehr sehr sehr sehr sehrsehr sehr sehr sehr langer Text.")));
-
-		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
-		
+//
+//		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
+//		
 
 		try {
 			components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File(View.class.getResource("/de/nrw/smims2013/adventure/story/xml/exampleDialogue.xml").toURI()))));

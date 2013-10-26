@@ -11,10 +11,13 @@ import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 
 import de.herbert.model.Dialogue;
+import de.herbert.parser.FormattedText;
+import de.herbert.parser.Text;
 
 public class DialoguePanel extends Component{
 
 	ScrollableFormattedTextPanel textPanel;
+	ScrollableFormattedTextPanel textPanelNew;
 	List<FormattedTextButton> buttons = new LinkedList<FormattedTextButton>();
 	List<FormattedTextButton> buttonsNew = new LinkedList<FormattedTextButton>();
 	Dialogue dialogue;
@@ -30,6 +33,7 @@ public class DialoguePanel extends Component{
 		super(boundings);
 		this.dialogue = dialogue;
 		textPanel = new ScrollableFormattedTextPanel(boundings, dialogue.getCurPart().getContent());
+		textPanelNew = new ScrollableFormattedTextPanel(boundings, new FormattedText(Text.emptyText));
 		uAnswerButtons();
 	}
 	
@@ -100,20 +104,27 @@ public class DialoguePanel extends Component{
 		}
 		
 		// set textPanel size
-		textPanel.setBoundings(new Rectangle(boundings.getX(), boundings.getY(), boundings.getWidth(), buttonY - boundings.getY()));
+		textPanelNew.setBoundings(new Rectangle(boundings.getX(), boundings.getY(), boundings.getWidth(), buttonY - boundings.getY()));
 	}
 	
 	public void setCurPart(String id){
 		dialogue.setCurPart(id);
 		uAnswerButtons();
-		textPanel.setText(dialogue.getCurPart().getContent());
+		textPanelNew.setText(dialogue.getCurPart().getContent());
+		pos = boundings.getWidth();
 	}
 
+	float pos = 0;
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		if(!isUpdating) {
+		
+		if(pos > 1) pos -= 0.5* delta;
+		else{
+			pos = 0;
 			buttons = buttonsNew;
+			textPanel.setBoundings(textPanelNew.getBoundings());
+			textPanel.setText(textPanelNew.getText());
 		}
 		
 		for(FormattedTextButton b : buttons){
@@ -129,10 +140,25 @@ public class DialoguePanel extends Component{
 		g.setColor(Color.gray);
 		g.draw(boundings);
 		g.fill(boundings, new GradientFill(boundings.getX(), boundings.getCenterY(), Color.white, boundings.getX(), boundings.getMaxY(), new Color(0xFFEBCD)));//new Color(0xFFDAB9)));
-		textPanel.render(container, g);
+		
+		Rectangle oldClip = g.getWorldClip();
+		g.setWorldClip(boundings.getX(),boundings.getY(),boundings.getWidth(), boundings.getHeight());
+		if(pos > 0)
+		g.translate(-boundings.getWidth() + pos, 0);
+		textPanel.render(container,g);
 		for(FormattedTextButton b : buttons){
 			b.render(container, g);
 		}
+		
+		if(pos > 0){
+		g.translate(boundings.getWidth(), 0);
+		for(FormattedTextButton b : buttonsNew){
+			b.render(container, g);
+		}
+		//textPanelNew.render(container, g);
+		g.translate(-boundings.getWidth() - pos, 0);
+		}
+		g.setWorldClip(oldClip);
 		
 		
 	}
