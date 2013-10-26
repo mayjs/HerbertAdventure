@@ -65,6 +65,26 @@ public class View implements ButtonListener{
 		//components.add(new NotAnimatedInventoryPanel(new Rectangle(10, 10, 600, 70), 8));
 		//components.add(new InventoryPanel(new Rectangle(10, 100, 600, 70), 8));
 
+		try {
+//			FormattedTextPanel.popUp(300, 500, new FormattedText(TextParser.getInstance().parseText(new File("C:/example.xml"))), true); // irgendwie findet der die Date nicht :(
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//components.add(new InventoryPanel(new Rectangle(10, 10, 600, 70), 8));
+		
+		Textbox box = new Textbox(600,500,60,20);
+		box.setDefaultText("Default Text");
+		box.setCurrentBoundingAsMinimal();
+		//components.add(box);
+		
+		ScrollList list = new SelectorScrollList(new Rectangle(30,200,249,150));
+		for(int i = 0; i < 10; i++) list.addEntry(""+i);
+		components.add(list);
+		
+		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
+
+
 //		components.add(new InventoryPanel(new Rectangle(0, 530, 600, 70), 8));
 //		
 //		Textbox box = new Textbox(600,500,60,20);
