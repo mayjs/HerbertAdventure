@@ -38,7 +38,7 @@ public class FormattedTextPanel extends TextPanel{
 	@Override
 	public void generateBoundings() {
 		if(text == null) return;
-		Rectangle b = text.calcBoundings();
+		Rectangle b = text.getBoundings();
 		boundings.setWidth(b.getWidth() + 2*gap);
 		boundings.setHeight(b.getHeight() + 2*gap);
 	}

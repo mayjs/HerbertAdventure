@@ -3,8 +3,10 @@ package de.herbert.parser;
 
 import java.awt.Font;
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,35 +17,17 @@ import org.w3c.dom.Element;
 
 public class TextParser {
 	static TextParser instance;
-	List<Element> fonts = new LinkedList<Element>();
+	Map <String, Font> loadedFonts = new HashMap<String, Font>();
 	
 	public static TextParser getInstance(){
 		if(instance == null) instance = new TextParser();
 		return instance;
 	}
 	
-	public List<Element> getFonts() {
-		return fonts;
-	}
-
-	public void setFonts(List<Element> fonts) {
-		this.fonts = fonts;
-	}
-
-	public void parse(File file){
-		try{
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(file);
-	
-			doc.getDocumentElement().normalize();
-			
-			Element e = doc.getDocumentElement();
-			System.out.println(e.getTextContent());
-			fonts = ParserFunctions.getChildElementsByTag(e, "font");
-			
-		}catch(Exception e){
-			e.printStackTrace();
+	public void loadFonts(Element element){
+		List<Element> fonts = ParserFunctions.getChildElementsByTag(element, "font");
+		for(Element e : fonts){
+			loadedFonts.put(e.getAttribute("loadedName"), getFont(e));
 		}
 	}
 	
@@ -64,9 +48,9 @@ public class TextParser {
 	}
 	
 	public FormattedText parseText(Element e){
-		fonts = ParserFunctions.getChildElementsByTag(e, "font");
+		List<Element> fontList = ParserFunctions.getChildElementsByTag(e, "font");
 		List<Text> textList = new LinkedList<Text>();
-		for(Element el : fonts){
+		for(Element el : fontList){
 			textList.add(makeText(el));
 		}
 		return new FormattedText(textList);
@@ -91,8 +75,13 @@ public class TextParser {
 	}
 	
 	public Font getFont(Element e){
-		Font f = new Font(e.getAttribute("name"), getFontStyle(e.getAttribute("style")), ParserFunctions.makeInt(e.getAttribute("size"), 12));
+		Font f =getLoadedFont(e.getAttribute("loadedName"));
+		if(f == null) f = new Font(e.getAttribute("name"), getFontStyle(e.getAttribute("style")), ParserFunctions.makeInt(e.getAttribute("size"), 12));
 		return f;
+	}
+	
+	public Font getLoadedFont(String loadedName){
+		return loadedFonts.get(loadedName);
 	}
 	
 	public int getFontStyle(String str){
