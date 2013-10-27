@@ -57,10 +57,14 @@ public class ScrollableFormattedTextPanel extends Component {
 		if(scrollbar.getMax() > 0) scrollbar.render(container, g);
 		
 		Rectangle oldClip = g.getWorldClip();
-		g.setWorldClip(	boundings.getX() < oldClip.getX() ? oldClip.getX() : boundings.getX(),
+		if(oldClip != null)
+			g.setWorldClip(	boundings.getX() < oldClip.getX() ? oldClip.getX() : boundings.getX(),
 						boundings.getY() < oldClip.getY() ? oldClip.getY() : boundings.getY(),
 						(boundings.getWidth() - scrollbar.getBoundings().getWidth()) < oldClip.getWidth() ? (boundings.getWidth() - scrollbar.getBoundings().getWidth()) : oldClip.getWidth(), 
 						boundings.getHeight() < oldClip.getHeight() ? boundings.getHeight() : oldClip.getHeight());
+		else
+			g.setWorldClip(boundings);
+		
 		g.translate(0, -scrollbar.getValue());
 		text.draw(g, boundings.getMinX() + gap, boundings.getMinY() + gap);
 		g.translate(0, scrollbar.getValue());

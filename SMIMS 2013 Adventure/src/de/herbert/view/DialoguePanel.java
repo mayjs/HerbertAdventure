@@ -23,6 +23,7 @@ public class DialoguePanel extends Component{
 	Dialogue dialogue;
 	
 	float buttonY;
+	float buttonYOld;
 	float buttonX;
 	float buttonGap = 10;
 	float rowHeight = 20;
@@ -34,29 +35,13 @@ public class DialoguePanel extends Component{
 		this.dialogue = dialogue;
 		textPanel = new ScrollableFormattedTextPanel(boundings, dialogue.getCurPart().getContent());
 		textPanelNew = new ScrollableFormattedTextPanel(boundings, new FormattedText(Text.emptyText));
-		uAnswerButtons();
+		setCurPart(dialogue.getFirstPartId());
+		// make the animation start in the right way
+		pos = 0;
+		buttonYOld = buttonY;
 	}
 	
-	boolean isUpdating = false;
 	private void updateAnswerButtons(){
-		isUpdating = true;
-		buttonsNew = new LinkedList<FormattedTextButton>();
-		int j;
-		float buttonWidth = boundings.getWidth() / maxButtonsPerRow - buttonGap;
-		float buttonHeight = 30;
-		buttonY = (float) (boundings.getMaxY() - Math.floor(dialogue.getCurPart().getCountOfAnswers()/maxButtonsPerRow + 1) * (buttonHeight + buttonGap));
-		for(int i = 0; i < dialogue.getCurPart().getCountOfAnswers(); i++){
-			j = i % maxButtonsPerRow;
-			FormattedTextButton bttn = new FormattedTextButton(new Rectangle(boundings.getX() + buttonGap + j * buttonWidth, (buttonHeight + buttonGap)*(j>0?(int)i/j:0) + buttonY + buttonGap, buttonWidth, buttonHeight), dialogue.getCurPart().getAnswers().get(i).getText());
-			bttn.addButtonListener(answerClicked, dialogue.getCurPart().getAnswers().get(i).getId());
-			buttonsNew.add(bttn);
-		}
-		isUpdating = false;
-		textPanel.setBoundings(new Rectangle(boundings.getX(), boundings.getY(), boundings.getWidth(), buttonY - boundings.getY()));
-		textPanel.setText(dialogue.getCurPart().getContent());
-	}
-	
-	private void uAnswerButtons(){
 		buttonsNew = new LinkedList<FormattedTextButton>();
 		float buttonWidth = (boundings.getWidth() - buttonGap) / maxButtonsPerRow - buttonGap;
 		float[] posY = new float[maxButtonsPerRow];
@@ -104,27 +89,42 @@ public class DialoguePanel extends Component{
 		}
 		
 		// set textPanel size
-		textPanelNew.setBoundings(new Rectangle(boundings.getX(), boundings.getY(), boundings.getWidth(), buttonY - boundings.getY()));
+		//textPanelNew.setBoundings(new Rectangle(boundings.getX(), boundings.getY(), boundings.getWidth(), buttonY - boundings.getY()));
 	}
 	
 	public void setCurPart(String id){
 		dialogue.setCurPart(id);
-		uAnswerButtons();
+		updateAnswerButtons();
 		textPanelNew.setText(dialogue.getCurPart().getContent());
-		pos = boundings.getWidth();
+		pos = -buttonYOld + boundings.getMaxY();
+		b= true;
 	}
 
 	float pos = 0;
+	float step = 0;
+	boolean b = true;
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
 		
-		if(pos > 1) pos -= 0.5* delta;
+		if(Math.abs(pos) > 1) {
+			step = Math.signum(pos) * (float) (0.3* delta);
+			pos -= step;
+		}
+		
 		else{
-			pos = 0;
+			if(b){
+				pos = buttonYOld - boundings.getMaxY();
+				buttonYOld = buttonY;
+			}
+			else
+				pos = 0;
+			
+			b = false;
 			buttons = buttonsNew;
 			textPanel.setBoundings(textPanelNew.getBoundings());
 			textPanel.setText(textPanelNew.getText());
+			step = 0;
 		}
 		
 		for(FormattedTextButton b : buttons){
@@ -143,21 +143,40 @@ public class DialoguePanel extends Component{
 		
 		Rectangle oldClip = g.getWorldClip();
 		g.setWorldClip(boundings.getX(),boundings.getY(),boundings.getWidth(), boundings.getHeight());
-		if(pos > 0)
-		g.translate(-boundings.getWidth() + pos, 0);
-		textPanel.render(container,g);
-		for(FormattedTextButton b : buttons){
-			b.render(container, g);
+
+		Rectangle tpBoundings;
+		
+		Color color = new Color(50,50, 50, 0);
+		if(pos > 0){
+			tpBoundings = new Rectangle(textPanel.getBoundings().getX(), textPanel.getBoundings().getY(), textPanel.getBoundings().getWidth(), buttonYOld - boundings.getY() - pos - buttonYOld +boundings.getMaxY());
+			color.add(new Color(0, 0, 0, Math.abs(pos - boundings.getMaxY() + buttonYOld) * (1 /(boundings.getMaxY() - buttonYOld))));
+		}else{
+			tpBoundings = new Rectangle(textPanel.getBoundings().getX(), textPanel.getBoundings().getY(), textPanel.getBoundings().getWidth(), buttonYOld - boundings.getY() -pos);
+			color.add(new Color(0, 0, 0, Math.abs(pos) * (1 /(boundings.getMaxY() - buttonYOld))));
 		}
 		
-		if(pos > 0){
-		g.translate(boundings.getWidth(), 0);
-		for(FormattedTextButton b : buttonsNew){
+		textPanel.setBoundings(tpBoundings);
+		
+		textPanel.render(container,g);
+		// make textPanel gray
+		g.setColor(color);
+		g.fill(tpBoundings);
+		
+		// translate and render buttons
+		for(FormattedTextButton b : buttons){
+				if(pos > 0)
+					b.translate(0, - pos - buttonYOld +boundings.getMaxY());
+				else 
+					b.translate(0, -pos);
+
 			b.render(container, g);
+				if(pos > 0)
+					b.translate(0,  pos + buttonYOld -boundings.getMaxY());
+				else 
+					b.translate(0, pos);
 		}
-		//textPanelNew.render(container, g);
-		g.translate(-boundings.getWidth() - pos, 0);
-		}
+		
+		
 		g.setWorldClip(oldClip);
 		
 		
