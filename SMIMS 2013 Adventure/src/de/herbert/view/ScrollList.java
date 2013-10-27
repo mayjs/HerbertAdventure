@@ -51,7 +51,7 @@ public class ScrollList extends Component {
 		for(int i = 0; i < entries.size(); i++){
 			font.drawString(boundings.getX(), boundings.getY()+font.getLineHeight()*i+lineDistance*i,entries.get(i), textColor);
 		}
-		g.translate(0, 0);
+		g.translate(0, scrollbar.getValue()*(font.getLineHeight()+lineDistance));
 		g.setWorldClip(oldClip);
 	}
 	

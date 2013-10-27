@@ -144,19 +144,21 @@ public class DialoguePanel extends Component{
 		Rectangle oldClip = g.getWorldClip();
 		g.setWorldClip(boundings.getX(),boundings.getY(),boundings.getWidth(), boundings.getHeight());
 		if(pos > 0)
-		g.translate(-boundings.getWidth() + pos, 0);
+			g.translate(-boundings.getWidth() + pos, 0);
 		textPanel.render(container,g);
 		for(FormattedTextButton b : buttons){
 			b.render(container, g);
 		}
+		if(pos > 0) g.translate(boundings.getWidth() + pos, 0);
+
 		
 		if(pos > 0){
-		g.translate(boundings.getWidth(), 0);
-		for(FormattedTextButton b : buttonsNew){
-			b.render(container, g);
-		}
-		//textPanelNew.render(container, g);
-		g.translate(-boundings.getWidth() - pos, 0);
+			g.translate(boundings.getWidth(), 0);
+			for(FormattedTextButton b : buttonsNew){
+				b.render(container, g);
+			}
+			//textPanelNew.render(container, g);
+			g.translate(-boundings.getWidth() - pos, 0);
 		}
 		g.setWorldClip(oldClip);
 		
