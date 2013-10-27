@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Rectangle;
 import de.herbert.parser.FormattedText;
 
 public class ScrollableFormattedTextPanel extends Component {
-	float scrollbarWidth = 20;
+	float scrollbarWidth = 50;
 	float gap = 5;
 	FormattedText text;
 	VerticalScrollbar scrollbar = new VerticalScrollbar(new Rectangle(0, 0, 0, 0));
@@ -31,14 +31,15 @@ public class ScrollableFormattedTextPanel extends Component {
 	
 	public void setText(FormattedText text){
 		this.text = text;
-		calcScrollbarValues();
 		text.wrapToWidth(boundings.getWidth() - 4 * gap - scrollbar.getBoundings().getWidth());
+		calcScrollbarValues();
 	}
 	
 	public void calcScrollbarValues(){
 		scrollbar.setMax(text.getHeight() - boundings.getHeight() + 2*gap);
 		if(scrollbar.getMax() < 0) scrollbar.setMax(0);
-		scrollbar.setValue(0);
+		if(scrollbar.getValue() > scrollbar.getMax())
+			scrollbar.setValue(scrollbar.getMax());
 	}
 
 	@Override

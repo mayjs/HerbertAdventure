@@ -102,7 +102,7 @@ public class View implements ButtonListener{
 //		components.add(new ScrollableFormattedTextPanel(new Rectangle(100, 10, 200, 100), new FormattedText("ein sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr "
 //				+ "sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr sehr"
 //				+ "sehr sehr sehr sehrsehr sehr sehr sehr sehr sehr sehr sehrsehr sehr sehr sehr langer Text.")));
-//
+
 //		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
 //		
 

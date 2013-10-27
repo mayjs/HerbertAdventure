@@ -111,19 +111,19 @@ public class DialoguePanel extends Component{
 			step = Math.signum(pos) * (float) (0.3* delta);
 			pos -= step;
 		}
-		
 		else{
 			if(b){
 				pos = buttonYOld - boundings.getMaxY();
 				buttonYOld = buttonY;
+				b = false;
+				buttons = buttonsNew;
+				textPanel.setBoundings(textPanelNew.getBoundings());
+				textPanel.setText(textPanelNew.getText());
 			}
 			else
 				pos = 0;
 			
-			b = false;
-			buttons = buttonsNew;
-			textPanel.setBoundings(textPanelNew.getBoundings());
-			textPanel.setText(textPanelNew.getText());
+			
 			step = 0;
 		}
 		
@@ -155,7 +155,9 @@ public class DialoguePanel extends Component{
 			color.add(new Color(0, 0, 0, Math.abs(pos) * (1 /(boundings.getMaxY() - buttonYOld))));
 		}
 		
-		textPanel.setBoundings(tpBoundings);
+		if(textPanel.getBoundings().getHeight() != tpBoundings.getHeight()) {
+			textPanel.setBoundings(tpBoundings);
+		}
 		
 		textPanel.render(container,g);
 		// make textPanel gray
