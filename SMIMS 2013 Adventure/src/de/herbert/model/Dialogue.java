@@ -10,7 +10,7 @@ import de.herbert.parser.FormattedText;
 public class Dialogue {
 	Map<String, DialoguePart> parts = new HashMap<String, DialoguePart>();
 	DialoguePart curPart;
-	DialoguePart first;
+	String first;
 	
 	public Dialogue(){
 		List<DialogueAnswer> ans = new LinkedList<DialogueAnswer>();
@@ -28,7 +28,8 @@ public class Dialogue {
 	}
 	
 	public void setFirstPart(String id){
-		curPart = first = getPart(id);
+		setCurPart(id);
+		first = id;
 	}
 	public void addPart(DialoguePart part, String id){
 		parts.put(id, part);
@@ -44,5 +45,9 @@ public class Dialogue {
 	
 	public DialoguePart getCurPart(){
 		return curPart;
+	}
+	
+	public String getFirstPartId(){
+		return first;
 	}
 }

@@ -25,6 +25,11 @@ public class FormattedTextButton extends Button{
 		calcRenderCoords();
 	}
 	
+	public void translate(float x, float y){
+		super.translate(x, y);
+		calcRenderCoords();
+	}
+	
 	public void calcRenderCoords(){
 		Rectangle imgBoundings = new Rectangle(boundings.getX()+gap,boundings.getY()+gap,text.getWidth(),text.getHeight());
 		float dx = boundings.getCenterX() - imgBoundings.getCenterX();

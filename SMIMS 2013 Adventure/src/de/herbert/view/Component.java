@@ -16,6 +16,11 @@ public abstract class Component {
 	public Component(Rectangle boundings){
 		this.boundings = boundings;
 	}
+	
+	public void translate(float x, float y){
+		boundings.setX(boundings.getX() + x);
+		boundings.setY(boundings.getY() + y);
+	}
 		
 	public Rectangle getBoundings() {
 		return boundings;
