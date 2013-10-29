@@ -10,28 +10,37 @@ import org.newdawn.slick.SlickException;
 import de.herbert.model.Model;
 import de.herbert.view.View;
 
+/**
+ * The Controller class containing the main method and controlling everything else.
+ *
+ */
 public class Control extends BasicGame {
-
+	//Note: Shouldn't we call it Controller instead of Control?
+	
+	private static Control instance;
+	
 	private View view;
 	private Model model;
 	private GameContainer container;
-	
-	private static Control instance;
 	
 	private Control(String title) {
 		super(title);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static Control createInstance(String title){
-		instance = new Control(title);
+	/**
+	 * Get existing instance of Control, if there is none, return newly created instance using the given title.
+	 * @param title	title of the game
+	 * @return	only existing instance of Control
+	 */
+	public static Control getInstance(String title) {
+		if(instance == null)
+			instance = new Control(title);
 		return instance;
 	}
 	
 	public static Control getInstance(){
-		if(instance == null)
-			createInstance("NULL INSTANCE");
-		return instance;
+		return getInstance("NULL INSTANCE");
 	}
 
 	@Override
@@ -43,10 +52,10 @@ public class Control extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		// TODO Auto-generated method stub
+		//TODO Auto-generated method stub
 		this.container = container;
 		model = new Model();
-		//Todo: Load Player
+		//TODO Load Player
 		view = new View(this);
 		view.init(container);
 	}
@@ -67,8 +76,7 @@ public class Control extends BasicGame {
 	}
 	
 	public static void main(String[] args) throws SlickException{
-		AppGameContainer container = new AppGameContainer(Control.createInstance("Herbert"), 800, 600, false);
-		
+		AppGameContainer container = new AppGameContainer(Control.getInstance("Herbert"), 800, 600, false);
 		container.start();
 	}
 }
