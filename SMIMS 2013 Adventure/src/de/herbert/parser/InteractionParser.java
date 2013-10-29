@@ -169,7 +169,8 @@ public class InteractionParser {
 			_err("interaction replace: unknown scene");
 			return;
 		}
-		Point itemPos = scene.getItemsAsMap().get(item1);
+		//Point itemPos = scene.getItemsAsMap().get(item1);
+		Point itemPos = scene.getItemPosition(item1);
 		scene.remove(item1);
 		scene.add(item2, itemPos);
 	}
