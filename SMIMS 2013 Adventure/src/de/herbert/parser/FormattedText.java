@@ -2,6 +2,7 @@ package de.herbert.parser;
 
 
 import java.awt.Font;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.w3c.dom.Element;
 
-public class FormattedText {
+public class FormattedText implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private List<Text> textParts = new LinkedList<Text>();
 	private List<Text> wrappedParts = new LinkedList<Text>();
 	Rectangle boundings = null;

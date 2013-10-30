@@ -9,6 +9,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.herbert.model.Point3d;
 import de.nrw.smims2013.adventure.model.Point;
 
 /**
@@ -71,11 +72,30 @@ class ParserFunctions {
 	}
 	
 	static Point makePoint(Element element, String identifier, int defX, int defY){
-		return new Point(makeInt(element.getAttribute(identifier + "X"), defX), makeInt(element.getAttribute(identifier + "Y"), defY));
+		return new Point(	makeInt(element.getAttribute(identifier + "X"), defX),
+							makeInt(element.getAttribute(identifier + "Y"), defY));
+	}
+	
+	static Point makePoint(Element element, String identifier, Point defaultPoint){
+		return makePoint(element, identifier, defaultPoint.getX(), defaultPoint.getY());
 	}
 	
 	static Point makePoint(Element element, String identifier){
 		return makePoint(element, identifier, 15, 15);
+	}
+	
+	static Point3d makePoint3d(Element element, String identifier, int defX, int defY, int defZ){
+		return new Point3d(	makeInt(element.getAttribute(identifier + "X"), defX), 
+							makeInt(element.getAttribute(identifier + "Y"), defY),
+							makeInt(element.getAttribute(identifier + "Z"), defZ));
+	}
+	
+	static Point3d makePoint3D(Element element, String identifier, Point3d defaultPoint){
+		return makePoint3d(element, identifier, defaultPoint.getX(), defaultPoint.getY(), defaultPoint.getZ());
+	}
+	
+	static Point3d makePoint3d(Element element, String identifier){
+		return makePoint3d(element, identifier, 15, 15, 0);
 	}
 	
 	static Color makeColor(String str){

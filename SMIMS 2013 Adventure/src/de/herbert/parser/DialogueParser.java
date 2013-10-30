@@ -1,6 +1,7 @@
 package de.herbert.parser;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,9 @@ import de.herbert.model.Dialogue;
 import de.herbert.model.DialogueAnswer;
 import de.herbert.model.DialoguePart;
 
-public class DialogueParser {
+public class DialogueParser implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	private static DialogueParser instance;
 	
 	private Map<String, Dialogue> loadedDialogues = new HashMap<String, Dialogue>();

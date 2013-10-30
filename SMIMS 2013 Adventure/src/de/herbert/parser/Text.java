@@ -1,14 +1,21 @@
 package de.herbert.parser;
 
 import java.awt.Font;
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 
-public class Text {
+public class Text implements Serializable{
+	private static final long serialVersionUID = 1L;
+	private static boolean useAntiAlaising = false;
+	
 	public static Text emptyText = new Text("", new Font("Verdana", 0, 12), Color.black);
+	public static Map<Font, TrueTypeFont> loadedSlickFonts = new HashMap<Font, TrueTypeFont>();
 	
 	private String text;
 	private Font font;
@@ -21,15 +28,24 @@ public class Text {
 		super();
 		this.text = text;
 		this.font = f;
-		this.slickFont = new TrueTypeFont(f, true);
+		this.slickFont = getTTF(f);
 		this.color = black;
 	}
 	
 	private Text(String text, Font f, Color black, org.newdawn.slick.Font slickFont){
 		this.text = text;
 		this.font =f;
-		this.slickFont = slickFont;
+		this.slickFont = getTTF(f);
 		this.color = black;
+	}
+	
+	public TrueTypeFont getTTF(Font f){
+		TrueTypeFont ttf = loadedSlickFonts.get(f);
+		if(ttf == null)	{
+			ttf = new TrueTypeFont(f, useAntiAlaising);
+			loadedSlickFonts.put(f, ttf);
+		}
+		return ttf;
 	}
 	
 	public void append(String s){

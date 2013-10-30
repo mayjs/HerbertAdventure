@@ -1,5 +1,6 @@
 package de.herbert.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.w3c.dom.Element;
@@ -7,7 +8,9 @@ import org.w3c.dom.Node;
 
 import de.herbert.parser.FormattedText;
 
-public class DialoguePart {
+public class DialoguePart implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	FormattedText content;
 	Element interactionNodeOpen;
 	Element interactionNodeClose;

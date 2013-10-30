@@ -3,6 +3,7 @@ package de.herbert.parser;
 
 import java.awt.Font;
 import java.io.File;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,9 @@ import org.newdawn.slick.Color;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class TextParser {
+public class TextParser implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	static TextParser instance;
 	Map <String, Font> loadedFonts = new HashMap<String, Font>();
 	

@@ -1,5 +1,6 @@
 package de.herbert.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,7 +8,8 @@ import java.util.Map;
 
 import de.herbert.parser.FormattedText;
 
-public class Dialogue {
+public class Dialogue implements Serializable{
+	private static final long serialVersionUID = 1L;
 	Map<String, DialoguePart> parts = new HashMap<String, DialoguePart>();
 	DialoguePart curPart;
 	String first;

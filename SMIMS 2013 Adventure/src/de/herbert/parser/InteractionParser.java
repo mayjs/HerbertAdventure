@@ -1,5 +1,6 @@
 package de.herbert.parser;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -15,7 +16,9 @@ import de.herbert.model.NPC;
 import de.herbert.model.Point;
 import de.herbert.model.Scene;
 
-public class InteractionParser {
+public class InteractionParser implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private Map<String, Method> iMethods = new HashMap<String, Method>();
 	private static InteractionParser instance = null;
 	

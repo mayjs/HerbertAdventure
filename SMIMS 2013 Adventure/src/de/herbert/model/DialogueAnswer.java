@@ -1,8 +1,12 @@
 package de.herbert.model;
 
+import java.io.Serializable;
+
 import de.herbert.parser.FormattedText;
 
-public class DialogueAnswer {
+public class DialogueAnswer implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private FormattedText text;
 	private String id;
 	
