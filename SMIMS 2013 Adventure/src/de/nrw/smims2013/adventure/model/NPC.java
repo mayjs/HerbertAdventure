@@ -120,5 +120,12 @@ public class NPC implements Serializable{
 		
 		return out;
 	}
+	
+	/**
+	 * Returns the NPCs name.
+	 */
+	public String toString() {
+		return this.getName();
+	}
 
 }
