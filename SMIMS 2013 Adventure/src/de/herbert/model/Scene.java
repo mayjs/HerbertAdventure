@@ -139,8 +139,10 @@ public class Scene implements Serializable {
 	
 	/**
 	 * Very expensive method returning a hashmap containing the items and their positions. 
-	 * Needn't be used under normal circumstances.
+	 * 
+	 * @deprecated method is slow and needn't be used under normal circumstances
 	 */
+	@Deprecated
 	public Map<Item,Point> getItemsAsMap() {
 		Map<Item,Point> result = new HashMap<Item,Point>();
 		for (int x=0; x<getAllItems().length; x++) {
@@ -240,12 +242,12 @@ public class Scene implements Serializable {
 		return null;
 	}
 	
-	public Point getItemPosition(Item i){
+	public Point3d getItemPosition(Item i){
 		for(int x=0; x<items.length; x++){
 			for(int y=0; y<items[x].length; y++){
 				for(int z=0; z<items[x][y].length; z++) {
 					if(items[x][y][z] == i)
-						return new Point(x,y);
+						return new Point3d(x,y,z);
 				}
 			}
 		}
