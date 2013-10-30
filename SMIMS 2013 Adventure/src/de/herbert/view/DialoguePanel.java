@@ -21,6 +21,7 @@ public class DialoguePanel extends Component{
 	List<FormattedTextButton> buttons = new LinkedList<FormattedTextButton>();
 	List<FormattedTextButton> buttonsNew = new LinkedList<FormattedTextButton>();
 	Dialogue dialogue;
+	Rectangle tpBoundings = new Rectangle(0, 0, 0, 0);
 	
 	float buttonY;
 	float buttonYOld;
@@ -122,8 +123,6 @@ public class DialoguePanel extends Component{
 			}
 			else
 				pos = 0;
-			
-			
 			step = 0;
 		}
 		
@@ -144,9 +143,10 @@ public class DialoguePanel extends Component{
 		Rectangle oldClip = g.getWorldClip();
 		g.setWorldClip(boundings.getX(),boundings.getY(),boundings.getWidth(), boundings.getHeight());
 
-		Rectangle tpBoundings;
+		
 		
 		Color color = new Color(50,50, 50, 0);
+		if(step != 0){//textPanel.getBoundings().getHeight() != tpBoundings.getHeight()) {
 		if(pos > 0){
 			tpBoundings = new Rectangle(textPanel.getBoundings().getX(), textPanel.getBoundings().getY(), textPanel.getBoundings().getWidth(), buttonYOld - boundings.getY() - pos - buttonYOld +boundings.getMaxY());
 			color.add(new Color(0, 0, 0, Math.abs(pos - boundings.getMaxY() + buttonYOld) * (1 /(boundings.getMaxY() - buttonYOld))));
@@ -155,14 +155,16 @@ public class DialoguePanel extends Component{
 			color.add(new Color(0, 0, 0, Math.abs(pos) * (1 /(boundings.getMaxY() - buttonYOld))));
 		}
 		
-		if(textPanel.getBoundings().getHeight() != tpBoundings.getHeight()) {
+		
 			textPanel.setBoundings(tpBoundings);
 		}
 		
 		textPanel.render(container,g);
 		// make textPanel gray
-		g.setColor(color);
-		g.fill(tpBoundings);
+		if(step != 0){
+			g.setColor(color);
+			g.fill(tpBoundings);
+		}
 		
 		// translate and render buttons
 		for(FormattedTextButton b : buttons){
