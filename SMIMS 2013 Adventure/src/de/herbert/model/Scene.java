@@ -6,13 +6,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Scene implements Serializable{
+/**
+ * A Scene is a single section of the game (e.g. a room) and contains all the NPCs, items and the neighboring scenes.
+ *
+ */
+public class Scene implements Serializable {
 	
 
 	private static final long serialVersionUID = 1L;
 	private boolean[][] tileMap;
 	private String name;
-	private Item[][] items;
+	private Item[][][] items;
 	private List<NPC> npcs = new LinkedList<NPC>();
 	private Scene left, right, top, bottom;
 	private Point startLeft, startRight, startTop, startBottom;
@@ -26,20 +30,45 @@ public class Scene implements Serializable{
 			tileMap[10][y] = true;
 	}
 	
-	public Scene(String pName, int pSizeX, int pSizeY) {
+	/**
+	 * Scene constructor creating a scene with the size of x*y and the z coordinates into the room.
+	 * 
+	 * @param pName	name of the scene
+	 * @param pSizeX horizontal size
+	 * @param pSizeY vertical size
+	 * @param pSizeZ third dimensional size
+	 */
+	public Scene(String pName, int pSizeX, int pSizeY, int pSizeZ) {
 		name = pName;
 		tileMap = new boolean[pSizeX][pSizeY];
-		items = new Item[pSizeX][pSizeY];
+		items = new Item[pSizeX][pSizeY][pSizeZ];
 		blockedWallHeight = 0;
+	}
+	
+	/**
+	 * Scene constructor creating a scene with a size of x*y and only one possible z-coordinate (like in the old version of the game).
+	 * @param pName name of the scene
+	 * @param pSizeX horizontal size
+	 * @param pSizeY vertical size
+	 */
+	public Scene(String pName, int pSizeX, int pSizeY) {
+		this(pName, pSizeX, pSizeY, 1);
 	}
 	
 	//getter and setter
 	
+	/**
+	 * Return the name of the scene.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Set the name of the scene to the given parameter.
+	 */
 	public void setName(String name) {
+		//TODO do something if name == ""
 		this.name = name;
 	}
 
@@ -87,6 +116,9 @@ public class Scene implements Serializable{
 		return npcs;
 	}
 	
+	/**
+	 * Return the NPC located at (x|y) or null.
+	 */
 	public NPC getNPCAt(int x, int y){
 		if(npcs == null)
 			return null;
@@ -101,19 +133,26 @@ public class Scene implements Serializable{
 		return null;
 	}
 
-	public Item[][] getAllItems() {
+	public Item[][][] getAllItems() {
 		return items;
 	}
 	
+	/**
+	 * Very expensive method returning a hashmap containing the items and their positions. 
+	 * 
+	 * @deprecated method is slow and needn't be used under normal circumstances
+	 */
+	@Deprecated
 	public Map<Item,Point> getItemsAsMap() {
 		Map<Item,Point> result = new HashMap<Item,Point>();
-		for (int i=0; i<getAllItems().length; i++) {
-			for (int j=0; j<getAllItems()[i].length;j++)
-			{
-				Point p = new Point(i,j);
-				Item item = getItemAt(p);
-				if ((item != null) && (result.get(item)==null)) {
-					result.put(item,p);
+		for (int x=0; x<getAllItems().length; x++) {
+			for (int y=0; y<getAllItems()[x].length;y++) {
+				for(int z=0; z<getAllItems()[x][y].length; z++) {
+					Point p = new Point(x, y);
+					Item item = getItemAt(p);
+					if ((item != null) && (result.get(item)==null)) {
+						result.put(item, p);
+					}
 				}
 			}
 		}
@@ -192,19 +231,24 @@ public class Scene implements Serializable{
 	public Item getItemAt(Point position) {
 		for(int x=0; x<items.length; x++) {
 			for(int y=0; y<items[x].length; y++) {
-				if(items[x][y]!= null && 
-					x <= position.getX() && position.getX() < x+items[x][y].getWidth() &&
-					y <= position.getY() && position.getY() < y+items[x][y].getHeight())
-					return items[x][y];
+				for(int z=0; z<items[x][y].length; z++) {
+					if(items[x][y][z]!= null && 
+						x <= position.getX() && position.getX() < x+items[x][y][z].getWidth() &&
+						y <= position.getY() && position.getY() < y+items[x][y][z].getHeight())
+						return items[x][y][z];
+				}
 			}
 		}
 		return null;
 	}
-	public Point getItemPosition(Item i){
+	
+	public Point3d getItemPosition(Item i){
 		for(int x=0; x<items.length; x++){
 			for(int y=0; y<items[x].length; y++){
-				if(items[x][y] == i)
-					return new Point(x,y);
+				for(int z=0; z<items[x][y].length; z++) {
+					if(items[x][y][z] == i)
+						return new Point3d(x,y,z);
+				}
 			}
 		}
 		return null;
@@ -242,10 +286,11 @@ public class Scene implements Serializable{
 	 * 
 	 * @param pItem
 	 * @param pPosition
+	 * @param pPosZ z Position of the item
 	 * @param flush Should the tileMap be refreshed?
 	 * @return True if added, false if not.
 	 */
-	public boolean add(Item pItem, Point pPosition, boolean flush) {
+	public boolean add(Item pItem, Point pPosition, int pPosZ, boolean flush) {
 //		//Test all fields the item will cover
 //		for(int x = pPosition.getX(); x<pPosition.getX()+pItem.getWidth() && x<items.length; x++) {
 //			for(int y = pPosition.getY(); y<pPosition.getY()+pItem.getHeight() && y<items[x].length; y++) {
@@ -255,7 +300,8 @@ public class Scene implements Serializable{
 //		}
 		int x = pPosition.getX() < items.length ? pPosition.getX() : items.length - 1;
 		int y = pPosition.getY() < items[0].length ? pPosition.getY() : items.length -1;
-		items[x][y] = pItem;
+		int z = pPosZ >= 0 && pPosZ<items[0][0].length ? pPosZ : 0;
+		items[x][y][z] = pItem;
 		
 		if (flush)
 			refreshTileMap();
@@ -264,13 +310,35 @@ public class Scene implements Serializable{
 	}
 	
 	/**
-	 * Add Item to Scene (TileMap is refreshed)
+	 * Add Item to Scene (setting the z-Coordinate to 0 for compatibility with old version).
+	 * @param pItem
+	 * @param pPosition
+	 * @param flush Should the tileMap be refreshed?
+	 * @return
+	 */
+	public boolean add(Item pItem, Point pPosition, boolean flush) {
+		return add(pItem, pPosition, 0, flush);
+	}
+	
+	/**
+	 * Add Item to the Scene at the given position and refresh TileMap.
+	 * @param pItem
+	 * @param pPosition
+	 * @param zPosition
+	 * @return	True if added, false if not.
+	 */
+	public boolean add(Item pItem, Point pPosition, int zPosition) {
+		return add(pItem, pPosition, zPosition, true);
+	}
+	
+	/**
+	 * Add Item to Scene (TileMap is refreshed, z-Position is 0)
 	 * @param pItem Item to Add
 	 * @param pPosition Position to add item to
 	 * @return True if added, false if not
 	 */
 	public boolean add(Item pItem, Point pPosition) {
-		return add(pItem, pPosition, true);
+		return add(pItem, pPosition, 0, true);
 	}
 	
 	/**
@@ -322,16 +390,19 @@ public class Scene implements Serializable{
 		//block tiles
 		for (int i = 0; i < items.length; i++) {
 			for (int j = 0; j < items[i].length; j++) {
-				if(items[i][j]!=null) {
-					for(int x=i; x<i+items[i][j].getWidth(); x++)
-						for(int y=j; y<j+items[i][j].getHeight(); y++)
-							tileMap[x<tileMap.length ? x : items.length-1][y<tileMap[i].length ? y : tileMap[i].length-1] = true;
+				for(int z=0; z< items[i][j].length; z++) {
+					if(items[i][j]!=null) {
+						for(int x=i; x<i+items[i][j][z].getWidth(); x++)
+							for(int y=j; y<j+items[i][j][z].getHeight(); y++)
+								tileMap[x<tileMap.length ? x : items.length-1][y<tileMap[i].length ? y : tileMap[i].length-1] = true;
+					}
 				}
 			}
 		}
 	}
 	
 	//Only Pathfinding from here on
+	//TODO put pathfinding in other class
 	
 	/**
 	 * 

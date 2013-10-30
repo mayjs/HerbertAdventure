@@ -143,6 +143,7 @@ public class DialoguePanel extends Component{
 		Rectangle oldClip = g.getWorldClip();
 		g.setWorldClip(boundings.getX(),boundings.getY(),boundings.getWidth(), boundings.getHeight());
 
+
 		
 		
 		Color color = new Color(50,50, 50, 0);
@@ -156,6 +157,10 @@ public class DialoguePanel extends Component{
 		}
 		
 		
+		if(pos > 0) g.translate(boundings.getWidth() + pos, 0);
+
+		
+		if(textPanel.getBoundings().getHeight() != tpBoundings.getHeight()) {
 			textPanel.setBoundings(tpBoundings);
 		}
 		
@@ -185,6 +190,7 @@ public class DialoguePanel extends Component{
 		
 		
 	}
+	}
 	
 	ButtonListener answerClicked = new ButtonListener(){
 		public void buttonClicked(String buttonId){
@@ -193,3 +199,4 @@ public class DialoguePanel extends Component{
 		}
 	};
 }
+

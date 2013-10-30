@@ -72,6 +72,8 @@ public class StoryParser implements Serializable {
 
 		try {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document doc = db.parse(file);
 

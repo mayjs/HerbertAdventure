@@ -80,7 +80,7 @@ public class View implements ButtonListener{
 		
 		ScrollList list = new SelectorScrollList(new Rectangle(30,200,249,150));
 		for(int i = 0; i < 10; i++) list.addEntry(""+i);
-		components.add(list);
+//		components.add(list);
 		
 		//components.add(new Annotation(box,"!!!!",1)); //This code creates an annotation which instantly shows up when you hover the component
 
@@ -122,6 +122,7 @@ public class View implements ButtonListener{
 //			e.printStackTrace();
 //		}
 
+		System.out.println("Initiated "+components.size() + " components");
 	}
 	
 	public void update(GameContainer container, int delta)

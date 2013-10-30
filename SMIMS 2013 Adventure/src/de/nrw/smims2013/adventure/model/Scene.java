@@ -331,6 +331,14 @@ public class Scene implements Serializable{
 		}
 	}
 	
+	/**
+	 * Returns scene name.
+	 */
+	@Override
+	public String toString() {
+		return this.getName();
+	}
+	
 	//Only Pathfinding from here on
 	
 	/**
