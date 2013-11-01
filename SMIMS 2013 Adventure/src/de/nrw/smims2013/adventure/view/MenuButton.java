@@ -20,7 +20,8 @@ public class MenuButton extends JButton
 		setSize(100,100);
 		setLocation(0,0); 
 		ActionListener al = new ActionListener() {
-		      public void actionPerformed( ActionEvent e ) 
+		      @Override
+			public void actionPerformed( ActionEvent e ) 
 		      {		 
 		    	  	triggered = triggered ? false : true;
 		    	  	if(triggered)

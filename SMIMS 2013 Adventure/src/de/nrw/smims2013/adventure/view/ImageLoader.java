@@ -1,6 +1,7 @@
 package de.nrw.smims2013.adventure.view;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class ImageLoader {
 				width = (int)(70d*((double)bi.getWidth()/(double)bi.getHeight()));
 			}
 			
-			ret = new ImageIcon(bi.getScaledInstance(width, height, BufferedImage.SCALE_SMOOTH));
+			ret = new ImageIcon(bi.getScaledInstance(width, height, Image.SCALE_SMOOTH));
 		}
 		return ret;
 	}

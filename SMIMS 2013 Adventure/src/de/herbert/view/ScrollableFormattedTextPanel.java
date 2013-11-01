@@ -22,6 +22,7 @@ public class ScrollableFormattedTextPanel extends Component {
 		setBoundings(boundings);
 	}
 	
+	@Override
 	public void setBoundings(Rectangle boundings){
 		super.setBoundings(boundings);
 		scrollbar.setBoundings(new Rectangle(boundings.getMaxX() - scrollbarWidth, boundings.getY(), scrollbarWidth, boundings.getHeight()));

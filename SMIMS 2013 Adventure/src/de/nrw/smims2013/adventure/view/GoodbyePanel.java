@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 public class GoodbyePanel extends JPanel
 {
@@ -22,7 +23,7 @@ public class GoodbyePanel extends JPanel
 	header.setLayout(null);
 	header.setText(" Vielen Dank für's spielen!");
 	header.setBounds(-20, 0, 1000, 100);
-	header.setHorizontalAlignment(JLabel.CENTER);
+	header.setHorizontalAlignment(SwingConstants.CENTER);
 	header.setFont(new Font("DialogInput", Font.BOLD, 40));
 	header.setForeground(Color.RED);
 	
@@ -40,7 +41,7 @@ public class GoodbyePanel extends JPanel
 	startText.setLayout(null);
 	startText.setText("*Sei gespannt auf viele weitere Abenteuer mit Herbert und Gisela*");
 	startText.setBounds(100, 510, 800, 100);
-	startText.setHorizontalAlignment(JLabel.CENTER);
+	startText.setHorizontalAlignment(SwingConstants.CENTER);
 	startText.setFont(new Font("DialogInput", Font.BOLD, 20));
 	startText.setForeground(Color.RED);
 	startText.setVisible(true);
@@ -48,7 +49,7 @@ public class GoodbyePanel extends JPanel
 	
 	JLabel subtitle=new JLabel();
 	subtitle.setLayout(null);
-	subtitle.setHorizontalAlignment(JLabel.CENTER);
+	subtitle.setHorizontalAlignment(SwingConstants.CENTER);
 	subtitle.setBounds(0,45,1000,100);
 	subtitle.setBackground(new Color(0,0,0,0));
 	subtitle.setForeground(Color.RED);

@@ -1,6 +1,5 @@
 package de.herbert.view;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -25,6 +24,7 @@ public class PctButton extends Button{
 		setImage(image);
 	}
 	
+	@Override
 	public void setBoundings(Rectangle boundings){
 		super.setBoundings(boundings);
 		
@@ -58,11 +58,13 @@ public class PctButton extends Button{
 		renderY = boundings.getY() + gap + dy;
 	}
 	
+	@Override
 	public void update(GameContainer container, int delta)
 		throws SlickException {
 		super.update(container, delta);
 	}
 	
+	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		// background is rendered in super.render(...)

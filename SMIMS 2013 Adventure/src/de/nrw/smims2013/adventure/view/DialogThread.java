@@ -14,6 +14,7 @@ public class DialogThread extends Thread {
 		text = pText;
 	}
 
+	@Override
 	public void run() {
 		dialog.setText(text);
 		dialogPanel.setVisible(true);

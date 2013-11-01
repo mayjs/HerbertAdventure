@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 import de.nrw.smims2013.adventure.model.Item;
 
@@ -47,8 +48,8 @@ public class DescriptionPanel extends JPanel
 		header.setSize(300, 30);
 		header.setText(pItem.getDisplayName());
 		header.setFont(new Font("DialogInput", Font.BOLD, 30));
-		header.setHorizontalAlignment(JLabel.CENTER);
-		header.setVerticalAlignment(JLabel.CENTER);
+		header.setHorizontalAlignment(SwingConstants.CENTER);
+		header.setVerticalAlignment(SwingConstants.CENTER);
 		header.setLocation(0, 0);
 		infoText=new JTextArea();
 		infoText.setFont(new Font("DialogInput", Font.BOLD, 15));

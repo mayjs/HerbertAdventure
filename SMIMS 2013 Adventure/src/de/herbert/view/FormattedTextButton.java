@@ -1,6 +1,5 @@
 package de.herbert.view;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -20,11 +19,13 @@ public class FormattedTextButton extends Button{
 		this.text = text;
 	}
 	
+	@Override
 	public void setBoundings(Rectangle boundings){
 		super.setBoundings(boundings);
 		calcRenderCoords();
 	}
 	
+	@Override
 	public void translate(float x, float y){
 		super.translate(x, y);
 		calcRenderCoords();

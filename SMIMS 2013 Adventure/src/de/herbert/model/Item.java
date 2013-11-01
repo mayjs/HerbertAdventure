@@ -6,8 +6,6 @@ import java.util.Map;
 
 import org.w3c.dom.Node;
 
-import de.nrw.smims2013.adventure.parser.StoryParser;
-
 public class Item implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -128,6 +126,7 @@ public class Item implements Serializable{
 //		StoryParser.getInstance().parseUse(this);
 	}
 	
+	@Override
 	public String toString() {
 		return displayName;
 	}

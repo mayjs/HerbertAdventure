@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class DialogPanel extends JPanel {
 
@@ -21,8 +22,8 @@ public class DialogPanel extends JPanel {
 		setLocation(200, 550);
 		dialog.setSize(600, 25);
 		dialog.setLocation(0, 0);
-		dialog.setHorizontalAlignment(JLabel.CENTER);
-		dialog.setVerticalAlignment(JLabel.CENTER);
+		dialog.setHorizontalAlignment(SwingConstants.CENTER);
+		dialog.setVerticalAlignment(SwingConstants.CENTER);
 		this.add(dialog);
 		setVisible(false);
 	}
