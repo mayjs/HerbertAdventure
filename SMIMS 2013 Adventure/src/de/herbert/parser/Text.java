@@ -14,8 +14,9 @@ public class Text implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private static boolean useAntiAlaising = false;
 	
-	public static Text emptyText = new Text("", new Font("Verdana", 0, 12), Color.black);
+	
 	public static Map<Font, TrueTypeFont> loadedSlickFonts = new HashMap<Font, TrueTypeFont>();
+	public static Text emptyText = new Text("", new Font("Verdana", 0, 12), Color.black);
 	
 	private String text;
 	private Font font;
@@ -30,6 +31,7 @@ public class Text implements Serializable{
 		this.font = f;
 		this.slickFont = getTTF(f);
 		this.color = black;
+		//if(emptyText == null) emptyText = new Text("", new Font("Verdana", 0, 12), Color.black);
 	}
 	
 	private Text(String text, Font f, Color black, org.newdawn.slick.Font slickFont){
@@ -37,10 +39,12 @@ public class Text implements Serializable{
 		this.font =f;
 		this.slickFont = getTTF(f);
 		this.color = black;
+		if(emptyText == null) emptyText = new Text("", new Font("Verdana", 0, 12), Color.black);
 	}
 	
 	public TrueTypeFont getTTF(Font f){
-		TrueTypeFont ttf = loadedSlickFonts.get(f);
+		TrueTypeFont ttf = null;
+		if(f != null) ttf = loadedSlickFonts.get(f);
 		if(ttf == null)	{
 			ttf = new TrueTypeFont(f, useAntiAlaising);
 			loadedSlickFonts.put(f, ttf);

@@ -78,9 +78,9 @@ public class InteractionParser implements Serializable{
 		if (location.equals("inventory"))
 			interactionAdd(item);
 		else if (location.equals("scene"))
-			interactionAdd(item, StoryParser.getInstance().getPlayer().getScene(), StoryParser.getInstance().makePoint(e, "pos"));
+			interactionAdd(item, StoryParser.getInstance().getPlayer().getScene(), ParserFunctions.makePoint(e, "pos"));
 		else
-			interactionAdd(item, StoryParser.getInstance().getScene(location), StoryParser.getInstance().makePoint(e, "pos"));
+			interactionAdd(item, StoryParser.getInstance().getScene(location), ParserFunctions.makePoint(e, "pos"));
 	}
 	
 	private void interactionAdd(Item item, Scene scene, Point pos){

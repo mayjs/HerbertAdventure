@@ -32,7 +32,7 @@ public class FormattedText implements Serializable{
 	}
 	
 	public FormattedText(String text){
-		textParts.add(new Text(text, new Font("Verdana", 0, 12), Color.black));
+		textParts.add(new Text(text, new Font("TimesNewRoman", 1, 1), Color.black));
 		wrappedParts = textParts;
 	}
 	
