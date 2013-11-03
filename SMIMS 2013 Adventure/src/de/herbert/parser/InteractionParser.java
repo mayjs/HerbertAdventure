@@ -139,8 +139,6 @@ public class InteractionParser implements Serializable{
 			parseInteraction((Element)npc.getNode(item));
 	}
 	
-	public String parseDialog(Node d, int t){return "";}
-	
 
 	public void parseUse(Item item) {
 		if (item != null)

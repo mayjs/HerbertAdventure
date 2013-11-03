@@ -9,8 +9,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.herbert.model.Point;
 import de.herbert.model.Point3d;
-import de.nrw.smims2013.adventure.model.Point;
+
 
 /**
  * Collection of useful functions for parsing. 
@@ -19,6 +20,12 @@ import de.nrw.smims2013.adventure.model.Point;
  */
 class ParserFunctions {
 	
+	/**
+	 * 
+	 * @param list 
+	 * @param tag tag name to 
+	 * @return List of Elements which are in list and whose tag name equals tag
+	 */
 	static List<Element> getElementsByTag(NodeList list, String tag){
 		List<Element> elementsByTag = new LinkedList<Element>();
 		Node node;
@@ -37,9 +44,13 @@ class ParserFunctions {
 		return getElementsByTag(element.getChildNodes(), tag);
 	}
 	
+	/**
+	 * gets the child Elements of node.
+	 * @param node 
+	 * @return child Elements of node
+	 */
 	static List<Element> getChildElements(Node node){
 		return getElements(node.getChildNodes());
-		
 	}
 	
 	static List<Element> getElements(NodeList nodes){
@@ -55,22 +66,30 @@ class ParserFunctions {
 		return elements;
 	}
 	
-	static int makeInt(String value, int standardValue) {
+	static int makeInt(String value, int defaultValue) {
 		try {
 			return Integer.parseInt(value);
 		} catch (Exception e) {
-			return standardValue;
+			return defaultValue;
 		}
 	}
 
-	static boolean makeBoolean(String value, boolean standardValue) { 
+	static boolean makeBoolean(String value, boolean defaultValue) { 
 		try {
 			return Boolean.parseBoolean(value);
 		} catch (Exception e) {
-			return standardValue;
+			return defaultValue;
 		}
 	}
 	
+	/**
+	 * makes a Point out of the attributes of element: P(identifierX|identifierY)
+	 * @param element
+	 * @param identifier name of point
+	 * @param defX default x-value
+	 * @param defY default y-value
+	 * @return a point
+	 */
 	static Point makePoint(Element element, String identifier, int defX, int defY){
 		return new Point(	makeInt(element.getAttribute(identifier + "X"), defX),
 							makeInt(element.getAttribute(identifier + "Y"), defY));
@@ -84,6 +103,15 @@ class ParserFunctions {
 		return makePoint(element, identifier, 15, 15);
 	}
 	
+	/**
+	 * makes a Point3d out of the attributes of element: P(identifierX|identifierY|identifierZ)
+	 * @param element
+	 * @param identifier name of point
+	 * @param defX default x-value
+	 * @param defY default y-value
+	 * @param defZ default z-value
+	 * @return a Point3d
+	 */
 	static Point3d makePoint3d(Element element, String identifier, int defX, int defY, int defZ){
 		return new Point3d(	makeInt(element.getAttribute(identifier + "X"), defX), 
 							makeInt(element.getAttribute(identifier + "Y"), defY),

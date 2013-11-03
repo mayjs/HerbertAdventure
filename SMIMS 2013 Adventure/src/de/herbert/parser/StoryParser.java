@@ -147,7 +147,7 @@ public class StoryParser implements Serializable {
 	private Player parsePlayer(Document doc){
 		Player player = new Player();
 		
-		player.setPosition(makePoint(doc.getDocumentElement(), "playerPos"));
+		player.setPosition(ParserFunctions.makePoint(doc.getDocumentElement(), "playerPos"));
 		player.setScene(getScene(doc.getDocumentElement().getAttribute("startScene")));
 		player.setInventory(parseInventory(doc));
 		this.player = player;
@@ -168,14 +168,6 @@ public class StoryParser implements Serializable {
 		} catch (Exception e) {
 			return standardValue;
 		}
-	}
-	
-	Point makePoint(Element element, String identifier, int defX, int defY){
-		return new Point(makeInt(element.getAttribute(identifier + "X"), defX), makeInt(element.getAttribute(identifier + "Y"), defY));
-	}
-	
-	Point makePoint(Element element, String identifier){
-		return makePoint(element, identifier, 15, 15);
 	}
 
 	private NPC makeNPC(Element element){
@@ -232,20 +224,22 @@ public class StoryParser implements Serializable {
 		Scene scene = new Scene(element.getAttribute("name"),
 								makeInt(element.getAttribute("width"), 100),
 								makeInt(element.getAttribute("height"), 60));
-		scene.setStartBottom(makePoint(element, "bPos"));
-		scene.setStartTop(makePoint(element, "tPos"));
-		scene.setStartRight(makePoint(element, "rPos"));
-		scene.setStartLeft(makePoint(element, "lPos"));
+		scene.setStartBottom(ParserFunctions.makePoint(element, "bPos"));
+		scene.setStartTop(ParserFunctions.makePoint(element, "tPos"));
+		scene.setStartRight(ParserFunctions.makePoint(element, "rPos"));
+		scene.setStartLeft(ParserFunctions.makePoint(element, "lPos"));
 		scene.blockWall(makeInt(element.getAttribute("blockedWallHeight"), 0));
 		// parse the rest of the content of the scene excluding neighbour scenes
 		List<Element> childElements = ParserFunctions.getChildElements(element);
 		for(Element e : childElements){
 			if(e.getNodeName().equals("item")){
 				scene.add(getItem(e.getAttribute("name")),
-						makePoint(e, "pos"));
+						ParserFunctions.makePoint(e, "pos"),
+						ParserFunctions.makeInt(e.getAttribute("posZ"), 0));
 			}else if(e.getNodeName().equals("npc")){
 				NPC npc = getNPC(e.getAttribute("name"));
-				npc.setPos(makePoint(e, "pos"));
+				npc.setPos(	ParserFunctions.makePoint(e, "pos"));
+							///ParserFunctions.makeInt(e.getAttribute("PosZ"), 0));
 				scene.addNPC(npc);
 			}
 		}

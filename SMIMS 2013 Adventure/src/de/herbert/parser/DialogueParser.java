@@ -29,6 +29,10 @@ public class DialogueParser implements Serializable{
 		return instance;
 	}
 	
+	/**
+	 * loads Dialogues which are Child Elements of parentElement into an internal Map.
+	 * @param parentElement
+	 */
 	public void loadDialogues(Element parentElement){
 		List<Element> dialogueElements = ParserFunctions.getChildElementsByTag(parentElement, "dialoge");
 		for(Element e : dialogueElements)
@@ -51,6 +55,11 @@ public class DialogueParser implements Serializable{
 		return null;
 	}
 	
+	/**
+	 * Parses a dialogue
+	 * @param dialogueElement the element of the dialogue
+	 * @return the parsed Dialogue object
+	 */
 	public Dialogue parseDialogue(Element dialogueElement){
 		if(!dialogueElement.getNodeName().equals("dialogue")) return null;
 		
@@ -63,6 +72,11 @@ public class DialogueParser implements Serializable{
 		return dialogue;
 	}
 	
+	/**
+	 * Parses a DialoguePart
+	 * @param partElement the element of the DialoguePart
+	 * @return the parsed DialugePart
+	 */
 	private DialoguePart parseDialoguePart(Element partElement){
 		// parse answers
 		List<DialogueAnswer> answers = new LinkedList<DialogueAnswer>();
@@ -84,12 +98,22 @@ public class DialogueParser implements Serializable{
 		return new DialoguePart(text, answers, open, close);	// create DialoguePart
 	}
 	
+	/**
+	 * Parses a DialogueAnswer
+	 * @param answerElement the element of the DialogueAnswer
+	 * @return the parsed DialogueAnswer
+	 */
 	private DialogueAnswer parseDialogueAnswer(Element answerElement){
 		FormattedText text = TextParser.getInstance().parseText(answerElement);
 		String id = answerElement.getAttribute("id");
 		return new DialogueAnswer(text, id);
 	}
 	
+	/**
+	 * returns the loaded Dialogue associated with name
+	 * @param name the name of the loaded Dialogue
+	 * @return the Dialogue
+	 */
 	public Dialogue getDialogue(String name){
 		return loadedDialogues.get(name);
 	}
