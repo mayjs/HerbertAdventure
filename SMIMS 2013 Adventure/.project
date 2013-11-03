@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/de/herbert/parser/exampleDialog.xml</name>
-			<type>1</type>
-			<location>C:/Users/Alex/Dropbox/workspace/HerbertAdventure/SMIMS 2013 Adventure/src/de/herbert/parser/example.xml</location>
-		</link>
-	</linkedResources>
 </projectDescription>

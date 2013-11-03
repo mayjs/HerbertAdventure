@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import de.herbert.parser.FormattedText;
 
 public class DialoguePart implements Serializable{

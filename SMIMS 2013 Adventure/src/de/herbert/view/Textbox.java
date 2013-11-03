@@ -115,7 +115,7 @@ public class Textbox extends Component implements KeyListener{
 			text = text.substring(0, text.length()-1);
 			this.adjustBoundings();
 		}
-		else if((int)c >= 32 && text.length() < this.maxLength){ //only use printable characters
+		else if(c >= 32 && text.length() < this.maxLength){ //only use printable characters
 			text += c;
 			this.adjustBoundings();
 		}

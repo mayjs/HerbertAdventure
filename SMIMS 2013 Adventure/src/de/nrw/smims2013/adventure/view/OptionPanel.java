@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import de.nrw.smims2013.adventure.main.Main;
 import de.nrw.smims2013.adventure.model.Item;
@@ -49,8 +50,8 @@ public class OptionPanel extends JPanel
 		header.setText(item.getDisplayName());
 		header.setSize(130, 16);
 		header.setLocation(0, 0);
-		header.setHorizontalAlignment(JLabel.CENTER);
-		header.setVerticalAlignment(JLabel.CENTER);
+		header.setHorizontalAlignment(SwingConstants.CENTER);
+		header.setVerticalAlignment(SwingConstants.CENTER);
 		this.add(header);
 		
 		this.setLocation(pPoint.getX(),pPoint.getY()-(18*i+19));
@@ -108,13 +109,14 @@ public class OptionPanel extends JPanel
 		}
 		
 		
-		ItemButton[] buttonArray = (ItemButton[])buttons.toArray(new ItemButton[0]);
+		ItemButton[] buttonArray = buttons.toArray(new ItemButton[0]);
 		
 		this.popUp(buttonArray, point, item);
 		adventureFrame.repaint();
 	}
 	
 	ActionListener view = new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			ItemButton bttn = (ItemButton)e.getSource();
 			bttn.getAdventureFrame().getOptionPanel().dispose();
@@ -123,6 +125,7 @@ public class OptionPanel extends JPanel
 	};
 	
 	ActionListener take = new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			ItemButton bttn = (ItemButton)e.getSource();
 			Point playerPos = bttn.getAdventureFrame().getPlayer().getPosition();
@@ -142,6 +145,7 @@ public class OptionPanel extends JPanel
 	};
 	
 	ActionListener interact = new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			ItemButton bttn = (ItemButton)e.getSource();
 			bttn.getAdventureFrame().getScenePanel().setSelectedItem(bttn.getItem());
@@ -155,6 +159,7 @@ public class OptionPanel extends JPanel
 	};
 	
 	ActionListener use = new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			ItemButton bttn = (ItemButton)e.getSource();
 			bttn.getItem().use();

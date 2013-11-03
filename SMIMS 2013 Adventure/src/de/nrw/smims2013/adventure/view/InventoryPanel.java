@@ -46,6 +46,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 		add(leftArrowBtn);
 		leftArrowBtn.setVisible(true);		
 		ActionListener left = new ActionListener() {
+			@Override
 			public void actionPerformed( ActionEvent e ) 
 		    {		 		    	  
 		    	 scrollLeft();          
@@ -75,6 +76,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 		add(rightArrowBtn);
 		rightArrowBtn.setVisible(true);	
 		ActionListener right = new ActionListener() {
+			@Override
 			public void actionPerformed( ActionEvent e ) 
 		    {		 		    	  
 		    	 scrollRight();          
@@ -175,6 +177,7 @@ public class InventoryPanel extends JPanel implements MouseListener{
 	//Action listener for the inventory buttons
 	ActionListener buttonClick = new ActionListener() {
 		//int x =-1;
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			InventoryButton bttn = (InventoryButton)e.getSource();
 			bttn.getAdventureFrame().getDescriptionPanel().dispose();

@@ -1,7 +1,6 @@
 package de.herbert.view;
 
 
-import org.newdawn.slick.AppletGameContainer.Container;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;

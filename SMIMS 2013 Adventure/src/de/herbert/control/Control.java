@@ -1,12 +1,12 @@
 package de.herbert.control;
 
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.AppletGameContainer.Container;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import de.herbert.model.Item;
 import de.herbert.model.Model;
 import de.herbert.view.View;
 
@@ -73,6 +73,14 @@ public class Control extends BasicGame {
 	
 	public View getView(){
 		return view;
+	}
+	
+	public Item[][][] getSceneItems(){
+		return model.getPlayer().getScene().getAllItems();
+	}
+	
+	public Model getModel(){
+		return model;
 	}
 	
 	public static void main(String[] args) throws SlickException{

@@ -89,12 +89,14 @@ public class PausePanel extends JPanel {
 	}
 
 	ActionListener fortsetzen = new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			fortsetzen();
 		}
 	};
 
 	ActionListener speichern = new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (speichern()) {
 				System.out.println("Speichern erfolgreich!");
@@ -106,6 +108,7 @@ public class PausePanel extends JPanel {
 	};
 
 	ActionListener laden = new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			boolean result = laden();
 			if (result == true) {
@@ -119,6 +122,7 @@ public class PausePanel extends JPanel {
 	};
 
 	ActionListener beenden = new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			speichern();
 			System.exit(0);

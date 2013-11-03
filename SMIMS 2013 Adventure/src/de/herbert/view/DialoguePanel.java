@@ -193,6 +193,7 @@ public class DialoguePanel extends Component{
 	}
 	
 	ButtonListener answerClicked = new ButtonListener(){
+		@Override
 		public void buttonClicked(String buttonId){
 			// TODO pass value to control
 			setCurPart(buttonId);

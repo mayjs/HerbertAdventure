@@ -122,6 +122,7 @@ public class AdventureFrame extends JFrame {
 	/**
 	 * Repaint the whole window (attention, may take some time when called in a loop!)
 	 */
+	@Override
 	public void repaint(){
 		super.repaint();
 		scenePanel.paintImmediately(0, 0, scenePanel.getWidth(), scenePanel.getHeight());

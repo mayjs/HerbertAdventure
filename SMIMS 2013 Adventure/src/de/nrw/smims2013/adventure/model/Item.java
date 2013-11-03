@@ -128,6 +128,7 @@ public class Item implements Serializable{
 		StoryParser.getInstance().parseUse(this);
 	}
 	
+	@Override
 	public String toString() {
 		return displayName;
 	}

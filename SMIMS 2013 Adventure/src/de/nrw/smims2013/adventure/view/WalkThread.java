@@ -47,6 +47,7 @@ public class WalkThread extends Thread {
 			
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
 					public synchronized void run() {
 						scenePanel.repaintPlayer();
 						scenePanel.getAdventureFrame().getOptionPanel().dispose();

@@ -31,10 +31,12 @@ public class TextButton extends Button{
 		setText(text);
 	}
 	
+	@Override
 	public void update(GameContainer container, int delta) throws SlickException{
 		super.update(container, delta);
 	}
 	
+	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
 		super.render(container, g);

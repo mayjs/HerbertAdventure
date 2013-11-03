@@ -68,11 +68,11 @@ public class ScenePanel extends JPanel implements MouseListener {
 	}
 
 	private int convertViewXToModelX(int x) {
-		return (int) (x / SKALIERUNG_X);
+		return x / SKALIERUNG_X;
 	}
 
 	private int convertViewYToModelY(int y) {
-		return (int) (y / SKALIERUNG_Y);
+		return y / SKALIERUNG_Y;
 	}
 
 	@Override

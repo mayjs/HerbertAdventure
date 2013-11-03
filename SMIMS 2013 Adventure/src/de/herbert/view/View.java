@@ -12,9 +12,6 @@ import org.newdawn.slick.geom.Rectangle;
 
 import de.herbert.control.Control;
 import de.herbert.parser.DialogueParser;
-import de.herbert.parser.FormattedText;
-//import de.herbert.model.Dialogue;
-//import de.herbert.parser.FormattedText;
 
 
 public class View implements ButtonListener{

@@ -21,7 +21,7 @@ public class Scene implements Serializable {
 	private Scene left, right, top, bottom;
 	private Point startLeft, startRight, startTop, startBottom;
 	private int blockedWallHeight;	//block so many lines of the wall from zero on
-	
+	private int height, width;
 
 	public Scene () {
 		//this is only for A* test
@@ -43,6 +43,8 @@ public class Scene implements Serializable {
 		tileMap = new boolean[pSizeX][pSizeY];
 		items = new Item[pSizeX][pSizeY][pSizeZ];
 		blockedWallHeight = 0;
+		width = pSizeX;
+		height = pSizeY;
 	}
 	
 	/**
@@ -116,6 +118,16 @@ public class Scene implements Serializable {
 		return npcs;
 	}
 	
+	
+	
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
 	/**
 	 * Return the NPC located at (x|y) or null.
 	 */
@@ -237,6 +249,25 @@ public class Scene implements Serializable {
 						y <= position.getY() && position.getY() < y+items[x][y][z].getHeight())
 						return items[x][y][z];
 				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Look for an item in the specified layer
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public Item getItemAt(int x, int y, int z){
+		for(int xc = 0; xc < items.length; xc++){
+			for(int yc = 0; yc < items[xc].length; yc++){
+				if(items[xc][yc][z] != null &&
+						xc <= x && x < xc +items[xc][yc][z].getWidth() &&
+						yc <= y && y < yc +items[xc][yc][z].getHeight())
+					return items[xc][yc][z];
 			}
 		}
 		return null;

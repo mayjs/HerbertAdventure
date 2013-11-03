@@ -60,6 +60,7 @@ public class Point implements Serializable{
 		this.y += p.getY();
 	}
 	
+	@Override
 	public String toString()
 	{
 		return "("+x+"/"+y+")";
