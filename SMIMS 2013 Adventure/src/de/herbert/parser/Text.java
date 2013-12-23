@@ -19,26 +19,29 @@ public class Text implements Serializable{
 	public static Text emptyText = new Text("", new Font("Verdana", 0, 12), Color.black);
 	
 	private String text;
-	private Font font;
-	private Color color;
+	private ColoredFont font;
 	private org.newdawn.slick.Font slickFont;
 	private float width, height;
 	private List<Text> lines = null;
 	
-	public Text(String text, Font f, Color black) {
+	public Text(String text, Font f, Color color) {
 		super();
 		this.text = text;
-		this.font = f;
+		this.font = new ColoredFont(f, color);
 		this.slickFont = getTTF(f);
-		this.color = black;
 		//if(emptyText == null) emptyText = new Text("", new Font("Verdana", 0, 12), Color.black);
 	}
 	
-	private Text(String text, Font f, Color black, org.newdawn.slick.Font slickFont){
+	public Text(String text, ColoredFont f){
+		font = f;
 		this.text = text;
-		this.font =f;
-		this.slickFont = getTTF(f);
-		this.color = black;
+		this.slickFont = getTTF(f.getFont());
+	}
+	
+	private Text(String text, ColoredFont f, org.newdawn.slick.Font slickFont){
+		this.text = text;
+		this.font = f;
+		this.slickFont = getTTF(f.getFont());
 		if(emptyText == null) emptyText = new Text("", new Font("Verdana", 0, 12), Color.black);
 	}
 	
@@ -63,11 +66,11 @@ public class Text implements Serializable{
 	}
 	
 	public Text sub(int index){
-		return new Text(text.substring(index), font, color, slickFont);
+		return new Text(text.substring(index), font, slickFont);
 	}
 	
 	public Text sub(int fromIndex, int toIndex){
-		return new Text(text.substring(fromIndex, toIndex), font, color, slickFont);
+		return new Text(text.substring(fromIndex, toIndex), font, slickFont);
 	}
 	
 	public int indexOf(char c){
@@ -151,13 +154,13 @@ public class Text implements Serializable{
 		lines = new LinkedList<Text>();
 		String sub = getText();
 		while((ind = sub.indexOf("\n")) > -1){
-			lines.add(new Text(sub.substring(0, ind), font, color, slickFont));
+			lines.add(new Text(sub.substring(0, ind), font, slickFont));
 			if(ind + 2 > sub.length())
 				sub = "";
 			else
 				sub = sub.substring(ind + 1, sub.length());
 		}
-		lines.add(new Text(sub, font, color, slickFont));
+		lines.add(new Text(sub, font, slickFont));
 	}
 	
 	public Text getLastLine(){
@@ -234,19 +237,26 @@ public class Text implements Serializable{
 		calcWidthAndHeight();
 	}
 	public Font getFont() {
-		return font;
+		return font.getFont();
 	}
 	public org.newdawn.slick.Font getSlickFont(){
 		return slickFont;
 	}
 	public void setFont(Font font) {
-		this.font = font;
-		this.slickFont = new TrueTypeFont(font, false);
+		this.font.setFont(font);
+		this.slickFont = getTTF(font);
 	}
 	public Color getColor() {
-		return color;
+		return font.getColor();
 	}
 	public void setColor(Color color) {
-		this.color = color;
-	}	
+		this.font.setColor(color);
+	}
+	public ColoredFont getColoredFont(){
+		return font;
+	}
+	public void setColoredFont(ColoredFont font){
+		this.font = font;
+		slickFont = getTTF(font.getFont());
+	}
 }

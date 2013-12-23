@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.script.SimpleScriptContext;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -22,6 +28,9 @@ public class InteractionParser implements Serializable{
 	private Map<String, Method> iMethods = new HashMap<String, Method>();
 	private static InteractionParser instance = null;
 	
+	private static ScriptEngineManager scriptEngineManager = new ScriptEngineManager(); 
+	private static ScriptEngine engine = scriptEngineManager.getEngineByName("JavaScript");
+	
 	private InteractionParser(){
 		// get interaction Methods
 		Method[] methods = getClass().getDeclaredMethods();
@@ -30,12 +39,35 @@ public class InteractionParser implements Serializable{
 			if(m.getName().contains("interaction_"))
 				iMethods.put(m.getName().substring(m.getName().indexOf("_") + 1), m);
 		}
+		
+		// prepare js-Engine
+		prepareEngine();
 	}
 	
 	public static synchronized InteractionParser getInstance(){
 		if(instance == null) 
 			instance = new InteractionParser();
 		return instance;
+	}
+	
+	public Object executeScript(String script){
+		try {
+			return engine.eval(script);
+		} catch (ScriptException e) {
+			System.out.println("Couldn't run script:\n" + script + "\n");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private void prepareEngine(){
+		// set variables ...
+		engine.put("player", StoryParser.getInstance().getPlayer());
+		engine.put("inventory", StoryParser.getInstance().getPlayer().getInventory());
+	}
+	
+	public String getInteractionName(Element interactionElement){
+		return interactionElement.getAttribute("name");
 	}
 	
 	private Point getStartPos(Scene scene, String pos){
@@ -50,7 +82,8 @@ public class InteractionParser implements Serializable{
 		return new Point(15, 15);
 	}
 	
-	void parseInteraction(Element element){
+	public void parseInteraction(Element element){
+		if(element == null) return;
 		List<Element> childElements = ParserFunctions.getChildElements(element);
 		
 		for(Element e : childElements){
@@ -70,29 +103,57 @@ public class InteractionParser implements Serializable{
 	
 	@SuppressWarnings("unused")
 	private void interaction_add(Element e) {
+		if(e.hasAttribute("item"))
+			interactionAddItem(e);
+		else if(e.hasAttribute("npc"))
+			interactionAddNPC(e);
+	}
+	
+	private void interactionAddItem(Element e){
 		Item item = StoryParser.getInstance().getItem(e.getAttribute("item"));
 		if (item == null || !e.getNodeName().equals("add"))
 			return;
 
 		String location = e.getAttribute("location");
 		if (location.equals("inventory"))
-			interactionAdd(item);
+			interactionAddItem(item);
 		else if (location.equals("scene"))
-			interactionAdd(item, StoryParser.getInstance().getPlayer().getScene(), ParserFunctions.makePoint(e, "pos"));
+			interactionAddItem(item, StoryParser.getInstance().getPlayer().getScene(), ParserFunctions.makePoint(e, "pos"));
 		else
-			interactionAdd(item, StoryParser.getInstance().getScene(location), ParserFunctions.makePoint(e, "pos"));
+			interactionAddItem(item, StoryParser.getInstance().getScene(location), ParserFunctions.makePoint(e, "pos"));
 	}
 	
-	private void interactionAdd(Item item, Scene scene, Point pos){
+	private void interactionAddItem(Item item, Scene scene, Point pos){
 		scene.add(item, pos);
 	}
 	
-	private void interactionAdd(Item item){
+	private void interactionAddItem(Item item){
 		StoryParser.getInstance().getPlayer().getInventory().add(item);
+	}
+	
+	private void interactionAddNPC(Element e){
+		Scene scene;
+		if(e.getAttribute("location").equals("scene")) 
+			scene = StoryParser.getInstance().getPlayer().getScene();
+		else
+			scene = StoryParser.getInstance().getScene(e.getAttribute("location"));
+		if(scene == null)
+			return;
+		
+		NPC npc = StoryParser.getInstance().getNPC(e.getAttribute("npc"));
+		npc.setPos(ParserFunctions.makePoint(e, "pos"));
+		scene.addNPC(npc);
 	}
 	
 	@SuppressWarnings("unused")
 	private void interaction_remove(Element e){
+		if(e.hasAttribute("item"))
+			interactionRemoveItem(e);
+		else if(e.hasAttribute("npc"))
+			interactionRemoveNPC(e);
+	}
+	
+	private void interactionRemoveItem(Element e){
 		Item item = StoryParser.getInstance().getItem(e.getAttribute("item"));
 		if(item == null || !e.getNodeName().equals("remove"))
 			return;
@@ -118,6 +179,17 @@ public class InteractionParser implements Serializable{
 		return scene.remove(item);
 	}
 	
+	private void interactionRemoveNPC(Element e){
+		Scene scene;
+		if(e.getAttribute("location").equals("scene")) 
+			scene = StoryParser.getInstance().getPlayer().getScene();
+		else
+			scene = StoryParser.getInstance().getScene(e.getAttribute("location"));
+		if(scene == null)
+			return;
+		
+		scene.removeNPC(StoryParser.getInstance().getNPC(e.getAttribute("npc")));
+	}
 	
 	@SuppressWarnings("unused")
 	private void interaction_changeScene(Element e){
@@ -186,6 +258,11 @@ public class InteractionParser implements Serializable{
 	@SuppressWarnings("unused")
 	private void interaction_closeDialogue(Element interactionElement){
 		// TODO add code to close dialogue
+	}
+	
+	@SuppressWarnings("unused")
+	private void interaction_javaScript(Element interactionElement){
+		executeScript(interactionElement.getTextContent());
 	}
 	
 	private void _err(String msg){

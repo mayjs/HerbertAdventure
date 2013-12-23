@@ -18,7 +18,7 @@ public class Button extends Component {
 	static String uniqueIDRef = new String(new char[]{ID_CHAR_MIN - 1});
 	
 	private String uniqueID = null;
-	private Map<ButtonListener, String> listeners = new HashMap<ButtonListener, String>();
+	private Map<ButtonListener, Object> listeners = new HashMap<ButtonListener, Object>();
 	
 	ButtonStyle style;
 	GradientFill currentFill;
@@ -102,12 +102,12 @@ public class Button extends Component {
 			
 	}
 	
-	public String getListenerID(ButtonListener listener){
+	public Object getListenerID(ButtonListener listener){
 		return listeners.get(listener);
 	}
 	
-	public void addButtonListener(ButtonListener listener, String id){
-		listeners.put(listener, id);
+	public void addButtonListener(ButtonListener listener, Object obj){
+		listeners.put(listener, obj);
 	}
 	
 	public void addButtonListener(ButtonListener listener){

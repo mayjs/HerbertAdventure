@@ -10,15 +10,11 @@ public class DialoguePart implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	FormattedText content;
-	Element interactionNodeOpen;
-	Element interactionNodeClose;
 	List<DialogueAnswer> answers;
 	
 	public DialoguePart(FormattedText content, List<DialogueAnswer> answers, Element interactionNodeOpen, Element interactionNodeClose) {
 		this.content = content;
-		this.answers = answers;
-		this.interactionNodeOpen = interactionNodeOpen;
-		this.interactionNodeClose = interactionNodeClose;
+		this.answers = answers;;
 	}
 	
 	public FormattedText getContent() {
@@ -30,13 +26,5 @@ public class DialoguePart implements Serializable{
 	
 	public int getCountOfAnswers(){
 		return answers.size();
-	}
-	
-	public Element getInteractionNodeOpen(){
-		return interactionNodeOpen;
-	}
-	
-	public Element getInteractionNodeClose(){
-		return interactionNodeClose;
 	}
 }

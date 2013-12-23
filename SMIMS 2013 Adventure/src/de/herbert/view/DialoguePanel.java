@@ -11,7 +11,9 @@ import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Rectangle;
 
 import de.herbert.model.Dialogue;
+import de.herbert.model.DialogueAnswer;
 import de.herbert.parser.FormattedText;
+import de.herbert.parser.InteractionParser;
 import de.herbert.parser.Text;
 
 public class DialoguePanel extends Component {
@@ -71,7 +73,7 @@ public class DialoguePanel extends Component {
 					0, 0, buttonWidth, buttonHeight), dialogue.getCurPart()
 					.getAnswers().get(i).getText());
 			button.addButtonListener(answerClicked, dialogue.getCurPart()
-					.getAnswers().get(i).getId());
+					.getAnswers().get(i));
 			buttonsNew.add(button);
 		}
 
@@ -216,9 +218,10 @@ public class DialoguePanel extends Component {
 
 	ButtonListener answerClicked = new ButtonListener() {
 		@Override
-		public void buttonClicked(String buttonId) {
+		public void buttonClicked(Object buttonId) {
 			// TODO pass value to control
-			setCurPart(buttonId);
+			setCurPart(((DialogueAnswer)buttonId).getId());
+			InteractionParser.getInstance().parseInteraction(((DialogueAnswer)buttonId).getInteraction());
 		}
 	};
 }

@@ -3,7 +3,10 @@
 <dialogue startPart="startPart">
 	<part id="startPart">
 		<font name="TimesNewRoman" size="23" style="bold italic" color="0xFF0022">KÄSE!!!!\n1\n2\n3\n4\n5\n6ist gelb und manchmal löcherig</font>
-		<answer id="part2"><font name="Verdana" size="12" color="0xFFFFFF">weiter</font></answer>
+		<answer id="part2"><font name="Verdana" size="12" color="0xFFFFFF">weiter</font>
+		<interaction>
+			<javaScript>print(inventory.countItems());</javaScript>	
+		</interaction></answer>
 	</part>
 	<part id="part2">
 		<font name="TimesNewRoman" size="15" color="0xFFFFFF" style="bold">la</font>

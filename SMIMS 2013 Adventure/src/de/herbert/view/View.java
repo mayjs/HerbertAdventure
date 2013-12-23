@@ -11,10 +11,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import de.herbert.control.Control;
+import de.herbert.model.Item;
 import de.herbert.parser.DialogueParser;
+import de.herbert.parser.StoryParser;
 
 
-public class View implements ButtonListener{
+public class View {
 	private Control control;
 	
 	private List<Component> components;
@@ -104,6 +106,7 @@ public class View implements ButtonListener{
 //		
 
 		try {
+			StoryParser.getInstance().getPlayer().getInventory().add(new Item());
 			components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File(View.class.getResource("/de/nrw/smims2013/adventure/story/xml/exampleDialogue.xml").toURI()))));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -141,11 +144,6 @@ public class View implements ButtonListener{
 		for(Component c : components){
 			c.render(container, g);
 		}
-	}
-
-	@Override
-	public void buttonClicked(String buttonId) {
-		System.out.println("Button " + buttonId + " clicked.");
 	}
 	
 	public void addComponent(Component component){

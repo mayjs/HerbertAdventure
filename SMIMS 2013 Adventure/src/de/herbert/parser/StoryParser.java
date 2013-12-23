@@ -295,6 +295,17 @@ public class StoryParser implements Serializable {
 		return scenes.get(name);
 	}
 	
+	public boolean hasItem(String name){
+		return items.containsKey(name);
+	}
+	
+	public boolean hasNPC(String name){
+		return npcs.containsKey(name);
+	}
+	
+	public boolean hasScene(String name){
+		return scenes.containsKey(name);
+	}
 	
 	private Inventory parseInventory(Document doc) {
 		// inventory

@@ -124,7 +124,7 @@ public class InventoryPanel extends Component implements ButtonListener{
 	}
 
 	@Override
-	public void buttonClicked(String buttonId) {	
+	public void buttonClicked(Object buttonId) {	
 		if(buttonId.equals("LA")){ // leftArrow
 			scrollLeft();
 			return;
@@ -135,7 +135,7 @@ public class InventoryPanel extends Component implements ButtonListener{
 		}
 		
 		// TODO: Handle all other buttons ...
-		int id = Integer.parseInt(buttonId);
+		int id = Integer.parseInt((String) buttonId);
 		System.out.println("InventoryButton " + id + " (" + getInventory().get(id + offset).getName() + ") clicked!");
 	}
 	

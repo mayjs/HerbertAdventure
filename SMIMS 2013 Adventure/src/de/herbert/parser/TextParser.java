@@ -20,7 +20,7 @@ public class TextParser implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	static TextParser instance;
-	Map <String, Font> loadedFonts = new HashMap<String, Font>();
+	Map <String, ColoredFont> loadedFonts = new HashMap<String, ColoredFont>();
 	
 	public static TextParser getInstance(){
 		if(instance == null) instance = new TextParser();
@@ -30,7 +30,7 @@ public class TextParser implements Serializable{
 	public void loadFonts(Element element){
 		List<Element> fonts = ParserFunctions.getChildElementsByTag(element, "font");
 		for(Element e : fonts){
-			loadedFonts.put(e.getAttribute("loadedName"), getFont(e));
+			loadedFonts.put(e.getAttribute("loadedName"), new ColoredFont(getFont(e), getColor(e)));
 		}
 	}
 	
@@ -65,7 +65,7 @@ public class TextParser implements Serializable{
 		while((ind = str.indexOf("\\n"))>=0){
 			str = str.substring(0, ind) + "\n" + ((ind + 2 >= str.length() - 1)?"":str.substring(ind + 2, str.length()));
 		}
-		Text text = new Text(str, getFont(e), getColor(e));
+		Text text = new Text(str, getColoredFont(e));
 		return text;
 	}
 	
@@ -77,22 +77,30 @@ public class TextParser implements Serializable{
 		return ParserFunctions.makeColor(e.getAttribute("color"));
 	}
 	
-	public Font getFont(Element e){
-		Font f =getLoadedFont(e.getAttribute("loadedName"));
-		if(f == null) f = new Font(e.getAttribute("name"), getFontStyle(e.getAttribute("style")), ParserFunctions.makeInt(e.getAttribute("size"), 12));
+	public Font getFont(Element e){	
+		return new Font(e.getAttribute("name"), getFontStyle(e.getAttribute("style")), ParserFunctions.makeInt(e.getAttribute("size"), 12));
+	}
+	
+	public ColoredFont getColoredFont(Element e){
+		ColoredFont f = loadedFonts.get(e.getAttribute("loadedName"));
+		if(f == null){
+			f = new ColoredFont(getFont(e), getColor(e));
+			if(e.hasAttribute("loadedName"))
+				loadedFonts.put(e.getAttribute("loadedName"), f);
+		}
 		return f;
 	}
 	
-	public Font getLoadedFont(String loadedName){
+	public ColoredFont getLoadedFont(String loadedName){
 		return loadedFonts.get(loadedName);
 	}
 	
 	public int getFontStyle(String str){
 		if(str == null) return Font.PLAIN;
 		int returnValue = 0;
-				if(str.contains("bold"))	returnValue = Font.BOLD;
-				if(str.contains("italic")) 	returnValue = returnValue | Font.ITALIC;
+		if(str.contains("bold"))	returnValue = Font.BOLD;
+		if(str.contains("italic")) 	returnValue = returnValue | Font.ITALIC;
 		else 								returnValue = Font.PLAIN;
-				return returnValue;
+			return returnValue;
 	}
 }

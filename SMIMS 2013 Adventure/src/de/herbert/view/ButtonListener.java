@@ -1,6 +1,6 @@
 package de.herbert.view;
 
 public interface ButtonListener {
-	public void buttonClicked(String buttonId);
+	public void buttonClicked(Object buttonId);
 }
-//
+

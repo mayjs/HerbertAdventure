@@ -106,6 +106,8 @@ public class DialogueParser implements Serializable{
 	private DialogueAnswer parseDialogueAnswer(Element answerElement){
 		FormattedText text = TextParser.getInstance().parseText(answerElement);
 		String id = answerElement.getAttribute("id");
+		List<Element> interactions = ParserFunctions.getChildElementsByTag(answerElement, "interaction");
+		if(interactions.size() > 0) return new DialogueAnswer(text, id, interactions.get(0));
 		return new DialogueAnswer(text, id);
 	}
 	

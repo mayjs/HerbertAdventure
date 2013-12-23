@@ -73,13 +73,42 @@ class ParserFunctions {
 			return defaultValue;
 		}
 	}
-
-	static boolean makeBoolean(String value, boolean defaultValue) { 
-		try {
-			return Boolean.parseBoolean(value);
-		} catch (Exception e) {
-			return defaultValue;
+	
+	static boolean parseBoolean(String b) {
+		
+		Object obj = InteractionParser.getInstance().executeScript(b);
+		if(obj == null){
+			System.out.println("Couldn't parse boolean: " + b + "\nreturned false!");
+			return false;
 		}
+		
+		return (Boolean) obj;
+
+	}
+	
+	static List<String> getStringList(String str, String separator){
+		List<String> list = new LinkedList<String>();
+		int ind;
+		while((ind = str.indexOf(separator)) >= 0){
+			list.add(str.substring(0, ind));
+			str = str.substring(ind + separator.length(), str.length());
+		}
+		list.add(str);
+		return list;
+	}
+	
+	static Object getObject(String str){
+		return null;
+	}
+	
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	static boolean makeBoolean(String value){
+		return parseBoolean(value);
 	}
 	
 	/**
@@ -129,5 +158,9 @@ class ParserFunctions {
 	static Color makeColor(String str){
 		Color c = Color.decode(str);
 		return c; 
+	}
+	
+	public void main(String[] args){
+		
 	}
 }

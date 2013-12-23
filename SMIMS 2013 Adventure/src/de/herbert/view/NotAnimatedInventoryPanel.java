@@ -92,7 +92,7 @@ public class NotAnimatedInventoryPanel extends Component implements ButtonListen
 	}
 
 	@Override
-	public void buttonClicked(String buttonId) {	
+	public void buttonClicked(Object buttonId) {	
 		if(buttonId.equals("LA")){ // leftArrow
 			scrollLeft();
 			return;
@@ -103,7 +103,7 @@ public class NotAnimatedInventoryPanel extends Component implements ButtonListen
 		}
 		
 		// TODO: Handle all other buttons ...
-		int id = Integer.parseInt(buttonId);
+		int id = Integer.parseInt((String) buttonId);
 		System.out.println("InventoryButton " + id + " (" + getInventory().get(id + offset - 1).getName() + ") clicked!");
 	}
 	
