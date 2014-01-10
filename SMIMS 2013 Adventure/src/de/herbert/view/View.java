@@ -1,5 +1,6 @@
 package de.herbert.view;
 
+import java.awt.Font;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.newdawn.slick.geom.Rectangle;
 import de.herbert.control.Control;
 import de.herbert.model.Item;
 import de.herbert.parser.DialogueParser;
+import de.herbert.parser.FormattedText;
 import de.herbert.parser.StoryParser;
 
 
@@ -105,13 +107,19 @@ public class View {
 //		components.add(new ScrollableFormattedTextPanel(new Rectangle(10, 10, 100, 100), new FormattedText("Zeile 10\n")));
 //		
 
-		try {
-			StoryParser.getInstance().getPlayer().getInventory().add(new Item());
-			components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File(View.class.getResource("/de/nrw/smims2013/adventure/story/xml/exampleDialogue.xml").toURI()))));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			StoryParser.getInstance().getPlayer().getInventory().add(new Item());
+//			components.add(new DialoguePanel(new Rectangle(100, 200, 600, 200), DialogueParser.getInstance().parseDialogue(new File(View.class.getResource("/de/nrw/smims2013/adventure/story/xml/exampleDialogue.xml").toURI()))));
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		MenuPanel mp = new MenuPanel(new Rectangle(10, 10, 600, 600));
+		components.add(mp);
+		mp.addMenuButton(new FormattedTextButton(new Rectangle(0, 0, 30, 20), new FormattedText("Neues Spiel starten", new Font("Verdana", 1, 40))));
+		mp.addMenuButton(new FormattedTextButton(new Rectangle(0, 0, 30, 20), new FormattedText("Spiel laden", new Font("Verdana", 1, 40))));
+		mp.addMenuButton(new FormattedTextButton(new Rectangle(0, 0, 30, 20), new FormattedText("Credits", new Font("Verdana", 1, 40))));
+		mp.addMenuButton(new FormattedTextButton(new Rectangle(0, 0, 30, 20), new FormattedText("Beenden", new Font("Verdana", 1, 40))));
 		
 		//FormattedTextPanel.popUp(200, 200, new FormattedText("Testtext\nund Absatz"), false);
 		
